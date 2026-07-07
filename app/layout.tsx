@@ -20,12 +20,29 @@ export const metadata: Metadata = {
     "Autovex builds automation pipelines, web platforms and mobile apps that take repetitive work off your team's plate — shipped in weeks, not quarters.",
 };
 
+// Structured data so search engines and AI assistants can classify the agency.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Autovex Solutions",
+  url: "https://autovex.solutions",
+  email: "hello@autovex.solutions",
+  description: metadata.description,
+  serviceType: ["Business process automation", "Web development", "Mobile app development"],
+  knowsAbout: ["n8n", "Next.js", "React Native", "OpenAI", "Supabase"],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className={`${archivo.variable} ${plexMono.variable}`}>
+    // font variables live on <html> so :root tokens (--sans/--mono) can resolve them
+    <html lang="en" className={`${archivo.variable} ${plexMono.variable}`}>
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+        />
         {children}
         <Effects />
       </body>

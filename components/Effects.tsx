@@ -32,7 +32,7 @@ export default function Effects() {
     paintGrain();
     addEventListener("resize", paintGrain);
 
-    const els = document.querySelectorAll(".reveal");
+    const els = document.querySelectorAll(".reveal, .rise");
     let io: IntersectionObserver | undefined;
     if (reduced || !("IntersectionObserver" in window)) {
       els.forEach((el) => el.classList.add("in"));
@@ -46,7 +46,8 @@ export default function Effects() {
             }
           });
         },
-        { threshold: 0.15 },
+        // fire ~180px before entry so fast scrollers never see blank sections
+        { threshold: 0, rootMargin: "0px 0px 180px 0px" },
       );
       els.forEach((el) => io!.observe(el));
     }

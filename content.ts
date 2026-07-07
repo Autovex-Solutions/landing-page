@@ -6,6 +6,11 @@ export const contact = {
   bookingUrl: "#", // TODO: Cal.com / Calendly link
 };
 
+export const founder = {
+  name: "Ishaq",
+  line: "You'll work directly with Ishaq — the engineer building it, not an account manager.",
+};
+
 export const stack = ["n8n", "Next.js", "React Native", "OpenAI", "Supabase"];
 
 export type WorkItem = {
@@ -16,24 +21,29 @@ export type WorkItem = {
   image?: string; // path under /public, falls back to striped placeholder
 };
 
-export const workItems: WorkItem[] = [
-  {
-    title: "Ops autopilot for a logistics firm",
-    summary: "Order intake, invoicing and dispatch notifications — hands-free.",
-    metric: "−34 hrs/week of manual work",
-    sample: true,
-  },
-  {
-    title: "Booking platform for a clinic chain",
-    summary: "Web booking with automated reminders and no-show recovery.",
-    metric: "2× online bookings in 60 days",
-    sample: true,
-  },
-];
+// Empty until we ship real ones — the Teardown panel carries the section meanwhile.
+export const workItems: WorkItem[] = [];
+
+// The free-teardown offer + the interactive pipeline sketcher next to it.
+export const teardown = {
+  eyebrow: "Free teardown",
+  heading: "Send us your worst workflow.",
+  headingDim: "We'll show you the math.",
+  body: "Type the process you hate. Watch the pipeline that replaces it sketch itself — right here, in seconds. The engineered version, with your real numbers, lands in your inbox within 48 hours.",
+  placeholder:
+    "e.g. Every order lands in our inbox as a PDF — we retype it into the CRM, invoice it in QuickBooks, then chase the driver on WhatsApp…",
+  sample:
+    "We copy every invoice PDF into the CRM by hand, then chase missing fields over email for days.",
+  ctaLabel: "Get the engineered version — free, 48h",
+  mailSubject: "Teardown request",
+};
 
 export const steps = [
   { title: "Map", body: "A short call and an audit of where your team's hours actually go." },
-  { title: "Blueprint", body: "A fixed-scope plan with the expected return stated up front." },
+  {
+    title: "Blueprint",
+    body: "A fixed-scope plan with the expected return stated up front. Typical engagement: $3–10k, 3–6 weeks.", // TODO: confirm real range
+  },
   { title: "Build", body: "Shipped in weeks, with a working demo every Friday." },
   { title: "Run", body: "We monitor, maintain and keep improving what we ship." },
 ];

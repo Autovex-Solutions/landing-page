@@ -1,5 +1,21 @@
 /* Landing page sections. Server components — content lives in content.ts. */
-import { contact, stack, steps, workItems } from "@/content";
+import { contact, founder, stack, steps, teardown, workItems } from "@/content";
+import DottedWave from "@/components/DottedWave";
+import TeardownSketch from "@/components/TeardownSketch";
+import VideoPicker from "@/components/VideoPicker";
+
+/* Words wrapped for the masked rise-on-scroll effect (.rise gets .in from Effects). */
+function Rise({ text, offset = 0 }: { text: string; offset?: number }) {
+  return (
+    <>
+      {text.split(" ").map((word, i) => (
+        <span className="w" key={i}>
+          <span style={{ transitionDelay: `${(offset + i) * 55}ms` }}>{word}</span>
+        </span>
+      ))}
+    </>
+  );
+}
 
 export function Nav() {
   return (
@@ -11,7 +27,7 @@ export function Nav() {
       </a>
       <div className="nav-links">
         <a href="#services">Services</a>
-        <a href="#work">Work</a>
+        <a href="#work">Teardown</a>
         <a href="#process">Process</a>
         <a className="solid" href="#contact">
           Book a call
@@ -25,11 +41,16 @@ export function Hero() {
   return (
     <header>
       <div className="sky" />
-      <video className="bgvid" autoPlay muted loop playsInline src="/hero-loop.mp4" />
+      <DottedWave variant="hero" />
+      {/* hidden by default — dev picker can swap a clip in; promote the winner in CSS if a clip beats the wave */}
+      <video className="bgvid" style={{ display: "none" }} autoPlay muted loop playsInline />
       <div className="veil" />
+      {process.env.NODE_ENV === "development" && <VideoPicker />}
       <div className="hero-inner">
         <p className="mono eyebrow">Automation &middot; Web &middot; Mobile</p>
-        <h1>The busywork ends here.</h1>
+        <h1 className="rise">
+          <Rise text="The busywork ends here." />
+        </h1>
         <p className="hero-sub">
           Autovex builds automation pipelines, web platforms and mobile apps that take
           repetitive work off your team&apos;s plate &mdash; shipped in weeks, not quarters.
@@ -39,7 +60,7 @@ export function Hero() {
             Book a call <span className="arrow">&rarr;</span>
           </a>
           <a className="btn ghost" href="#work">
-            See the work <span className="arrow">&rarr;</span>
+            Get a free teardown <span className="arrow">&rarr;</span>
           </a>
         </div>
         <div className="hero-foot">
@@ -60,8 +81,11 @@ export function Services() {
     <section id="services">
       <div className="section-head reveal">
         <p className="mono eyebrow">What we do</p>
-        <h2>
-          Automation first. <span className="dim">Everything else follows.</span>
+        <h2 className="rise">
+          <Rise text="Automation first." />{" "}
+          <span className="dim">
+            <Rise text="Everything else follows." offset={2} />
+          </span>
         </h2>
       </div>
       <div className="section-body svc-grid">
@@ -79,7 +103,7 @@ export function Services() {
             </p>
           </div>
           <div className="flow" aria-label="Example automation flow">
-            <span className="chip">
+            <span className="chip hot">
               &#9679; New lead form submitted <small>trigger</small>
             </span>
             <span className="down">&darr;</span>
@@ -87,7 +111,7 @@ export function Services() {
             <span className="down">&darr;</span>
             <span className="chip dim">Draft a personalised reply</span>
             <span className="down">&darr;</span>
-            <span className="chip">
+            <span className="chip hot">
               &#10003; CRM updated, rep notified <small>4 sec</small>
             </span>
           </div>
@@ -114,26 +138,38 @@ export function Services() {
 export function Work() {
   return (
     <section id="work">
-      <div className="section-head reveal">
-        <p className="mono eyebrow">Selected work</p>
-        <h2>Proof over promises.</h2>
-        <p className="work-note">Sample layout &mdash; real case studies drop in as we ship them</p>
+      <div className="section-body teardown">
+        <div className="td-pitch reveal">
+          <p className="mono eyebrow">{teardown.eyebrow}</p>
+          <h2 className="rise">
+            <Rise text={teardown.heading} />{" "}
+            <span className="dim">
+              <Rise text={teardown.headingDim} offset={4} />
+            </span>
+          </h2>
+          <p className="td-body">{teardown.body}</p>
+        </div>
+        <div className="reveal">
+          <TeardownSketch />
+        </div>
       </div>
-      <div className="section-body work-grid">
-        {workItems.map((item) => (
-          <div className="case reveal" key={item.title}>
-            <div className="case-thumb">
-              {item.image && <img src={item.image} alt={item.title} />}
-              {item.sample && <span className="sample-chip">Sample</span>}
+      {workItems.length > 0 && (
+        <div className="section-body work-grid">
+          {workItems.map((item) => (
+            <div className="case reveal" key={item.title}>
+              <div className="case-thumb">
+                {item.image && <img src={item.image} alt={item.title} />}
+                {item.sample && <span className="sample-chip">Sample</span>}
+              </div>
+              <div className="case-body">
+                <h3>{item.title}</h3>
+                <p>{item.summary}</p>
+                <span className="case-metric">{item.metric}</span>
+              </div>
             </div>
-            <div className="case-body">
-              <h3>{item.title}</h3>
-              <p>{item.summary}</p>
-              <span className="case-metric">{item.metric}</span>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
@@ -143,8 +179,11 @@ export function Process() {
     <section id="process">
       <div className="section-head reveal">
         <p className="mono eyebrow">How it works</p>
-        <h2>
-          Four steps. <span className="dim">No black box.</span>
+        <h2 className="rise">
+          <Rise text="Four steps." />{" "}
+          <span className="dim">
+            <Rise text="No black box." offset={2} />
+          </span>
         </h2>
       </div>
       <div className="section-body steps">
@@ -163,9 +202,12 @@ export function Process() {
 export function Cta() {
   return (
     <section className="cta" id="contact">
-      <div className="reveal">
+      <DottedWave />
+      <div className="cta-inner reveal">
         <p className="mono eyebrow">Start here</p>
-        <h2>Tell us what&apos;s slowing you down.</h2>
+        <h2 className="rise">
+          <Rise text="Tell us what's slowing you down." />
+        </h2>
         <p>
           A 20-minute call. You describe the bottleneck, we tell you honestly whether
           automation pays for itself.
@@ -178,6 +220,7 @@ export function Cta() {
         <p className="alt">
           or write to <a href={`mailto:${contact.email}`}>{contact.email}</a>
         </p>
+        <p className="mono founder-line">{founder.line}</p>
       </div>
     </section>
   );

@@ -1,0 +1,27 @@
+# Autovex Solutions
+
+> Services agency building business-process automation first, plus web platforms
+> and mobile apps. Small senior team led by Ishaq; fixed-scope engagements shipped
+> in weeks, with the expected return stated up front.
+
+## What we do
+
+- Automation (core service): wiring CRM, inbox, sheets and invoicing into
+  pipelines that run end to end — n8n + OpenAI, deterministic where it matters.
+- Web: fast, search-friendly marketing sites and web apps (Next.js).
+- Mobile: iOS and Android from one codebase (React Native).
+
+## How engagements work
+
+Map (audit of where hours go) → Blueprint (fixed scope, expected return, typical
+$3–10k over 3–6 weeks) → Build (working demo every Friday) → Run (monitor and improve).
+
+## Free teardown
+
+Email one workflow you hate to hello@autovex.solutions and get back a teardown
+within 48 hours: where the hours go, what we'd automate, what it saves per month.
+
+## Contact
+
+- Email: hello@autovex.solutions
+- Book a call: https://autovex.solutions/#contact

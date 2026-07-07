@@ -1,4 +1,5 @@
-import { Nav, Hero, Services, Work, Process, Cta, Footer } from "@/components/sections";
+import Nav from "@/components/Nav";
+import { Hero, Services, Projects, Teardown, Process, Cta, Footer } from "@/components/sections";
 
 export default function Home() {
   return (
@@ -6,7 +7,8 @@ export default function Home() {
       <Nav />
       <Hero />
       <Services />
-      <Work />
+      <Projects />
+      <Teardown />
       <Process />
       <Cta />
       <Footer />

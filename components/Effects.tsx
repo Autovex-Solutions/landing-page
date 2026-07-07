@@ -7,12 +7,6 @@ export default function Effects() {
   useEffect(() => {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const vid = document.querySelector<HTMLVideoElement>(".bgvid");
-    if (vid && reduced) {
-      vid.pause();
-      vid.removeAttribute("autoplay");
-    }
-
     const canvas = document.getElementById("grain") as HTMLCanvasElement | null;
     const paintGrain = () => {
       if (!canvas) return;

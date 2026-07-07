@@ -1,8 +1,11 @@
-/* Landing page sections. Server components — content lives in content.ts. */
-import { contact, founder, stack, steps, teardown, workItems } from "@/content";
+/* Landing page sections. Server components — content lives in content.ts.
+   Nav lives in components/Nav.tsx (client — scroll + menu state). */
+import { contact, steps, teardown, workItems } from "@/content";
+import CtaIconField from "@/components/CtaIconField";
 import DottedWave from "@/components/DottedWave";
+import FocusRail from "@/components/FocusRail";
 import TeardownSketch from "@/components/TeardownSketch";
-import VideoPicker from "@/components/VideoPicker";
+import ToolMarquee from "@/components/ToolMarquee";
 
 /* Words wrapped for the masked rise-on-scroll effect (.rise gets .in from Effects). */
 function Rise({ text, offset = 0 }: { text: string; offset?: number }) {
@@ -17,35 +20,11 @@ function Rise({ text, offset = 0 }: { text: string; offset?: number }) {
   );
 }
 
-export function Nav() {
-  return (
-    <nav>
-      <a className="brand" href="#">
-        {/* ponytail: plain img — logo is a tiny png, next/image adds nothing here */}
-        <img src="/logo-mark-white.png" alt="Autovex mark" />
-        <span>AUTOVEX SOLUTIONS</span>
-      </a>
-      <div className="nav-links">
-        <a href="#services">Services</a>
-        <a href="#work">Teardown</a>
-        <a href="#process">Process</a>
-        <a className="solid" href="#contact">
-          Book a call
-        </a>
-      </div>
-    </nav>
-  );
-}
-
 export function Hero() {
   return (
     <header>
       <div className="sky" />
       <DottedWave variant="hero" />
-      {/* hidden by default — dev picker can swap a clip in; promote the winner in CSS if a clip beats the wave */}
-      <video className="bgvid" style={{ display: "none" }} autoPlay muted loop playsInline />
-      <div className="veil" />
-      {process.env.NODE_ENV === "development" && <VideoPicker />}
       <div className="hero-inner">
         <p className="mono eyebrow">Automation &middot; Web &middot; Mobile</p>
         <h1 className="rise">
@@ -59,17 +38,13 @@ export function Hero() {
           <a className="btn primary" href="#contact">
             Book a call <span className="arrow">&rarr;</span>
           </a>
-          <a className="btn ghost" href="#work">
+          <a className="btn ghost" href="#teardown">
             Get a free teardown <span className="arrow">&rarr;</span>
           </a>
         </div>
         <div className="hero-foot">
-          <span className="mono">We build with</span>
-          <div className="stack-list mono">
-            {stack.map((s) => (
-              <span key={s}>{s}</span>
-            ))}
-          </div>
+          <span className="mono tools-label">We build with &amp; wire into</span>
+          <ToolMarquee />
         </div>
       </div>
     </header>
@@ -135,41 +110,44 @@ export function Services() {
   );
 }
 
-export function Work() {
+/* Case-study rail — coverflow of pipeline-diagram cards (FocusRail.tsx).
+   Renders nothing while workItems is empty (nav link hides too). */
+export function Projects() {
+  if (workItems.length === 0) return null;
   return (
     <section id="work">
-      <div className="section-body teardown">
-        <div className="td-pitch reveal">
-          <p className="mono eyebrow">{teardown.eyebrow}</p>
-          <h2 className="rise">
-            <Rise text={teardown.heading} />{" "}
-            <span className="dim">
-              <Rise text={teardown.headingDim} offset={4} />
-            </span>
-          </h2>
-          <p className="td-body">{teardown.body}</p>
-        </div>
-        <div className="reveal">
-          <TeardownSketch />
-        </div>
+      <div className="section-head reveal">
+        <p className="mono eyebrow">Selected work</p>
+        <h2 className="rise">
+          <Rise text="Shipped and running." />{" "}
+          <span className="dim">
+            <Rise text="Client names stay private." offset={3} />
+          </span>
+        </h2>
       </div>
-      {workItems.length > 0 && (
-        <div className="section-body work-grid">
-          {workItems.map((item) => (
-            <div className="case reveal" key={item.title}>
-              <div className="case-thumb">
-                {item.image && <img src={item.image} alt={item.title} />}
-                {item.sample && <span className="sample-chip">Sample</span>}
-              </div>
-              <div className="case-body">
-                <h3>{item.title}</h3>
-                <p>{item.summary}</p>
-                <span className="case-metric">{item.metric}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      <div className="section-body reveal">
+        <FocusRail items={workItems} />
+      </div>
+    </section>
+  );
+}
+
+export function Teardown() {
+  return (
+    <section id="teardown">
+      <div className="section-head reveal">
+        <p className="mono eyebrow">{teardown.eyebrow}</p>
+        <h2 className="rise">
+          <Rise text={teardown.heading} />{" "}
+          <span className="dim">
+            <Rise text={teardown.headingDim} offset={4} />
+          </span>
+        </h2>
+        <p className="lede">{teardown.body}</p>
+      </div>
+      <div className="section-body reveal">
+        <TeardownSketch />
+      </div>
     </section>
   );
 }
@@ -202,7 +180,8 @@ export function Process() {
 export function Cta() {
   return (
     <section className="cta" id="contact">
-      <DottedWave />
+      {/* floating tool tiles — the CTA's ambient layer (hero keeps the dot-wave) */}
+      <CtaIconField />
       <div className="cta-inner reveal">
         <p className="mono eyebrow">Start here</p>
         <h2 className="rise">
@@ -220,7 +199,6 @@ export function Cta() {
         <p className="alt">
           or write to <a href={`mailto:${contact.email}`}>{contact.email}</a>
         </p>
-        <p className="mono founder-line">{founder.line}</p>
       </div>
     </section>
   );

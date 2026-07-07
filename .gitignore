@@ -24,9 +24,6 @@
 .DS_Store
 *.pem
 
-# hero video candidates — dev-only, pick one and promote it to public/hero-loop.mp4
-/public/videos/
-
 # debug
 npm-debug.log*
 yarn-debug.log*

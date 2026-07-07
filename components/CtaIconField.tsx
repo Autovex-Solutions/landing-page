@@ -51,6 +51,13 @@ const TILES: Tile[] = [
   { icon: siMailchimp, left: "64%", top: "5%", size: 38, blur: 2, opacity: 0.45, dur: 12.5, delay: -5.5 },
 ];
 
+// Three knobs to tune the halo: pull tiles toward center (denser cluster),
+// cap how blurred the outer tiles get, and floor their opacity — so the
+// outermost marks stay at least slightly visible.
+const SPREAD = 0.72; // <1 pulls tiles toward horizontal center; smaller = tighter ring
+const MAX_BLUR = 1.5; // px; caps the outermost tiles' blur
+const MIN_OPACITY = 0.6; // outer tiles never fade below this
+
 export default function CtaIconField() {
   return (
     <div className="icon-field" aria-hidden="true">
@@ -59,12 +66,12 @@ export default function CtaIconField() {
           key={i}
           className={`tile${t.accent ? " accent" : ""}`}
           style={{
-            left: t.left,
+            left: `${50 + (parseFloat(t.left) - 50) * SPREAD}%`,
             top: t.top,
             width: t.size,
             height: t.size,
-            filter: t.blur ? `blur(${t.blur}px)` : undefined,
-            opacity: t.opacity,
+            filter: t.blur ? `blur(${Math.min(t.blur, MAX_BLUR)}px)` : undefined,
+            opacity: Math.max(t.opacity, MIN_OPACITY),
             animationDuration: `${t.dur}s`,
             animationDelay: `${t.delay}s`,
           }}

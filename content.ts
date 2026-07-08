@@ -2,7 +2,7 @@
 // Add a case study = add one object to `workItems` (sample: true renders the "Sample" chip).
 
 export const contact = {
-  email: "hello@autovex.solutions", // TODO: real address
+  email: "autovexsolutions@gmail.com", 
   bookingUrl: "#", // TODO: Cal.com / Calendly link
 };
 
@@ -26,8 +26,8 @@ export const workItems: WorkItem[] = [
     category: "Automation",
     title: "Autonomous content enrichment pipeline",
     summary:
-      "A media library's backlog goes in one side and comes out captioned, safety-rated, de-watermarked and upscaled to HD. Crash-safe, budget-capped, and it throttles itself to the AI vendor's real rate limits — a human only ever sees the flagged exceptions.",
-    metric: "0 human touches per video",
+      "A media library's backlog goes in one side and comes out captioned, safety-rated, de-watermarked and upscaled to HD. Crash-safe, budget-capped, and it throttles itself to the AI vendor's real rate limits. A human only ever sees the flagged exceptions.",
+    metric: "0 human touches per video · ~700 paying users",
     nodes: ["Fetch from library", "Gemini caption + safety", "Watermark sweep", "4× HD upscale", "Publish enriched", "Exception → human"],
   },
   {
@@ -71,12 +71,12 @@ export const teardown = {
   eyebrow: "Free teardown",
   heading: "Send us your worst workflow.",
   headingDim: "We'll show you the math.",
-  body: "The panel below is sketching real workflows on a loop — the busywork, then the pipeline that replaces it. Click in, type yours, and watch it redraw. The engineered version, with your real numbers, lands in your inbox within 48 hours.",
+  body: "The panel below is sketching real workflows on a loop, the busywork, then the pipeline that replaces it. Click in, type yours, and watch it redraw. The engineered version, with your real numbers, lands in your inbox within 48 hours.",
   placeholder:
-    "e.g. Every order lands in our inbox as a PDF — we retype it into the CRM, invoice it in QuickBooks, then chase the driver on WhatsApp…",
+    "e.g. Every order lands in our inbox as a PDF, we retype it into the CRM, invoice it in QuickBooks, then chase the driver on WhatsApp…",
   sample:
     "We copy every invoice PDF into the CRM by hand, then chase missing fields over email for days.",
-  ctaLabel: "Get the engineered version — free, 48h",
+  ctaLabel: "Get the engineered version, free, 48h",
   mailSubject: "Teardown request",
 };
 

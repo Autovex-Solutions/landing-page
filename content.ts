@@ -19,17 +19,32 @@ export type WorkItem = {
   image?: string; // path under /public — replaces the node diagram when set
 };
 
-// Representative builds (sample: true) until real case studies ship.
-// Swapping in a real one = replace an object here; the rail redraws itself.
+// First three are real, shipped systems (anonymized — client names stay off the page).
+// The remaining sample: true slots are placeholders for the other members' case studies.
 export const workItems: WorkItem[] = [
   {
     category: "Automation",
-    title: "Invoice intake pipeline",
+    title: "Autonomous content enrichment pipeline",
     summary:
-      "Order PDFs used to be retyped into the CRM by hand. Now they're parsed, matched and posted the minute they land — a human only sees the exceptions.",
-    metric: "11 hrs/week returned to the team",
-    sample: true,
-    nodes: ["Inbox — invoice PDF", "Extract line items", "Match against PO", "Post to QuickBooks", "Exception → human"],
+      "A media library's backlog goes in one side and comes out captioned, safety-rated, de-watermarked and upscaled to HD. Crash-safe, budget-capped, and it throttles itself to the AI vendor's real rate limits — a human only ever sees the flagged exceptions.",
+    metric: "0 human touches per video",
+    nodes: ["Fetch from library", "Gemini caption + safety", "Watermark sweep", "4× HD upscale", "Publish enriched", "Exception → human"],
+  },
+  {
+    category: "Automation",
+    title: "AI video restoration & upscaler",
+    summary:
+      "Low-res source in, 4× frames out: an in-house restoration stage with on-demand face recovery, tuned until it held its own against paid upscalers side by side. Runs on pay-per-second GPUs, so there's no idle hardware bill.",
+    metric: "4× resolution on serverless GPUs",
+    image: "/work/upscale-before-after.webp",
+  },
+  {
+    category: "Web",
+    title: "Live classroom engagement analytics",
+    summary:
+      "A virtual classroom that reads the room: emotion AI runs in each student's browser and streams only engagement signals, so instructors watch attention rise, dip and recover live — then get the post-session report.",
+    metric: "0 video frames leave the device",
+    image: "/work/classroom-live.webp",
   },
   {
     category: "Web",
@@ -41,15 +56,6 @@ export const workItems: WorkItem[] = [
     nodes: ["Next.js front end", "Live pricing API", "Stripe checkout", "Supabase records"],
   },
   {
-    category: "Automation",
-    title: "Lead routing engine",
-    summary:
-      "Every form fill is enriched, scored and in the right rep's hands with a drafted reply — before a competitor has opened the notification.",
-    metric: "4 sec from form to rep",
-    sample: true,
-    nodes: ["Form submitted", "Enrich & score", "Draft reply", "Assign to rep", "CRM updated"],
-  },
-  {
     category: "Mobile",
     title: "Field-ops companion app",
     summary:
@@ -57,15 +63,6 @@ export const workItems: WorkItem[] = [
     metric: "0 paper forms since launch",
     sample: true,
     nodes: ["React Native app", "Offline job queue", "Background sync", "Ops dashboard"],
-  },
-  {
-    category: "Automation",
-    title: "Support triage copilot",
-    summary:
-      "Inbound tickets are classified, answered straight from the docs where possible, and escalated with full context where not.",
-    metric: "68% resolved without a human",
-    sample: true,
-    nodes: ["Ticket arrives", "Classify intent", "Draft from docs", "Escalate w/ context"],
   },
 ];
 

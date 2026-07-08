@@ -2,7 +2,8 @@
    Nav lives in components/Nav.tsx (client — scroll + menu state). */
 import { contact, steps, teardown, workItems } from "@/content";
 import CtaIconField from "@/components/CtaIconField";
-import DottedWave from "@/components/DottedWave";
+import FlowDemo from "@/components/FlowDemo";
+import HeroMachine from "@/components/HeroMachine";
 import FocusRail from "@/components/FocusRail";
 import TeardownSketch from "@/components/TeardownSketch";
 import ToolMarquee from "@/components/ToolMarquee";
@@ -24,7 +25,10 @@ export function Hero() {
   return (
     <header>
       <div className="sky" />
-      <DottedWave variant="hero" />
+      {/* Revert to Ishaq's original: replace the line below with
+          <DottedWave variant="hero" /> and re-add
+          import DottedWave from "@/components/DottedWave"; */}
+      <HeroMachine />
       <div className="hero-inner">
         <p className="mono eyebrow">Automation &middot; Web &middot; Mobile</p>
         <h1 className="rise">
@@ -77,19 +81,8 @@ export function Services() {
               where it matters.
             </p>
           </div>
-          <div className="flow" aria-label="Example automation flow">
-            <span className="chip hot">
-              &#9679; New lead form submitted <small>trigger</small>
-            </span>
-            <span className="down">&darr;</span>
-            <span className="chip dim">Enrich &amp; score the lead</span>
-            <span className="down">&darr;</span>
-            <span className="chip dim">Draft a personalised reply</span>
-            <span className="down">&darr;</span>
-            <span className="chip hot">
-              &#10003; CRM updated, rep notified <small>4 sec</small>
-            </span>
-          </div>
+          {/* Revert to Ishaq's original: restore the static .flow markup here (see git) */}
+          <FlowDemo />
         </div>
         <div className="svc reveal">
           <div className="svc-tag mono">

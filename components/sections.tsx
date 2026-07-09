@@ -2,6 +2,7 @@
    Nav lives in components/Nav.tsx (client — scroll + menu state). */
 import { contact, steps, teardown, workItems } from "@/content";
 import CtaIconField from "@/components/CtaIconField";
+import CtaWires from "@/components/CtaWires";
 import FlowDemo from "@/components/FlowDemo";
 import HeroMachine from "@/components/HeroMachine";
 import FocusRail from "@/components/FocusRail";
@@ -175,6 +176,8 @@ export function Cta() {
     <section className="cta" id="contact">
       {/* floating tool tiles — the CTA's ambient layer (hero keeps the dot-wave) */}
       <CtaIconField />
+      {/* wires tools into the booking button one at a time (CtaWires.tsx) */}
+      <CtaWires />
       <div className="cta-inner reveal">
         <p className="mono eyebrow">Start here</p>
         <h2 className="rise">

@@ -40,7 +40,7 @@ export default function Nav() {
       <nav>
         <a className="brand" href="#" onClick={() => setOpen(false)}>
           {/* ponytail: plain img — logo is a tiny png, next/image adds nothing here */}
-          <img src="/logo-mark-white.png" alt="Autovex mark" />
+          <img src="/logo-mark-white.png" alt="Autovex Solutions logo" width="34" height="34" />
           <span>AUTOVEX SOLUTIONS</span>
         </a>
         <div className="nav-links">

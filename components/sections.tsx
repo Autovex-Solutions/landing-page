@@ -200,7 +200,13 @@ export function Cta() {
 export function Footer() {
   return (
     <footer>
-      <img src="/logo-lockup-white.png" alt="Autovex Solutions" />
+      <img
+        src="/logo-lockup-white.png"
+        alt="Autovex Solutions — AI automation, web and mobile app development agency"
+        width="240"
+        height="110"
+        loading="lazy"
+      />
       <span className="mono">
         &copy; {new Date().getFullYear()} Autovex Solutions &mdash; Automation &middot; Web &middot; Mobile
       </span>

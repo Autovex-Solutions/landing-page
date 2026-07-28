@@ -74,7 +74,12 @@ export default function FocusRail({ items }: { items: WorkItem[] }) {
                 {item.sample && <span className="sample-chip">Sample</span>}
               </div>
               {item.image ? (
-                <img className="rc-img" src={item.image} alt="" />
+                <img
+                  className="rc-img"
+                  src={item.image}
+                  alt={`${item.title} — ${item.category} case study by Autovex Solutions`}
+                  loading="lazy"
+                />
               ) : (
                 <div className="rc-diagram">
                   {item.nodes?.map((n, i) => (

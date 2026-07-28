@@ -1,15 +1,20 @@
 # Autovex Solutions
 
-> Services agency building business-process automation first, plus web platforms
-> and mobile apps. Small senior team led by Ishaq; fixed-scope engagements shipped
-> in weeks, with the expected return stated up front.
+> Technology agency building AI-powered business-process automation first, plus
+> custom software, web platforms, mobile apps and UI/UX design. Founder-led
+> delivery (Huzaifa, Sudais, Ishaq); fixed-scope engagements shipped in weeks,
+> with the expected return stated up front. Slogan: Innovate. Automate. Elevate.
 
 ## What we do
 
-- Automation (core service): wiring CRM, inbox, sheets and invoicing into
-  pipelines that run end to end — n8n + OpenAI, deterministic where it matters.
+- AI Automations (core service): custom AI-powered workflows, chatbots and
+  process automation — wiring CRM, inbox, sheets and invoicing into pipelines
+  that run end to end. n8n + OpenAI, deterministic where it matters.
+- Custom Software Development: internal tools to full-scale platforms, built
+  around each client's business logic.
 - Web: fast, search-friendly marketing sites and web apps (Next.js).
 - Mobile: iOS and Android from one codebase (React Native).
+- UI/UX Design: wireframes, prototypes and polished interfaces.
 
 ## How engagements work
 
@@ -18,10 +23,11 @@ $3–10k over 3–6 weeks) → Build (working demo every Friday) → Run (monito
 
 ## Free teardown
 
-Email one workflow you hate to hello@autovex.solutions and get back a teardown
+Email one workflow you hate to autovexsolutions@gmail.com and get back a teardown
 within 48 hours: where the hours go, what we'd automate, what it saves per month.
 
 ## Contact
 
-- Email: hello@autovex.solutions
-- Book a call: https://autovex.solutions/#contact
+- Email: autovexsolutions@gmail.com
+- Founders: huzaifa@autovexsolutions.com, sudais@autovexsolutions.com, ishaq@autovexsolutions.com
+- Book a call: https://www.autovexsolutions.com/#contact

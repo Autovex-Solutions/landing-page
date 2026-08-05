@@ -2,8 +2,8 @@
 // Add a case study = add one object to `workItems` (sample: true renders the "Sample" chip).
 
 export const contact = {
-  email: "autovexsolutions@gmail.com", 
-  bookingUrl: "#", // TODO: Cal.com / Calendly link
+  email: "Hello@autovexsolutions.com", 
+  bookingUrl: "https://calendly.com/autovexsolutions/30min"
 };
 
 // Tool logos/names for the hero marquee live in components/ToolMarquee.tsx
@@ -81,11 +81,20 @@ export const teardown = {
 };
 
 export const steps = [
-  { title: "Map", body: "A short call and an audit of where your team's hours actually go." },
   {
-    title: "Blueprint",
-    body: "A fixed-scope plan with the expected return stated up front. Typical engagement: $3–10k, 3–6 weeks.", // TODO: confirm real range
+    title: "Discover",
+    body: "We learn how your business operates, identify challenges, and define the best technical approach before a single line of code is written.",
   },
-  { title: "Build", body: "Shipped in weeks, with a working demo every Friday." },
-  { title: "Run", body: "We monitor, maintain and keep improving what we ship." },
+  {
+    title: "Design",
+    body: "We craft intuitive user experiences, scalable architecture, and a clear roadmap that aligns technology with your business goals.",
+  },
+  {
+    title: "Build",
+    body: "Our team develops, tests, and integrates your solution using modern technologies, keeping you involved throughout every milestone.",
+  },
+  {
+    title: "Launch & Scale",
+    body: "After deployment, we monitor, optimize, and continuously improve your product so it grows alongside your business.",
+  },
 ];

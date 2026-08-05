@@ -1,5 +1,4 @@
-/* Landing page sections. Server components — content lives in content.ts.
-   Nav lives in components/Nav.tsx (client — scroll + menu state). */
+
 import { contact, steps, teardown, workItems } from "@/content";
 import CtaIconField from "@/components/CtaIconField";
 import FlowDemo from "@/components/FlowDemo";
@@ -7,6 +6,8 @@ import HeroMachine from "@/components/HeroMachine";
 import FocusRail from "@/components/FocusRail";
 import TeardownSketch from "@/components/TeardownSketch";
 import ToolMarquee from "@/components/ToolMarquee";
+import WebDemo from "@/components/WebDemo";
+import MobileDemo from "@/components/MobileDemo";
 
 /* Words wrapped for the masked rise-on-scroll effect (.rise gets .in from Effects). */
 function Rise({ text, offset = 0 }: { text: string; offset?: number }) {
@@ -25,23 +26,27 @@ export function Hero() {
   return (
     <header>
       <div className="sky" />
-      {/* Revert to Ishaq's original: replace the line below with
-          <DottedWave variant="hero" /> and re-add
-          import DottedWave from "@/components/DottedWave"; */}
+     
       <HeroMachine />
       <div className="hero-inner">
-        <p className="mono eyebrow">Automation &middot; Web &middot; Mobile</p>
+       <div className="hero-pill mono">
+          <span className="hero-pill-dot"></span>
+          AI Automation • Web Apps • Mobile Apps
+        </div>    
         <h1 className="rise">
-          <Rise text="The busywork ends here." />
+          <Rise text="Engineered for
+          Impact." />
         </h1>
         <p className="hero-sub">
-          Autovex builds automation pipelines, web platforms and mobile apps that take
-          repetitive work off your team&apos;s plate &mdash; shipped in weeks, not quarters.
+          From AI automation to custom software, web platforms, and mobile apps—we build technology that solves real business problems.
         </p>
-        <div className="cta-row">
-          <a className="btn primary" href="#contact">
-            Book a call <span className="arrow">&rarr;</span>
-          </a>
+        <div className="cta-row"> 
+          <a
+               className="btn primary"
+               href="https://calendly.com/autovexsolutions/30min"
+            >
+               Book a Call <span className="arrow">&rarr;</span>
+</a>
           <a className="btn ghost" href="#teardown">
             Get a free teardown <span className="arrow">&rarr;</span>
           </a>
@@ -61,43 +66,74 @@ export function Services() {
       <div className="section-head reveal">
         <p className="mono eyebrow">What we do</p>
         <h2 className="rise">
-          <Rise text="Automation first." />{" "}
+          <Rise text="From concept to deployment." />{" "}
           <span className="dim">
-            <Rise text="Everything else follows." offset={2} />
+            <Rise text="We build what's next." offset={2} />
           </span>
         </h2>
       </div>
+
       <div className="section-body svc-grid">
+
+        {/* ---------------- Automation ---------------- */}
+
         <div className="svc lead reveal">
           <div className="svc-col">
             <div className="svc-tag mono">
               <span>01 / Automation</span>
               <span>Core service</span>
             </div>
+
             <h3>Workflows that run themselves</h3>
+
             <p>
-              We wire your tools together &mdash; CRM, inbox, sheets, invoicing &mdash; into
-              pipelines that handle the busywork end to end. AI where it helps, deterministic
-              where it matters.
+              We wire your tools together &mdash; CRM, inbox, sheets,
+              invoicing &mdash; into pipelines that handle the busywork end to
+              end. AI where it helps, deterministic where it matters.
             </p>
           </div>
-          {/* Revert to Ishaq's original: restore the static .flow markup here (see git) */}
+
           <FlowDemo />
         </div>
+
+        {/* ---------------- Web ---------------- */}
+
         <div className="svc reveal">
+
           <div className="svc-tag mono">
             <span>02 / Web</span>
           </div>
+
           <h3>Sites &amp; platforms that sell</h3>
-          <p>Fast, search-friendly marketing sites and web apps &mdash; built to convert, not just to exist.</p>
+
+          <p>
+            Fast, search-friendly marketing sites and web apps &mdash;
+            built to convert, not just to exist.
+          </p>
+
+          <WebDemo />
+
         </div>
+
+        {/* ---------------- Mobile ---------------- */}
+
         <div className="svc reveal">
+
           <div className="svc-tag mono">
             <span>03 / Mobile</span>
           </div>
-          <h3>Apps people keep</h3>
-          <p>iOS and Android from one codebase, from prototype to store release.</p>
+
+          <h3>Mobile apps built for growth</h3>
+
+          <p>
+            High-performance iOS and Android applications engineered for
+            speed, scalability and exceptional user experiences.
+          </p>
+
+          <MobileDemo />
+
         </div>
+
       </div>
     </section>
   );
@@ -149,19 +185,25 @@ export function Process() {
   return (
     <section id="process">
       <div className="section-head reveal">
-        <p className="mono eyebrow">How it works</p>
+        <p className="mono eyebrow">Our process</p>
+
         <h2 className="rise">
-          <Rise text="Four steps." />{" "}
+          <Rise text="Built with clarity." />{" "}
           <span className="dim">
-            <Rise text="No black box." offset={2} />
+            <Rise text="Delivered with precision." offset={2} />
           </span>
         </h2>
       </div>
+
       <div className="section-body steps">
         {steps.map((step, i) => (
           <div className="step reveal" key={step.title}>
-            <span className="mono">{String(i + 1).padStart(2, "0")}</span>
+            <span className="mono">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+
             <h3>{step.title}</h3>
+
             <p>{step.body}</p>
           </div>
         ))}
@@ -173,24 +215,30 @@ export function Process() {
 export function Cta() {
   return (
     <section className="cta" id="contact">
-      {/* floating tool tiles — the CTA's ambient layer (hero keeps the dot-wave) */}
       <CtaIconField />
+
       <div className="cta-inner reveal">
-        <p className="mono eyebrow">Start here</p>
+        <p className="mono eyebrow">Start your next project</p>
+
         <h2 className="rise">
-          <Rise text="Tell us what's slowing you down." />
+          <Rise text="Let's create what's next." />
         </h2>
+
         <p>
-          A 20-minute call. You describe the bottleneck, we tell you honestly whether
-          automation pays for itself.
+          From AI automation and custom software to web platforms and mobile
+          applications, we build technology that helps ambitious businesses
+          move faster, operate smarter, and scale with confidence.
         </p>
+
         <div className="cta-row">
           <a className="btn primary" href={contact.bookingUrl}>
-            Book a 20-min call <span className="arrow">&rarr;</span>
+            Book a Free Consultation <span className="arrow">&rarr;</span>
           </a>
         </div>
+
         <p className="alt">
-          or write to <a href={`mailto:${contact.email}`}>{contact.email}</a>
+          Prefer email?{" "}
+          <a href={`mailto:${contact.email}`}>{contact.email}</a>
         </p>
       </div>
     </section>

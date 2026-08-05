@@ -2,19 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/*
- * Hero background: "the machine" — a self-assembling automation pipeline.
- * On load, nodes pop in and circuit traces draw themselves; then amber data
- * packets flow through the graph forever, flashing nodes as they arrive.
- * The whole graph parallaxes gently toward the cursor. A terminal log in
- * the corner types out what the machine is doing.
- *
- * Revert to Ishaq's original: swap <HeroMachine /> in sections.tsx back to
- * <DottedWave variant="hero" /> and delete this file + its CSS block.
- *
- * Reduced motion: fully assembled static frame, no packets, static log.
- */
-
 const INK = "242, 241, 238";
 const AMBER = "242, 163, 60";
 

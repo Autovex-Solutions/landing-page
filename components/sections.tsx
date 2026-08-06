@@ -2,14 +2,14 @@
 import { contact, steps, teardown, workItems } from "@/content";
 import CtaIconField from "@/components/CtaIconField";
 import FlowDemo from "@/components/FlowDemo";
-import HeroMachine from "@/components/HeroMachine";
+import HeroMachine from "@/components/HeroMachine";   
 import FocusRail from "@/components/FocusRail";
 import TeardownSketch from "@/components/TeardownSketch";
 import ToolMarquee from "@/components/ToolMarquee";
 import WebDemo from "@/components/WebDemo";
 import MobileDemo from "@/components/MobileDemo";
 
-/* Words wrapped for the masked rise-on-scroll effect (.rise gets .in from Effects). */
+
 function Rise({ text, offset = 0 }: { text: string; offset?: number }) {
   return (
     <>

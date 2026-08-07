@@ -1,9 +1,15 @@
 // Single place to edit site content that changes often.
 // Add a case study = add one object to `workItems` (sample: true renders the "Sample" chip).
 
+// `phone` is rendered as selectable text (not only inside the tel: href) so Google
+// Business Profile can corroborate the number against the profile — keep the displayed
+// string identical to the number in the GBP phone field.
 export const contact = {
-  email: "Hello@autovexsolutions.com", 
-  bookingUrl: "https://calendly.com/autovexsolutions/30min"
+  email: "Hello@autovexsolutions.com",
+  bookingUrl: "https://calendly.com/autovexsolutions/30min",
+  phone: "+92 348 2033984",
+  phoneHref: "tel:+923482033984",
+  whatsapp: "https://wa.me/923482033984",
 };
 
 // Tool logos/names for the hero marquee live in components/ToolMarquee.tsx

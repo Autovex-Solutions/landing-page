@@ -1302,16 +1302,45 @@ footer {
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
-  padding: 34px var(--pad);
+  padding: 48px var(--pad);
   color: var(--faint);
 }
 footer img {
-  height: 44px;
+  height: 52px;
   width: auto;
   opacity: 0.9;
 }
+/* contact + copyright as one right-hand block */
+.footer-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 9px;
+  text-align: right;
+}
+/* must live after the base rule — equal specificity, later source wins */
+@media (max-width: 720px) {
+  /* footer stacks to one column; right-aligning it there leaves ragged orphans */
+  .footer-right {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
 footer .mono {
   font-size: 11px;
+}
+/* a phone number must never break across lines */
+a[href^="tel:"] {
+  white-space: nowrap;
+}
+/* contact links need an affordance — footer text is otherwise unlinked */
+.footer-contact a {
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+}
+.footer-contact a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
 /* ---------- effects ---------- */

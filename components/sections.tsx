@@ -239,6 +239,12 @@ export function Cta() {
         <p className="alt">
           Prefer email?{" "}
           <a href={`mailto:${contact.email}`}>{contact.email}</a>
+          {" · "}
+          <a href={contact.phoneHref}>{contact.phone}</a>
+          {" · "}
+          <a href={contact.whatsapp} rel="noopener" target="_blank">
+            WhatsApp
+          </a>
         </p>
       </div>
     </section>
@@ -255,9 +261,22 @@ export function Footer() {
         height="110"
         loading="lazy"
       />
-      <span className="mono">
-        &copy; {new Date().getFullYear()} Autovex Solutions &mdash; Automation &middot; Web &middot; Mobile
-      </span>
+      {/* Contact stacks above the copyright so the footer reads as two zones — brand
+          left, contact + legal right — instead of three items adrift.
+          Rendered as text, not just an href: Google Business Profile corroborates the
+          profile's phone number against what it can read on the site. */}
+      <div className="footer-right">
+        <span className="mono footer-contact">
+          <a href={contact.phoneHref}>{contact.phone}</a>
+          {" · "}
+          <a href={contact.whatsapp} rel="noopener" target="_blank">
+            WhatsApp
+          </a>
+        </span>
+        <span className="mono">
+          &copy; {new Date().getFullYear()} Autovex Solutions &mdash; Automation &middot; Web &middot; Mobile
+        </span>
+      </div>
     </footer>
   );
 }

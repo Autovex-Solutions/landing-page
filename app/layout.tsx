@@ -94,6 +94,7 @@ const jsonLd = {
       logo: `${SITE_URL}/logo-mark-white.png`,
       image: `${SITE_URL}/logo-lockup-white.png`,
       email: "autovexsolutions@gmail.com",
+      telephone: "+92-348-2033984",
       description:
         "Autovex Solutions is a technology company helping businesses modernize, automate and scale through intelligent software — AI automations, custom software, web platforms, mobile apps and UI/UX design.",
       founder: [
@@ -117,10 +118,12 @@ const jsonLd = {
         "@type": "ContactPoint",
         contactType: "sales",
         email: "autovexsolutions@gmail.com",
+        telephone: "+92-348-2033984",
         url: `${SITE_URL}/#contact`,
       },
       sameAs: [
         "https://github.com/Autovex-Solutions",
+        "https://wa.me/923482033984",
       ],
       knowsAbout: [
         "n8n",

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo, IBM_Plex_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import Effects from "@/components/Effects";
 import "./globals.css";
 
@@ -62,7 +64,8 @@ export const metadata: Metadata = {
     url: "/",
     siteName: "Autovex Solutions",
     locale: "en_US",
-    title: "Autovex Solutions — AI Automation, Web & Mobile App Development Agency",
+    title:
+      "Autovex Solutions — AI Automation, Web & Mobile App Development Agency",
     description:
       "AI-powered automation, custom software, web platforms and mobile apps that take repetitive work off your team's plate — shipped in weeks, not quarters.",
   },
@@ -78,7 +81,6 @@ export const metadata: Metadata = {
   },
 };
 
-// Structured data so search engines and AI assistants can classify the agency.
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -95,9 +97,21 @@ const jsonLd = {
       description:
         "Autovex Solutions is a technology company helping businesses modernize, automate and scale through intelligent software — AI automations, custom software, web platforms, mobile apps and UI/UX design.",
       founder: [
-        { "@type": "Person", name: "Huzaifa", email: "huzaifa@autovexsolutions.com" },
-        { "@type": "Person", name: "Sudais", email: "sudais@autovexsolutions.com" },
-        { "@type": "Person", name: "Ishaq", email: "ishaq@autovexsolutions.com" },
+        {
+          "@type": "Person",
+          name: "Huzaifa",
+          email: "huzaifa@autovexsolutions.com",
+        },
+        {
+          "@type": "Person",
+          name: "Sudais",
+          email: "sudais@autovexsolutions.com",
+        },
+        {
+          "@type": "Person",
+          name: "Ishaq",
+          email: "ishaq@autovexsolutions.com",
+        },
       ],
       contactPoint: {
         "@type": "ContactPoint",
@@ -105,8 +119,18 @@ const jsonLd = {
         email: "autovexsolutions@gmail.com",
         url: `${SITE_URL}/#contact`,
       },
-      sameAs: ["https://github.com/Autovex-Solutions"],
-      knowsAbout: ["n8n", "Next.js", "React Native", "OpenAI", "Supabase", "Stripe", "Zapier"],
+      sameAs: [
+        "https://github.com/Autovex-Solutions",
+      ],
+      knowsAbout: [
+        "n8n",
+        "Next.js",
+        "React Native",
+        "OpenAI",
+        "Supabase",
+        "Stripe",
+        "Zapier",
+      ],
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: "Services",
@@ -164,7 +188,9 @@ const jsonLd = {
       "@id": `${SITE_URL}/#website`,
       url: SITE_URL,
       name: "Autovex Solutions",
-      publisher: { "@id": `${SITE_URL}/#organization` },
+      publisher: {
+        "@id": `${SITE_URL}/#organization`,
+      },
       inLanguage: "en",
     },
     {
@@ -172,8 +198,12 @@ const jsonLd = {
       "@id": `${SITE_URL}/#webpage`,
       url: SITE_URL,
       name: "Autovex Solutions — AI Automation, Web & Mobile App Development Agency",
-      isPartOf: { "@id": `${SITE_URL}/#website` },
-      about: { "@id": `${SITE_URL}/#organization` },
+      isPartOf: {
+        "@id": `${SITE_URL}/#website`,
+      },
+      about: {
+        "@id": `${SITE_URL}/#organization`,
+      },
       inLanguage: "en",
     },
   ],
@@ -183,15 +213,24 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    // font variables live on <html> so :root tokens (--sans/--mono) can resolve them
-    <html lang="en" className={`${archivo.variable} ${plexMono.variable}`}>
+    <html
+      lang="en"
+      className={`${archivo.variable} ${plexMono.variable}`}
+    >
       <body>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          }}
         />
+
         {children}
+
         <Effects />
+
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -249,8 +249,12 @@ export default function HeroMachine() {
         ctx.arc(pos.x, pos.y, r + 3.5, 0, Math.PI * 2);
         ctx.stroke();
 
-        ctx.fillStyle = `rgba(${INK}, ${0.45 * prog})`;
-        ctx.fillText(n.label, pos.x + 12, pos.y + 3);
+        // labels land on the headline once the copy spans the full width — below
+        // 720px the dots and traces carry the graph on their own
+        if (w >= 720) {
+          ctx.fillStyle = `rgba(${INK}, ${0.45 * prog})`;
+          ctx.fillText(n.label, pos.x + 12, pos.y + 3);
+        }
       });
     };
 

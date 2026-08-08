@@ -1171,6 +1171,13 @@ header .wave {
   height: 100%;
   pointer-events: none;
 }
+/* must follow the base rule — equal specificity, later source wins */
+@media (max-width: 720px) {
+  /* the graph sits under the copy at this width; drop it back to texture */
+  .machine {
+    opacity: 0.45;
+  }
+}
 .hero-log {
   position: absolute;
   top: 118px;
@@ -1290,7 +1297,14 @@ header .wave {
   }
 }
 @media (max-width: 720px) {
-  /* keep only the outer corner tiles so the copy stays readable */
+  /* SPREAD is a fraction of viewport width, so at this size the tiles converge on
+     the centred copy — including the two amber ones. Fade the whole field rather
+     than the tiles: per-tile opacity is inline in CtaIconField, so a .tile rule
+     would need !important, while container opacity multiplies cleanly. */
+  .icon-field {
+    opacity: 0.35;
+  }
+  /* NB: with SPREAD applied these last entries are not the outermost tiles */
   .tile:nth-child(n + 9) {
     display: none;
   }

@@ -1367,11 +1367,19 @@ a[href^="tel:"] {
 }
 
 /* masked word-rise on big headings (.in added by Effects) */
+/* Rise emits a real space between words so crawlers read separate words instead of
+   "EngineeredforImpact." The old gap was a 0.28ch margin; a space here measures
+   0.3035ch (its glyph advance minus the heading's negative letter-spacing, which
+   applies to spaces too). word-spacing trims the difference back to 0.28ch, and
+   unlike a negative margin it correctly vanishes at line ends where the space is
+   dropped. Measured, not derived — see gap check in PLAN_seo-mobile-contact.md. */
+.rise {
+  word-spacing: -0.0235ch;
+}
 .rise .w {
   display: inline-block;
   overflow: hidden;
   vertical-align: bottom;
-  margin-right: 0.28ch;
 }
 .rise .w > span {
   display: inline-block;

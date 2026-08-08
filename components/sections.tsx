@@ -1,4 +1,5 @@
 
+import { Fragment } from "react";
 import { contact, steps, teardown, workItems } from "@/content";
 import CtaIconField from "@/components/CtaIconField";
 import FlowDemo from "@/components/FlowDemo";
@@ -10,13 +11,23 @@ import WebDemo from "@/components/WebDemo";
 import MobileDemo from "@/components/MobileDemo";
 
 
+/* Each word gets its own masked span so it can rise independently. The space between
+   spans is load-bearing for SEO, not for looks: without a real space character the DOM
+   text reads "EngineeredforImpact." to a crawler. The width it adds is cancelled by
+   `word-spacing` on .rise — see globals.css. No space after the last word: on the
+   centre-aligned CTA heading a trailing one shifts the whole line ~4px.
+   split(/\s+/) so a line break in the JSX source can't emit empty word spans. */
 function Rise({ text, offset = 0 }: { text: string; offset?: number }) {
+  const words = text.trim().split(/\s+/);
   return (
     <>
-      {text.split(" ").map((word, i) => (
-        <span className="w" key={i}>
-          <span style={{ transitionDelay: `${(offset + i) * 55}ms` }}>{word}</span>
-        </span>
+      {words.map((word, i) => (
+        <Fragment key={i}>
+          <span className="w">
+            <span style={{ transitionDelay: `${(offset + i) * 55}ms` }}>{word}</span>
+          </span>
+          {i < words.length - 1 ? " " : null}
+        </Fragment>
       ))}
     </>
   );
@@ -274,7 +285,7 @@ export function Footer() {
           </a>
         </span>
         <span className="mono">
-          &copy; {new Date().getFullYear()} Autovex Solutions &mdash; Automation &middot; Web &middot; Mobile
+          &copy; {new Date().getFullYear()}{" "}Autovex Solutions &mdash; Automation &middot; Web &middot; Mobile
         </span>
       </div>
     </footer>

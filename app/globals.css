@@ -210,11 +210,21 @@ a {
   .brand span {
     display: none;
   }
+  /* the 34px logo is untouched — this only grows the tap target around it */
+  .brand {
+    min-width: 44px;
+    min-height: 44px;
+  }
   .nav-links a:not(.solid) {
     display: none;
   }
+  .nav-links a.solid {
+    padding: 12px 18px;
+  }
   .nav-burger {
     display: flex;
+    width: 44px;
+    height: 44px;
   }
   .site-nav.scrolled nav {
     margin: 10px 12px 0;
@@ -610,6 +620,13 @@ h2 .dim {
   outline: 2px solid var(--accent);
   outline-offset: -1px;
 }
+/* Safari zooms into any field it focuses below 16px and never zooms back out —
+   on the one lead-capture input on the page. */
+@media (max-width: 720px) {
+  .sk-form textarea {
+    font-size: 16px;
+  }
+}
 .sk-run {
   align-self: flex-start;
   cursor: pointer;
@@ -981,9 +998,10 @@ h2 .dim {
   background: rgba(242, 241, 238, 0.13);
 }
 @media (max-width: 720px) {
+  /* at 230px the neighbours never clear the 250px centre card and smear across it */
   .rail-stage {
-    --rail-step: 230px;
-    height: 430px;
+    --rail-step: 300px;
+    height: 380px;
   }
   .rail-card {
     width: 250px;
@@ -1356,6 +1374,15 @@ a[href^="tel:"] {
   color: var(--accent);
   border-bottom-color: var(--accent);
 }
+/* 16px line box → 26px hit area. inline-block is load-bearing: vertical padding on an
+   inline element grows the border box without growing the line box, which would drop
+   the underline 5px off the text and into the gap above the copyright. */
+@media (max-width: 720px) {
+  .footer-contact a {
+    display: inline-block;
+    padding-block: 5px;
+  }
+}
 
 /* ---------- effects ---------- */
 .reveal {
@@ -1471,6 +1498,15 @@ a[href^="tel:"] {
       0 10px 40px rgba(0,0,0,.35);
 }
 
+/* .mono renders this uppercase at 12px/.08em ≈ 363px wide, against 350px of usable
+   width at a 390px viewport — so it wraps and strands "APPS" on a second line. */
+@media (max-width: 480px) {
+  .hero-pill {
+    font-size: 11px;
+    padding: 8px 14px;
+  }
+}
+
 .hero-pill-dot{
   width:7px;
   height:7px;
@@ -1496,29 +1532,10 @@ opacity:.55;
 
 }
 
-.hero-glass{
-
-position:relative;
-
-display:inline-block;
-
-padding:52px;
-
-border-radius:34px;
-
-background:rgba(255,255,255,.035);
-
-border:1px solid rgba(255,255,255,.08);
-
-backdrop-filter:blur(28px) saturate(170%);
--webkit-backdrop-filter:blur(28px) saturate(170%);
-
-box-shadow:
-
-0 30px 80px rgba(0,0,0,.35),
-
-inset 0 1px 0 rgba(255,255,255,.08);
-
-overflow:hidden;
-
+/* pulseDot is declared after every other reduce block, so its override has to live
+   here at the end — an earlier block would lose on source order. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-pill-dot {
+    animation: none;
+  }
 }

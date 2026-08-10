@@ -92,6 +92,7 @@ const jsonLd = {
       "@id": `${SITE_URL}/#organization`,
       name: "Autovex Solutions",
       legalName: "Autovex Solutions",
+      alternateName: "Autovex",
       slogan: "Innovate. Automate. Elevate.",
       url: SITE_URL,
       logo: `${SITE_URL}/logo-mark-white.png`,
@@ -125,6 +126,8 @@ const jsonLd = {
         url: `${SITE_URL}/#contact`,
       },
       sameAs: [
+        "https://www.linkedin.com/company/autovex-solutions/",
+        "https://www.instagram.com/autovex_solutions/",
         "https://github.com/Autovex-Solutions",
         "https://wa.me/923482033984",
       ],

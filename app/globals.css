@@ -1476,10 +1476,6 @@ a[href^="tel:"] {
 .hero-pill{
   display:inline-flex;
   align-items:center;
-  justify-content:center;
-  flex-wrap:wrap;
-  max-width:100%;
-  text-align:center;
   gap:10px;
 
   padding:10px 18px;
@@ -1502,17 +1498,14 @@ a[href^="tel:"] {
       0 10px 40px rgba(0,0,0,.35);
 }
 
-/* The brand name is in the pill for brand-query SEO, which makes the string ~434px at
-   11px/.08em against 350px of usable width at a 390px viewport — it cannot fit on one
-   line. So the pill wraps to two centred lines on mobile by design (flex-wrap above);
-   the tighter line-height keeps it reading as one chip rather than a stacked accident.
-   ponytail: if the two-line pill looks wrong, shorten the string, don't add breakpoints. */
+/* .mono renders this uppercase at 12px/.08em ≈ 363px wide, against 350px of usable
+   width at a 390px viewport — so it wraps and strands "APPS" on a second line.
+   Keep this string short: the brand name was tried here for SEO and pushed the pill to
+   ~434px, forcing a two-line chip. The brand lives in .hero-sub instead. */
 @media (max-width: 480px) {
   .hero-pill {
     font-size: 11px;
     padding: 8px 14px;
-    line-height: 1.5;
-    border-radius: 18px;
   }
 }
 

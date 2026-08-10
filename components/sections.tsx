@@ -42,14 +42,14 @@ export function Hero() {
       <div className="hero-inner">
        <div className="hero-pill mono">
           <span className="hero-pill-dot"></span>
-          AI Automation • Web Apps • Mobile Apps
-        </div>    
+          Autovex Solutions • AI Automation • Web &amp; Mobile Apps
+        </div>
         <h1 className="rise">
           <Rise text="Engineered for
           Impact." />
         </h1>
         <p className="hero-sub">
-          From AI automation to custom software, web platforms, and mobile apps—we build technology that solves real business problems.
+          Autovex Solutions builds AI automation, custom software, web platforms, and mobile apps that solve real business problems.
         </p>
         <div className="cta-row"> 
           <a

@@ -409,6 +409,29 @@ h2 .dim {
   color: var(--faint);
 }
 
+/* ---------- responsive split helpers ----------
+   Not Tailwind's hidden/md:block: `@import "tailwindcss"` wraps its output in
+   @layer utilities, and every plain rule below (e.g. .svc-grid) is unlayered —
+   unlayered CSS always wins over @layer rules regardless of source order, so a
+   Tailwind hidden/md:block combined with a component's own display rule would
+   silently fail to hide it. These stay unlayered on purpose. 768px matches
+   Tailwind's default `md` breakpoint so "mobile" here means the same thing it
+   does anywhere else in the project. */
+.desktop-only {
+  display: none;
+}
+.mobile-only {
+  display: block;
+}
+@media (min-width: 768px) {
+  .desktop-only {
+    display: block;
+  }
+  .mobile-only {
+    display: none;
+  }
+}
+
 /* ---------- services ---------- */
 .svc-grid {
   display: grid;
@@ -456,6 +479,107 @@ h2 .dim {
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+
+/* ---------- services accordion (components/ServicesAccordion.tsx, mobile only) ----------
+   Softer than the desktop .svc cards on purpose: this is a native mobile list, not
+   a diagram container, so it gets the rounding the rest of the site reserves for
+   dots/pills instead of the house's zero-radius panel rule. */
+.acc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.acc-item {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: border-color 0.25s ease;
+}
+.acc-item.open {
+  border-color: rgba(242, 163, 60, 0.35);
+}
+.acc-trigger {
+  width: 100%;
+  min-height: 44px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 16px;
+  background: none;
+  border: none;
+  color: inherit;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.acc-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.acc-tag {
+  color: var(--accent);
+}
+.acc-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.acc-summary {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.acc-chevron {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-top: 3px;
+  color: var(--faint);
+}
+.acc-item.open .acc-chevron {
+  color: var(--accent);
+}
+.acc-panel {
+  overflow: hidden;
+}
+.acc-bullets {
+  margin: 0;
+  padding: 0 16px 18px 16px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.acc-bullets li {
+  position: relative;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.acc-bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
 .flow {

@@ -104,3 +104,49 @@ export const steps = [
     body: "After deployment, we monitor, optimize, and continuously improve your product so it grows alongside your business.",
   },
 ];
+
+// Mobile accordion copy (components/ServicesAccordion.tsx). Desktop keeps the
+// hand-built flow-diagram cards in components/sections.tsx; this is the same three
+// services condensed to a 2-line summary + expandable bullets for small screens.
+export type ServiceItem = {
+  tag: string;
+  title: string;
+  summary: string;
+  bullets: string[];
+};
+
+export const services: ServiceItem[] = [
+  {
+    tag: "01 / Automation",
+    title: "Workflows that run themselves",
+    summary:
+      "We wire your tools together into pipelines that handle the busywork end to end.",
+    bullets: [
+      "CRM, inbox, sheets & invoicing wired into one pipeline",
+      "AI where it helps, deterministic where it matters",
+      "Runs unattended — exceptions are the only thing a human sees",
+    ],
+  },
+  {
+    tag: "02 / Web",
+    title: "Sites & platforms that sell",
+    summary:
+      "Fast, search-friendly marketing sites and web apps built to convert, not just to exist.",
+    bullets: [
+      "Next.js builds tuned for real Core Web Vitals",
+      "SEO-first structure, not bolted on after launch",
+      "Conversion-focused UX from first scroll to checkout",
+    ],
+  },
+  {
+    tag: "03 / Mobile",
+    title: "Mobile apps built for growth",
+    summary:
+      "High-performance iOS and Android apps engineered for speed, scale and exceptional UX.",
+    bullets: [
+      "Native-grade performance on iOS & Android",
+      "Architecture that scales from first 100 users to first 100k",
+      "Offline-ready, sync-safe where the job needs it",
+    ],
+  },
+];

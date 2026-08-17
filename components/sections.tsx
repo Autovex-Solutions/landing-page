@@ -5,6 +5,7 @@ import CtaIconField from "@/components/CtaIconField";
 import FlowDemo from "@/components/FlowDemo";
 import HeroMachine from "@/components/HeroMachine";   
 import FocusRail from "@/components/FocusRail";
+import ServicesAccordion from "@/components/ServicesAccordion";
 import TeardownSketch from "@/components/TeardownSketch";
 import ToolMarquee from "@/components/ToolMarquee";
 import WebDemo from "@/components/WebDemo";
@@ -84,67 +85,77 @@ export function Services() {
         </h2>
       </div>
 
-      <div className="section-body svc-grid">
+      {/* Desktop (>= 768px): full flow-diagram cards, unchanged */}
+      <div className="desktop-only">
+        <div className="section-body svc-grid">
 
-        {/* ---------------- Automation ---------------- */}
+          {/* ---------------- Automation ---------------- */}
 
-        <div className="svc lead reveal">
-          <div className="svc-col">
-            <div className="svc-tag mono">
-              <span>01 / Automation</span>
-              <span>Core service</span>
+          <div className="svc lead reveal">
+            <div className="svc-col">
+              <div className="svc-tag mono">
+                <span>01 / Automation</span>
+                <span>Core service</span>
+              </div>
+
+              <h3>Workflows that run themselves</h3>
+
+              <p>
+                We wire your tools together &mdash; CRM, inbox, sheets,
+                invoicing &mdash; into pipelines that handle the busywork end to
+                end. AI where it helps, deterministic where it matters.
+              </p>
             </div>
 
-            <h3>Workflows that run themselves</h3>
+            <FlowDemo />
+          </div>
+
+          {/* ---------------- Web ---------------- */}
+
+          <div className="svc reveal">
+
+            <div className="svc-tag mono">
+              <span>02 / Web</span>
+            </div>
+
+            <h3>Sites &amp; platforms that sell</h3>
 
             <p>
-              We wire your tools together &mdash; CRM, inbox, sheets,
-              invoicing &mdash; into pipelines that handle the busywork end to
-              end. AI where it helps, deterministic where it matters.
+              Fast, search-friendly marketing sites and web apps &mdash;
+              built to convert, not just to exist.
             </p>
+
+            <WebDemo />
+
           </div>
 
-          <FlowDemo />
-        </div>
+          {/* ---------------- Mobile ---------------- */}
 
-        {/* ---------------- Web ---------------- */}
+          <div className="svc reveal">
 
-        <div className="svc reveal">
+            <div className="svc-tag mono">
+              <span>03 / Mobile</span>
+            </div>
 
-          <div className="svc-tag mono">
-            <span>02 / Web</span>
+            <h3>Mobile apps built for growth</h3>
+
+            <p>
+              High-performance iOS and Android applications engineered for
+              speed, scalability and exceptional user experiences.
+            </p>
+
+            <MobileDemo />
+
           </div>
 
-          <h3>Sites &amp; platforms that sell</h3>
-
-          <p>
-            Fast, search-friendly marketing sites and web apps &mdash;
-            built to convert, not just to exist.
-          </p>
-
-          <WebDemo />
-
         </div>
+      </div>
 
-        {/* ---------------- Mobile ---------------- */}
-
-        <div className="svc reveal">
-
-          <div className="svc-tag mono">
-            <span>03 / Mobile</span>
-          </div>
-
-          <h3>Mobile apps built for growth</h3>
-
-          <p>
-            High-performance iOS and Android applications engineered for
-            speed, scalability and exceptional user experiences.
-          </p>
-
-          <MobileDemo />
-
+      {/* Mobile (< 768px): accordion — no flow diagrams, see ServicesAccordion.tsx */}
+      <div className="mobile-only">
+        <div className="section-body">
+          <ServicesAccordion />
         </div>
-
       </div>
     </section>
   );

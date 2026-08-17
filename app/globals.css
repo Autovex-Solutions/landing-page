@@ -351,6 +351,7 @@ h1 {
   align-items: center;
 }
 .btn {
+  position: relative;
   font-family: var(--mono);
   font-size: 12px;
   letter-spacing: 0.08em;
@@ -360,6 +361,7 @@ h1 {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  overflow: hidden;
   border: 1px solid rgba(242, 241, 238, 0.16);
   transition: background 0.18s ease, color 0.18s ease;
 }
@@ -370,6 +372,31 @@ h1 {
 }
 .btn.primary:hover {
   background: var(--accent-bright);
+}
+/* light sweep on hover — pointer-only so it never fires from a mobile tap */
+.btn.primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-20deg);
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn.primary::before {
+    transition: left 0.65s cubic-bezier(0.22, 0.61, 0.21, 1);
+  }
+  .btn.primary:hover::before {
+    left: 130%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn.primary::before {
+    display: none;
+  }
 }
 .btn.ghost {
   background: rgba(242, 241, 238, 0.07);
@@ -550,10 +577,13 @@ h2 .dim {
   border: 1px solid var(--line);
   border-radius: 18px;
   overflow: hidden;
-  transition: border-color 0.25s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 .acc-item.open {
-  border-color: rgba(242, 163, 60, 0.35);
+  border-color: rgba(242, 163, 60, 0.4);
+  background: linear-gradient(180deg, #191a1f 0%, var(--panel) 100%);
+  box-shadow: 0 0 0 1px rgba(242, 163, 60, 0.08), 0 12px 32px -12px rgba(242, 163, 60, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 .acc-trigger {
   width: 100%;
@@ -600,13 +630,17 @@ h2 .dim {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
-  margin-top: 3px;
+  width: 28px;
+  height: 28px;
+  margin-top: 1px;
+  border-radius: 50%;
   color: var(--faint);
+  background: transparent;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 .acc-item.open .acc-chevron {
   color: var(--accent);
+  background: var(--accent-soft);
 }
 .acc-panel {
   overflow: hidden;

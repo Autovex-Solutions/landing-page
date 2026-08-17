@@ -6,8 +6,11 @@
   --panel: #121316;
   --panel-2: #16181c;
   --ink: #f2f1ee;
-  --muted: #9b9d9f;
-  --faint: #6a6c6f;
+  /* brightened from #9b9d9f/#6a6c6f — on an OLED phone in daylight the old values
+     read as washed-out rather than "quiet"; these keep the same restrained role
+     but with more presence against the near-black background */
+  --muted: #b7b9bb;
+  --faint: #8a8c8f;
   --line: #26282b;
   /* phosphor amber — control-room status-light accent; used sparingly */
   --accent: #f2a33c;
@@ -172,18 +175,21 @@ a {
   width: 34px;
   height: 34px;
 }
-.brand span {
+/* desktop: the two words read as one flex row ("Autovex Solutions"); mobile
+   stacks them into a two-line lockup (see 720px query) so the icon can go big
+   without eating into the CTA pill's width the way a single wide line would */
+.brand-word {
+  display: flex;
+  align-items: baseline;
+  gap: 0.38em;
+}
+.brand-word span {
   font-family: var(--mono);
   font-size: 13px;
   letter-spacing: 0.14em;
   font-weight: 500;
+  text-transform: uppercase;
   white-space: nowrap;
-}
-/* two real text nodes so a crawler always sees the full name in the DOM; only
-   one is ever visible at a time — .brand-short only kicks in once the full
-   wordmark can no longer fit next to the CTA pill + burger (see 400px query) */
-.brand-short {
-  display: none;
 }
 .nav-links {
   display: flex;
@@ -214,25 +220,43 @@ a {
   background: var(--accent-bright);
 }
 @media (max-width: 720px) {
-  /* bumped from the 34px desktop mark — a lone glyph read too small next to the
-     CTA pill and burger at this width, especially once .scrolled shrinks it further */
+  /* A single-line wordmark fights the CTA pill for width at any phone size —
+     stacking "Autovex" / "Solutions" into two short lines instead means the
+     icon can go genuinely big without threatening the layout. Same size
+     whether scrolled or not: shrinking it on scroll was the opposite of what
+     was asked for. */
   .brand {
     min-width: 44px;
     min-height: 44px;
-    gap: 9px;
+    gap: 12px;
   }
-  .brand img {
-    width: 40px;
-    height: 40px;
+  .brand img,
+  .site-nav.scrolled .brand img {
+    width: 52px;
+    height: 52px;
   }
-  /* wordmark was hidden entirely below 720px — a bare glyph read as "no logo".
-     Shown at a tighter size/tracking than desktop's 13px so it clears the CTA
-     pill + burger; .brand-short (400px query below) takes over once even this
-     doesn't fit. */
-  .brand-full,
-  .brand-short {
-    font-size: 10.5px;
-    letter-spacing: 0.1em;
+  .brand-word {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+  }
+  .brand-word span {
+    letter-spacing: 0.08em;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+  /* mirrors the actual lockup art (reference/3.png): bold+larger "Autovex" over
+     a lighter, smaller "Solutions" — amber stays reserved for status/CTA use,
+     not the wordmark */
+  .brand-word span:first-child {
+    font-size: 13.5px;
+    font-weight: 700;
+  }
+  .brand-word span:last-child {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    color: var(--muted);
   }
   .nav-links a:not(.solid) {
     display: none;
@@ -254,27 +278,13 @@ a {
     margin: 0;
     max-width: none;
     border-radius: 0;
-    padding: 14px var(--pad);
+    padding: 10px var(--pad);
     background: rgba(11, 12, 14, 0.82);
     border-color: transparent;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(20px) saturate(1.4);
     -webkit-backdrop-filter: blur(20px) saturate(1.4);
     box-shadow: none;
-  }
-  .site-nav.scrolled .brand img {
-    width: 36px;
-    height: 36px;
-  }
-}
-/* below this, "AUTOVEX SOLUTIONS" + the CTA pill + burger no longer fit on one
-   line without wrapping (measured at 375px) — drop to "AUTOVEX" alone */
-@media (max-width: 400px) {
-  .brand-full {
-    display: none;
-  }
-  .brand-short {
-    display: block;
   }
 }
 
@@ -1509,19 +1519,28 @@ footer {
 .footer-brand {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
 }
 .footer-brand img {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   opacity: 0.95;
 }
-.footer-brand span {
-  font-family: var(--mono);
-  font-size: 16px;
+/* footer reuses .brand-word (Nav's icon+wordmark; also picks up its mobile
+   stack-to-two-lines behavior for free), scaled up — no CTA/burger competing
+   for width here, so it can run bigger than the nav ever can. Matches Nav's
+   mobile rules' specificity (class + tag + pseudo-class) so this wins on
+   source order rather than relying on !important. */
+.footer-word span:first-child {
+  font-size: 18px;
+  font-weight: 700;
   letter-spacing: 0.1em;
-  font-weight: 500;
-  color: var(--ink);
+}
+.footer-word span:last-child {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: var(--muted);
 }
 /* contact + copyright as one right-hand block */
 .footer-right {
@@ -1546,15 +1565,6 @@ footer {
   .footer-right {
     align-items: flex-start;
     text-align: left;
-  }
-  /* footer has no CTA/burger competing for width like the nav does, so the
-     wordmark can run at full size here */
-  .footer-brand img {
-    width: 52px;
-    height: 52px;
-  }
-  .footer-brand span {
-    font-size: 17px;
   }
   /* "© 2026 Autovex Solutions — Automation · Web · Mobile" was wrapping wherever
      it ran out of room, orphaning a lone "Mobile" on its own line — balance the

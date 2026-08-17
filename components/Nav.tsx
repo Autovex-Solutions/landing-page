@@ -41,8 +41,12 @@ export default function Nav() {
         <a className="brand" href="#" onClick={() => setOpen(false)}>
           {/* ponytail: plain img — logo is a tiny png, next/image adds nothing here */}
           <img src="/logo-mark-white.png" alt="Autovex Solutions logo" width="34" height="34" />
-          <span className="brand-full">AUTOVEX SOLUTIONS</span>
-          <span className="brand-short">AUTOVEX</span>
+          {/* desktop reads this as one line via flex + gap; mobile stacks it (see
+              .brand-word) — the same two spans serve both without a text swap */}
+          <span className="brand-word">
+            <span>Autovex</span>
+            <span>Solutions</span>
+          </span>
         </a>
         <div className="nav-links">
           {links.map((l) => (

@@ -288,7 +288,10 @@ export function Footer() {
           height="44"
           loading="lazy"
         />
-        <span className="mono">Autovex Solutions</span>
+        <span className="brand-word footer-word">
+          <span>Autovex</span>
+          <span>Solutions</span>
+        </span>
       </div>
       {/* Contact stacks above the copyright so the footer reads as two zones — brand
           left, contact + legal right — instead of three items adrift.

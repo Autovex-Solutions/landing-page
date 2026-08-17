@@ -41,7 +41,8 @@ export default function Nav() {
         <a className="brand" href="#" onClick={() => setOpen(false)}>
           {/* ponytail: plain img — logo is a tiny png, next/image adds nothing here */}
           <img src="/logo-mark-white.png" alt="Autovex Solutions logo" width="34" height="34" />
-          <span>AUTOVEX SOLUTIONS</span>
+          <span className="brand-full">AUTOVEX SOLUTIONS</span>
+          <span className="brand-short">AUTOVEX</span>
         </a>
         <div className="nav-links">
           {links.map((l) => (

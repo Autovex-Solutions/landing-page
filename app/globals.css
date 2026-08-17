@@ -177,6 +177,13 @@ a {
   font-size: 13px;
   letter-spacing: 0.14em;
   font-weight: 500;
+  white-space: nowrap;
+}
+/* two real text nodes so a crawler always sees the full name in the DOM; only
+   one is ever visible at a time — .brand-short only kicks in once the full
+   wordmark can no longer fit next to the CTA pill + burger (see 400px query) */
+.brand-short {
+  display: none;
 }
 .nav-links {
   display: flex;
@@ -207,29 +214,67 @@ a {
   background: var(--accent-bright);
 }
 @media (max-width: 720px) {
-  .brand span {
-    display: none;
-  }
-  /* the 34px logo is untouched — this only grows the tap target around it */
+  /* bumped from the 34px desktop mark — a lone glyph read too small next to the
+     CTA pill and burger at this width, especially once .scrolled shrinks it further */
   .brand {
     min-width: 44px;
     min-height: 44px;
+    gap: 9px;
+  }
+  .brand img {
+    width: 40px;
+    height: 40px;
+  }
+  /* wordmark was hidden entirely below 720px — a bare glyph read as "no logo".
+     Shown at a tighter size/tracking than desktop's 13px so it clears the CTA
+     pill + burger; .brand-short (400px query below) takes over once even this
+     doesn't fit. */
+  .brand-full,
+  .brand-short {
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
   }
   .nav-links a:not(.solid) {
     display: none;
   }
   .nav-links a.solid {
     padding: 12px 18px;
+    white-space: nowrap;
   }
   .nav-burger {
     display: flex;
     width: 44px;
     height: 44px;
   }
+  /* Desktop's condensed nav is a floating rounded pill; on mobile that pill sat a
+     few px above the hero badge (also a rounded pill) and read as duplicate,
+     stacked chrome. Swap it for a full-bleed bar with a hairline bottom border —
+     a different shape language from the badge, so the two don't compete. */
   .site-nav.scrolled nav {
-    margin: 10px 12px 0;
+    margin: 0;
     max-width: none;
-    padding: 8px 10px 8px 16px;
+    border-radius: 0;
+    padding: 14px var(--pad);
+    background: rgba(11, 12, 14, 0.82);
+    border-color: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    box-shadow: none;
+  }
+  .site-nav.scrolled .brand img {
+    width: 36px;
+    height: 36px;
+  }
+}
+/* below this, "AUTOVEX SOLUTIONS" + the CTA pill + burger no longer fit on one
+   line without wrapping (measured at 375px) — drop to "AUTOVEX" alone */
+@media (max-width: 400px) {
+  .brand-full {
+    display: none;
+  }
+  .brand-short {
+    display: block;
   }
 }
 
@@ -1461,10 +1506,22 @@ footer {
   padding: 48px var(--pad);
   color: var(--faint);
 }
-footer img {
-  height: 52px;
-  width: auto;
-  opacity: 0.9;
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.footer-brand img {
+  width: 48px;
+  height: 48px;
+  opacity: 0.95;
+}
+.footer-brand span {
+  font-family: var(--mono);
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  color: var(--ink);
 }
 /* contact + copyright as one right-hand block */
 .footer-right {
@@ -1476,10 +1533,35 @@ footer img {
 }
 /* must live after the base rule — equal specificity, later source wins */
 @media (max-width: 720px) {
+  /* the two top-level children (logo, .footer-right) were left to wrap as a plain
+     flex row — align-content on the wrapped row wasn't predictable and opened up
+     an oversized, uneven gap above the contact block. Explicit column stacking
+     fixes the spacing outright. */
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 26px;
+  }
   /* footer stacks to one column; right-aligning it there leaves ragged orphans */
   .footer-right {
     align-items: flex-start;
     text-align: left;
+  }
+  /* footer has no CTA/burger competing for width like the nav does, so the
+     wordmark can run at full size here */
+  .footer-brand img {
+    width: 52px;
+    height: 52px;
+  }
+  .footer-brand span {
+    font-size: 17px;
+  }
+  /* "© 2026 Autovex Solutions — Automation · Web · Mobile" was wrapping wherever
+     it ran out of room, orphaning a lone "Mobile" on its own line — balance the
+     break instead of leaving it to chance. */
+  .footer-copy {
+    text-wrap: balance;
+    max-width: 32ch;
   }
 }
 footer .mono {

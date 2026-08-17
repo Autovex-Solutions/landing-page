@@ -276,13 +276,20 @@ export function Cta() {
 export function Footer() {
   return (
     <footer>
-      <img
-        src="/logo-lockup-white.png"
-        alt="Autovex Solutions — AI automation, web and mobile app development agency"
-        width="240"
-        height="110"
-        loading="lazy"
-      />
+      {/* Real text lockup, not the old logo-lockup-white.png: that raster was a
+          square canvas with the wordmark stacked under the mark and heavily
+          padded, so at any sane footer height the "autovex solutions" text was
+          basically illegible. Type is the brand — same pattern as .brand in Nav. */}
+      <div className="footer-brand">
+        <img
+          src="/logo-mark-white.png"
+          alt="Autovex Solutions — AI automation, web and mobile app development agency"
+          width="44"
+          height="44"
+          loading="lazy"
+        />
+        <span className="mono">Autovex Solutions</span>
+      </div>
       {/* Contact stacks above the copyright so the footer reads as two zones — brand
           left, contact + legal right — instead of three items adrift.
           Rendered as text, not just an href: Google Business Profile corroborates the
@@ -295,7 +302,7 @@ export function Footer() {
             WhatsApp
           </a>
         </span>
-        <span className="mono">
+        <span className="mono footer-copy">
           &copy; {new Date().getFullYear()}{" "}Autovex Solutions &mdash; Automation &middot; Web &middot; Mobile
         </span>
       </div>

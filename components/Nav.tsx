@@ -43,25 +43,33 @@ export default function Nav() {
             <span>Solutions</span>
           </span>
         </a>
+        {/* True center on desktop (see the grid rule on .site-nav nav) — not
+            just "next to the logo", which is all flex space-between ever
+            guaranteed when the left/right groups aren't the same width. */}
         <div className="nav-links">
           {links.map((l) => (
             <a key={l.href} href={l.href}>
               {l.label}
             </a>
           ))}
-          <a className="solid" href="#contact">
+        </div>
+        {/* CTA + burger as one right-hand action group, distinct from the
+            links — was bundled inside .nav-links before, which is why the
+            burger ended up as its own third zone instead of pairing with it. */}
+        <div className="nav-actions">
+          <a className="nav-cta" href="#contact">
             Book a call
           </a>
+          <button
+            className="nav-burger"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen(!open)}
+          >
+            <span />
+            <span />
+          </button>
         </div>
-        <button
-          className="nav-burger"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          onClick={() => setOpen(!open)}
-        >
-          <span />
-          <span />
-        </button>
       </nav>
       <div className="nav-sheet" role="dialog" aria-label="Site menu">
         <div className="nav-sheet-links">

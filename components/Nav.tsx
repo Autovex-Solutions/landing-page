@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { workItems } from "@/content";
+import { getNavLinks } from "@/content";
 
 // Sticky glass nav. Transparent over the hero; after ~10px of scroll it
 // condenses into a floating glass bar. Mobile: burger → full-height sheet
@@ -28,12 +28,7 @@ export default function Nav() {
     };
   }, [open]);
 
-  const links = [
-    { href: "#services", label: "Services" },
-    ...(workItems.length > 0 ? [{ href: "#work", label: "Work" }] : []),
-    { href: "#teardown", label: "Teardown" },
-    { href: "#process", label: "Process" },
-  ];
+  const links = getNavLinks();
 
   return (
     <div className={`site-nav${scrolled ? " scrolled" : ""}${open ? " open" : ""}`}>

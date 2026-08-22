@@ -1,6 +1,8 @@
 // Single place to edit site content that changes often.
 // Add a case study = add one object to `workItems` (sample: true renders the "Sample" chip).
 
+import { siInstagram, siGithub } from "simple-icons";
+
 // `phone` is rendered as selectable text (not only inside the tel: href) so Google
 // Business Profile can corroborate the number against the profile — keep the displayed
 // string identical to the number in the GBP phone field.
@@ -14,6 +16,35 @@ export const contact = {
 
 // Tool logos/names for the hero marquee live in components/ToolMarquee.tsx
 // (names are coupled to their simple-icons imports).
+
+// Shared with components/Nav.tsx and Footer() in sections.tsx, so the two
+// never drift. "Work" only appears once there's a real case study to show —
+// same rule the nav already followed.
+export function getNavLinks() {
+  return [
+    { href: "#services", label: "Services" },
+    ...(workItems.length > 0 ? [{ href: "#work", label: "Work" }] : []),
+    { href: "#teardown", label: "Teardown" },
+    { href: "#process", label: "Process" },
+  ];
+}
+
+// Real profiles only — no placeholder/dead links. There's no X/Twitter
+// account yet, so it's omitted rather than faked; add it here once one exists.
+// LinkedIn's mark isn't in simple-icons (removed after a trademark request),
+// so it's hand-embedded here as a plain path — same 24x24 box as the rest.
+const LINKEDIN_PATH =
+  "M20.447 20.452h-3.554v-5.569c0-1.328-.025-3.037-1.851-3.037-1.851 0-2.132 1.445-2.132 2.939v5.667H9.355V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z";
+
+export type SocialLink = { name: string; href: string; path: string };
+export const socials: SocialLink[] = [
+  { name: "LinkedIn", href: "https://www.linkedin.com/company/autovex-solutions/", path: LINKEDIN_PATH },
+  { name: "Instagram", href: "https://www.instagram.com/autovex_solutions/", path: siInstagram.path },
+  { name: "GitHub", href: "https://github.com/Autovex-Solutions", path: siGithub.path },
+];
+
+export const footerBio =
+  "Autovex Solutions is a premier software agency engineering high-performance SaaS products, custom web platforms, and mobile applications. We build resilient, automated technology infrastructure that helps ambitious businesses move faster, operate smarter, and scale with absolute confidence.";
 
 export type WorkItem = {
   category: "Automation" | "Web" | "Mobile";

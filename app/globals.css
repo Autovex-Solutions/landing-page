@@ -1540,73 +1540,17 @@ header .wave {
     display: none;
   }
 }
-/* ---------- footer ---------- */
+/* ---------- footer ----------
+   Full centered column at every width (enterprise-footer pattern), not just a
+   mobile fallback of a desktop left/right split — the old two-column layout
+   is gone entirely, replaced end to end. */
 footer {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  padding: 48px var(--pad);
-  color: var(--faint);
-}
-.footer-brand {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-.footer-brand img {
-  width: 52px;
-  height: 52px;
-  opacity: 0.95;
-}
-/* footer reuses .brand-word (Nav's icon+wordmark; also picks up its mobile
-   stack-to-two-lines behavior for free), scaled up — no CTA/burger competing
-   for width here, so it can run bigger than the nav ever can. Matches Nav's
-   mobile rules' specificity (class + tag + pseudo-class) so this wins on
-   source order rather than relying on !important. */
-.footer-word span:first-child {
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-}
-.footer-word span:last-child {
-  font-size: 13px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  color: var(--muted);
-}
-/* contact + copyright as one right-hand block */
-.footer-right {
-  display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 9px;
-  text-align: right;
-}
-/* must live after the base rule — equal specificity, later source wins */
-@media (max-width: 720px) {
-  /* the two top-level children (logo, .footer-right) were left to wrap as a plain
-     flex row — align-content on the wrapped row wasn't predictable and opened up
-     an oversized, uneven gap above the contact block. Explicit column stacking
-     fixes the spacing outright. */
-  footer {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 26px;
-  }
-  /* footer stacks to one column; right-aligning it there leaves ragged orphans */
-  .footer-right {
-    align-items: flex-start;
-    text-align: left;
-  }
-  /* "© 2026 Autovex Solutions — Automation · Web · Mobile" was wrapping wherever
-     it ran out of room, orphaning a lone "Mobile" on its own line — balance the
-     break instead of leaving it to chance. */
-  .footer-copy {
-    text-wrap: balance;
-    max-width: 32ch;
-  }
+  align-items: center;
+  text-align: center;
+  padding: 88px var(--pad) 48px;
+  color: var(--faint);
 }
 footer .mono {
   font-size: 11px;
@@ -1615,9 +1559,117 @@ footer .mono {
 a[href^="tel:"] {
   white-space: nowrap;
 }
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.footer-brand img {
+  width: 56px;
+  height: 56px;
+  opacity: 0.95;
+}
+.footer-mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.footer-mark span {
+  font-family: var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.footer-mark span:first-child {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.footer-mark span:last-child {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.footer-socials {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 44px;
+}
+.footer-socials a {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.footer-socials a:hover {
+  color: var(--ink);
+  border-color: rgba(242, 241, 238, 0.4);
+}
+.footer-socials svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.footer-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 44px;
+}
+.footer-nav a {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+.footer-nav a:hover {
+  color: var(--ink);
+}
+
+.footer-bio {
+  max-width: 46ch;
+  color: var(--faint);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 44px;
+}
+@media (min-width: 768px) {
+  .footer-bio {
+    max-width: 62ch;
+  }
+}
+
+.footer-contact-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 44px;
+  font-weight: 600;
+}
+.footer-email {
+  color: var(--accent);
+  font-size: 15px;
+}
+.footer-email:hover {
+  color: var(--accent-bright);
+}
 /* contact links need an affordance — footer text is otherwise unlinked */
 .footer-contact a {
-  color: var(--muted);
+  color: var(--ink);
   border-bottom: 1px solid var(--line);
 }
 .footer-contact a:hover {
@@ -1632,6 +1684,15 @@ a[href^="tel:"] {
     display: inline-block;
     padding-block: 5px;
   }
+}
+
+.footer-copy {
+  width: 100%;
+  max-width: 340px;
+  margin: 0;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+  color: var(--faint);
 }
 
 /* ---------- effects ---------- */

@@ -1,6 +1,6 @@
 
 import { Fragment } from "react";
-import { contact, steps, teardown, workItems } from "@/content";
+import { contact, footerBio, getNavLinks, socials, steps, teardown, workItems } from "@/content";
 import CtaIconField from "@/components/CtaIconField";
 import FlowDemo from "@/components/FlowDemo";
 import HeroMachine from "@/components/HeroMachine";   
@@ -274,30 +274,56 @@ export function Cta() {
 }
 
 export function Footer() {
+  const links = [...getNavLinks(), { href: "#contact", label: "Contact" }];
+
   return (
     <footer>
       {/* Real text lockup, not the old logo-lockup-white.png: that raster was a
           square canvas with the wordmark stacked under the mark and heavily
           padded, so at any sane footer height the "autovex solutions" text was
-          basically illegible. Type is the brand — same pattern as .brand in Nav. */}
+          basically illegible. Type is the brand. Independent of Nav's
+          .brand-word (icon-beside-text, stacks only below 720px) — this one is
+          icon-above-text and centered at every width, by design. */}
       <div className="footer-brand">
         <img
           src="/logo-mark-white.png"
           alt="Autovex Solutions — AI automation, web and mobile app development agency"
-          width="44"
-          height="44"
+          width="56"
+          height="56"
           loading="lazy"
         />
-        <span className="brand-word footer-word">
+        <span className="footer-mark">
           <span>Autovex</span>
           <span>Solutions</span>
         </span>
       </div>
-      {/* Contact stacks above the copyright so the footer reads as two zones — brand
-          left, contact + legal right — instead of three items adrift.
-          Rendered as text, not just an href: Google Business Profile corroborates the
-          profile's phone number against what it can read on the site. */}
-      <div className="footer-right">
+
+      <div className="footer-socials">
+        {socials.map((s) => (
+          <a key={s.name} href={s.href} rel="noopener" target="_blank" aria-label={s.name}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d={s.path} />
+            </svg>
+          </a>
+        ))}
+      </div>
+
+      <nav className="footer-nav" aria-label="Footer">
+        {links.map((l) => (
+          <a key={l.href} href={l.href}>
+            {l.label}
+          </a>
+        ))}
+      </nav>
+
+      <p className="footer-bio">{footerBio}</p>
+
+      {/* Rendered as text, not just hrefs: Google Business Profile corroborates
+          the phone number against what it can read on the site. */}
+      <div className="footer-contact-block">
+        <a className="footer-email" href={`mailto:${contact.email}`}>
+          {contact.email}
+        </a>
         <span className="mono footer-contact">
           <a href={contact.phoneHref}>{contact.phone}</a>
           {" · "}
@@ -305,10 +331,11 @@ export function Footer() {
             WhatsApp
           </a>
         </span>
-        <span className="mono footer-copy">
-          &copy; {new Date().getFullYear()}{" "}Autovex Solutions &mdash; Automation &middot; Web &middot; Mobile
-        </span>
       </div>
+
+      <p className="footer-copy mono">
+        Copyright &copy; {new Date().getFullYear()} Autovex Solutions. All rights reserved.
+      </p>
     </footer>
   );
 }

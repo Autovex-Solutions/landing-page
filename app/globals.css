@@ -587,20 +587,14 @@ h2 .dim {
 }
 .svc {
   background: var(--panel);
-  border: 1px solid var(--line);
+  border: 1px solid rgba(242, 163, 60, 0.3);
   padding: clamp(24px, 3vw, 40px);
   display: flex;
   flex-direction: column;
   gap: 14px;
   transition: border-color 0.25s ease;
 }
-/* Web/Mobile get a resting amber edge — Automation already reads as the
-   lead service via the live FlowDemo panel next to it, so it keeps the
-   plain border rather than doubling up on emphasis. */
-.svc:not(.lead) {
-  border-color: rgba(242, 163, 60, 0.3);
-}
-.svc:not(.lead):hover {
+.svc:hover {
   border-color: rgba(242, 163, 60, 0.55);
 }
 .svc.lead {
@@ -853,7 +847,7 @@ h2 .dim {
 /* pipeline sketcher — full-width panel, form left, live diagram right */
 .sketch {
   background: var(--panel);
-  border: 1px solid var(--line);
+  border: 1px solid rgba(242, 163, 60, 0.3);
 }
 .sketch-bar {
   display: flex;
@@ -1020,7 +1014,7 @@ h2 .dim {
    is untouched. */
 .td-card {
   background: var(--panel);
-  border: 1px solid var(--line);
+  border: 1px solid rgba(242, 163, 60, 0.3);
   border-radius: 18px;
   padding: 20px;
   display: flex;

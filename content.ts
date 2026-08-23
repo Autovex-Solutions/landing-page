@@ -109,11 +109,17 @@ export const teardown = {
   heading: "Send us your worst workflow.",
   headingDim: "We'll show you the math.",
   body: "The panel below is sketching real workflows on a loop, the busywork, then the pipeline that replaces it. Click in, type yours, and watch it redraw. The engineered version, with your real numbers, lands in your inbox within 48 hours.",
+  // Mobile skips the self-running demo loop entirely (no live typing to
+  // describe), so it gets its own shorter, accurate copy instead of
+  // describing an animation that isn't there.
+  bodyMobile:
+    "Describe your worst workflow below and get an instant estimate of the hours it's costing you. The engineered version, with your real numbers, lands in your inbox within 48 hours.",
   placeholder:
     "e.g. Every order lands in our inbox as a PDF, we retype it into the CRM, invoice it in QuickBooks, then chase the driver on WhatsApp…",
   sample:
     "We copy every invoice PDF into the CRM by hand, then chase missing fields over email for days.",
   ctaLabel: "Get the engineered version, free, 48h",
+  mobileCta: "Get free teardown (48h)",
   mailSubject: "Teardown request",
 };
 

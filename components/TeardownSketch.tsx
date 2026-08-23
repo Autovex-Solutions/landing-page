@@ -2,15 +2,13 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { contact, teardown } from "@/content";
+import { buildSketch, monthlyHours, type Sketch, type SkNode } from "@/lib/teardownEngine";
 
 // Describe-your-workflow → instant n8n-style pipeline sketch + hours estimate.
 // Idles as a self-running demo: auto-types pre-baked workflows and draws their
 // diagrams on a loop until the visitor clicks the box and takes over.
-// ponytail: keyword heuristics for user input, fully client-side — the real
-// LLM-backed engine is PLAN_pipeline-engine.md.
-type SkNode = { label: string; kind: "trigger" | "step" | "done" };
-type Row = SkNode | [SkNode, SkNode]; // pair = parallel branch
-type Sketch = { rows: Row[]; perWeek: number };
+// The mobile lead-capture card (TeardownCard.tsx) reuses the same build
+// engine from lib/teardownEngine.ts without the demo loop / live typing.
 
 const STEP = 180; // ms per node in the stagger
 
@@ -60,45 +58,6 @@ const DEMOS: { text: string; sketch: Sketch }[] = [
     },
   },
 ];
-
-const TRIGGERS: [RegExp, string][] = [
-  [/invoice|billing|receipt/i, "Invoice arrives"],
-  [/order|purchase/i, "New order lands"],
-  [/lead|enquir|inquir|form/i, "New lead comes in"],
-  [/book|appointment|schedul/i, "Booking request arrives"],
-  [/email|inbox|message|whatsapp|dm\b/i, "Message hits the inbox"],
-];
-
-const STEPS: [RegExp, string][] = [
-  [/pdf|scan|extract|retype|re-?type|copy|paste|data entry|spreadsheet|sheet|excel/i, "Extract & enter the data"],
-  [/crm|hubspot|salesforce|pipedrive/i, "Update the CRM"],
-  [/invoice|quickbooks|xero|billing/i, "Generate & send the invoice"],
-  [/chase|remind|follow.?up|no.?show|late|overdue/i, "Chase it automatically"],
-  [/schedul|calendar|book|appointment/i, "Schedule & confirm"],
-  [/reply|respond|answer|draft/i, "Draft the reply"],
-  [/report|summar|dashboard|kpi/i, "Compile the report"],
-  [/dispatch|shipping|deliver|driver|inventory|stock/i, "Sync ops & notify dispatch"],
-  [/approv|review|sign.?off/i, "Route for approval"],
-  [/whatsapp|slack|telegram|sms|text/i, "Route & answer messages"],
-];
-
-function build(text: string): Sketch {
-  const trigger = TRIGGERS.find(([re]) => re.test(text))?.[1] ?? "The work shows up";
-  const steps = STEPS.filter(([re]) => re.test(text))
-    .map(([, label]) => label)
-    .slice(0, 4);
-  if (steps.length === 0) steps.push("Extract the busywork", "Process & validate", "Update your tools");
-  const volume = /daily|every day|each|hundreds|dozens|constant|all day|hours/i.test(text) ? 6 : 0;
-  const perWeek = 3 + steps.length * 4 + volume;
-  return {
-    rows: [
-      { label: trigger, kind: "trigger" },
-      ...steps.map((label) => ({ label, kind: "step" as const })),
-      { label: "Done — team notified, nothing retyped", kind: "done" },
-    ],
-    perWeek,
-  };
-}
 
 export default function TeardownSketch() {
   const [mode, setMode] = useState<"demo" | "user">("demo");
@@ -188,12 +147,12 @@ export default function TeardownSketch() {
   const run = (e: FormEvent) => {
     e.preventDefault();
     if (!text.trim()) return;
-    setSketch(build(text));
+    setSketch(buildSketch(text));
     setMine(true);
     setRunId((n) => n + 1);
   };
 
-  const monthly = sketch ? Math.round(sketch.perWeek * 4.3) : 0;
+  const monthly = sketch ? monthlyHours(sketch) : 0;
   const mailHref = `mailto:${contact.email}?subject=${encodeURIComponent(teardown.mailSubject)}&body=${encodeURIComponent(
     text.trim() || teardown.sample,
   )}`;

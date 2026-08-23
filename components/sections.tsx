@@ -6,6 +6,7 @@ import FlowDemo from "@/components/FlowDemo";
 import HeroMachine from "@/components/HeroMachine";   
 import FocusRail from "@/components/FocusRail";
 import ServicesAccordion from "@/components/ServicesAccordion";
+import TeardownCard from "@/components/TeardownCard";
 import TeardownSketch from "@/components/TeardownSketch";
 import ToolMarquee from "@/components/ToolMarquee";
 import WebDemo from "@/components/WebDemo";
@@ -194,10 +195,22 @@ export function Teardown() {
             <Rise text={teardown.headingDim} offset={4} />
           </span>
         </h2>
-        <p className="lede">{teardown.body}</p>
+        {/* Desktop's lede describes the self-running demo loop; mobile has no
+            loop/live-typing to describe, so it gets its own accurate copy. */}
+        <p className="lede desktop-only">{teardown.body}</p>
+        <p className="lede mobile-only">{teardown.bodyMobile}</p>
       </div>
-      <div className="section-body reveal">
-        <TeardownSketch />
+
+      <div className="desktop-only">
+        <div className="section-body reveal">
+          <TeardownSketch />
+        </div>
+      </div>
+
+      <div className="mobile-only">
+        <div className="section-body">
+          <TeardownCard />
+        </div>
       </div>
     </section>
   );

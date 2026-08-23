@@ -1001,6 +1001,87 @@ h2 .dim {
   color: var(--accent);
   border-bottom-color: var(--accent);
 }
+
+/* ---------- teardown card (components/TeardownCard.tsx, mobile only) ----------
+   Same rounded-card language as .acc-item (Services accordion) for visual
+   consistency across the mobile-redesigned sections; desktop's .sketch panel
+   is untouched. */
+.td-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.td-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.td-form label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.td-form textarea {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 12px 14px;
+  font-family: var(--sans);
+  /* 16px, not smaller: Safari zooms into any field it focuses below that
+     and never zooms back out — same fix as .sk-form textarea. */
+  font-size: 16px;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 88px;
+}
+.td-form textarea::placeholder {
+  color: var(--faint);
+}
+.td-form textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+.td-run {
+  width: 100%;
+  justify-content: center;
+}
+.td-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2px;
+  margin-top: 14px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.td-result-num {
+  font-family: var(--mono);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.td-result-label {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+.td-send {
+  width: 100%;
+  justify-content: center;
+}
+.td-note {
+  color: var(--faint);
+  font-size: 12.5px;
+  line-height: 1.5;
+  margin: 12px 0 0;
+}
+
 .sample-chip {
   position: absolute;
   top: 14px;

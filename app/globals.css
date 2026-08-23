@@ -531,7 +531,9 @@ h1 {
 /* ---------- shared section chrome ---------- */
 section {
   padding: clamp(72px, 10vw, 130px) var(--pad);
-  border-bottom: 1px solid var(--line);
+  /* was var(--line) — a flat dark gray. A subtle amber tint on every
+     section boundary reads as a premium edge instead of just a seam. */
+  border-bottom: 1px solid rgba(242, 163, 60, 0.16);
 }
 .section-head {
   max-width: 1200px;
@@ -590,6 +592,16 @@ h2 .dim {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  transition: border-color 0.25s ease;
+}
+/* Web/Mobile get a resting amber edge — Automation already reads as the
+   lead service via the live FlowDemo panel next to it, so it keeps the
+   plain border rather than doubling up on emphasis. */
+.svc:not(.lead) {
+  border-color: rgba(242, 163, 60, 0.3);
+}
+.svc:not(.lead):hover {
+  border-color: rgba(242, 163, 60, 0.55);
 }
 .svc.lead {
   grid-column: 1 / -1;
@@ -1346,13 +1358,14 @@ h2 .dim {
   font-family: var(--mono);
   font-size: 14px;
   background: rgba(242, 241, 238, 0.07);
-  border: 1px solid rgba(242, 241, 238, 0.14);
+  border: 1px solid rgba(242, 163, 60, 0.4);
   color: var(--ink);
   cursor: pointer;
-  transition: background 0.18s ease;
+  transition: background 0.18s ease, border-color 0.18s ease;
 }
 .rail-ctrl button:hover {
   background: rgba(242, 241, 238, 0.13);
+  border-color: rgba(242, 163, 60, 0.7);
 }
 @media (max-width: 720px) {
   /* at 230px the neighbours never clear the 250px centre card and smear across it */
@@ -1748,7 +1761,7 @@ a[href^="tel:"] {
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(242, 163, 60, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1756,8 +1769,8 @@ a[href^="tel:"] {
   transition: color 0.2s ease, border-color 0.2s ease;
 }
 .footer-socials a:hover {
-  color: var(--ink);
-  border-color: rgba(242, 241, 238, 0.4);
+  color: var(--accent);
+  border-color: var(--accent);
 }
 .footer-socials svg {
   width: 18px;

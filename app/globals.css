@@ -69,6 +69,9 @@ a {
   padding: 22px var(--pad);
   border: 1px solid transparent;
   border-radius: 999px;
+  /* clips .nav-progress to the pill's own rounded corners instead of the
+     flat bar poking past them in the scrolled/floating-pill state */
+  overflow: hidden;
   transition:
     max-width 0.35s ease,
     margin 0.35s ease,
@@ -197,17 +200,48 @@ a {
   gap: 2px;
 }
 .nav-links a {
+  position: relative;
+  isolation: isolate;
   font-size: 13.5px;
   font-weight: 500;
   letter-spacing: 0.01em;
   color: rgba(242, 241, 238, 0.82);
   padding: 8px 14px;
-  border-radius: 999px;
-  transition: background 0.18s ease, color 0.18s ease;
+  transition: color 0.18s ease;
 }
 .nav-links a:hover {
-  background: rgba(255, 255, 255, 0.09);
   color: var(--ink);
+}
+/* shared-layout hover pill (Nav.tsx, framer-motion layoutId) — replaces a
+   flat background swap with one indicator that slides between links */
+.nav-hover-pill {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.09);
+}
+.nav-link-label {
+  position: relative;
+}
+/* control-room status readout, not just chrome: fills left-to-right with
+   page scroll. transform, not width, so it's compositor-only. */
+.nav-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(0);
+  opacity: 0.85;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .nav-progress {
+    transition: transform 0.15s linear;
+  }
 }
 .nav-actions {
   display: flex;

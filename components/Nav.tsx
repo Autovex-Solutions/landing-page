@@ -1,17 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { getNavLinks } from "@/content";
 
 // Sticky glass nav. Transparent over the hero; after ~10px of scroll it
 // condenses into a floating glass bar. Mobile: burger → full-height sheet
-// (body scroll locked while open, Escape closes).
+// (body scroll locked while open, Escape closes). Desktop links carry a
+// hover pill that slides between them (shared layout animation) instead of
+// a flat background swap, plus a scroll-progress hairline along the bottom
+// edge — a small "control room" status readout, not just chrome.
 export default function Nav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const reduceMotion = useReducedMotion();
+  const links = useMemo(() => getNavLinks(), []);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(scrollY > 10);
+    const onScroll = () => {
+      setScrolled(scrollY > 10);
+      const max = document.documentElement.scrollHeight - innerHeight;
+      setProgress(max > 0 ? Math.min(scrollY / max, 1) : 0);
+    };
     onScroll();
     addEventListener("scroll", onScroll, { passive: true });
     return () => removeEventListener("scroll", onScroll);
@@ -27,8 +39,6 @@ export default function Nav() {
       removeEventListener("keydown", onKey);
     };
   }, [open]);
-
-  const links = getNavLinks();
 
   return (
     <div className={`site-nav${scrolled ? " scrolled" : ""}${open ? " open" : ""}`}>
@@ -46,10 +56,22 @@ export default function Nav() {
         {/* True center on desktop (see the grid rule on .site-nav nav) — not
             just "next to the logo", which is all flex space-between ever
             guaranteed when the left/right groups aren't the same width. */}
-        <div className="nav-links">
+        <div className="nav-links" onMouseLeave={() => setHovered(null)}>
           {links.map((l) => (
-            <a key={l.href} href={l.href}>
-              {l.label}
+            <a
+              key={l.href}
+              href={l.href}
+              className="nav-link"
+              onMouseEnter={() => setHovered(l.href)}
+            >
+              {hovered === l.href && (
+                <motion.span
+                  layoutId="nav-hover-pill"
+                  className="nav-hover-pill"
+                  transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 480, damping: 34 }}
+                />
+              )}
+              <span className="nav-link-label">{l.label}</span>
             </a>
           ))}
         </div>
@@ -70,6 +92,7 @@ export default function Nav() {
             <span />
           </button>
         </div>
+        <div className="nav-progress" style={{ transform: `scaleX(${progress})` }} aria-hidden="true" />
       </nav>
       <div className="nav-sheet" role="dialog" aria-label="Site menu">
         <div className="nav-sheet-links">

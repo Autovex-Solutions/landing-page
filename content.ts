@@ -20,6 +20,14 @@ export const contact = {
 export const servicesIntro =
   "We are your full-stack engineering partners, translating initial visions into market-leading digital products. Our holistic approach integrates strategic planning, user-centric design, and robust development to deliver end-to-end solutions that are built to scale and succeed.";
 
+// Full-screen interlude between Teardown and Process (components/MonitorGuyBanner.tsx).
+// The supplied brief was for a different company ("Mainframe" / an AI persona
+// called "A.R.I.A."), so this is Autovex-true copy in the same two-line,
+// blurred-label shape.
+export const banner = {
+  label: ["Hey there — you've made it this far.", "Let's skip the deck and just start building."],
+};
+
 // Tool logos/names for the hero marquee live in components/ToolMarquee.tsx
 // (names are coupled to their simple-icons imports).
 

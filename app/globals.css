@@ -1025,6 +1025,93 @@ h2 .dim {
   pointer-events: none;
 }
 
+/* ---------- monitor guy banner (components/MonitorGuyBanner.tsx) ----------
+   Full-screen interlude, section between Teardown and Process — see the
+   component's own comment for why the video is absolute (scoped to this
+   section) rather than the supplied brief's position: fixed. */
+.mg-banner {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: clamp(40px, 8vw, 80px) var(--pad);
+  background: var(--bg);
+}
+@media (min-width: 768px) {
+  .mg-banner {
+    justify-content: center;
+  }
+}
+.mg-banner-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% center;
+  pointer-events: none;
+}
+.mg-banner::after {
+  /* scrim so the label/button stay readable whether the video is present
+     (a light studio backdrop) or absent (mobile — just var(--bg)) */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 12, 14, 0.15) 0%, rgba(11, 12, 14, 0.55) 60%, rgba(11, 12, 14, 0.88) 100%);
+  pointer-events: none;
+}
+.mg-banner-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+}
+.mg-banner-label {
+  pointer-events: none;
+  user-select: none;
+  margin: 0 0 24px;
+  color: var(--ink);
+  font-size: clamp(18px, 4vw, 26px);
+  line-height: 1.35;
+  font-weight: 500;
+  filter: blur(4px);
+}
+.mg-banner-cta {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.mg-banner-cta.in {
+  opacity: 1;
+  transform: none;
+}
+.mg-banner-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.mg-banner-btn:hover {
+  background: var(--accent);
+  color: #0b0c0e;
+}
+.mg-banner-email {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.mg-banner-btn svg {
+  flex: none;
+}
+
 /* pipeline sketcher — full-width panel, form left, live diagram right */
 .sketch {
   background: var(--panel);

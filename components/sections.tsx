@@ -2,7 +2,7 @@
 import { Fragment } from "react";
 import { contact, footerBio, getNavLinks, servicesIntro, socials, steps, teardown, workItems } from "@/content";
 import CtaIconField from "@/components/CtaIconField";
-import FlowDemo from "@/components/FlowDemo";
+import FeatureGrid from "@/components/FeatureGrid";
 import HeroMachine from "@/components/HeroMachine";
 import FocusRail from "@/components/FocusRail";
 import OrbAnimation from "@/components/OrbAnimation";
@@ -10,8 +10,6 @@ import ServicesAccordion from "@/components/ServicesAccordion";
 import TeardownCard from "@/components/TeardownCard";
 import TeardownSketch from "@/components/TeardownSketch";
 import ToolMarquee from "@/components/ToolMarquee";
-import WebDemo from "@/components/WebDemo";
-import MobileDemo from "@/components/MobileDemo";
 
 
 /* Each word gets its own masked span so it can rise independently. The space between
@@ -91,69 +89,12 @@ export function Services() {
         <OrbAnimation />
       </div>
 
-      {/* Desktop (>= 768px): full flow-diagram cards, unchanged */}
+      {/* Desktop (>= 768px): bordered feature grid — replaces the old
+          hand-built flow-diagram cards (FlowDemo/WebDemo/MobileDemo,
+          removed) per explicit request. */}
       <div className="desktop-only">
-        <div className="section-body svc-grid">
-
-          {/* ---------------- Automation ---------------- */}
-
-          <div className="svc lead reveal">
-            <div className="svc-col">
-              <div className="svc-tag mono">
-                <span>01 / Automation</span>
-                <span>Core service</span>
-              </div>
-
-              <h3>Workflows that run themselves</h3>
-
-              <p>
-                We wire your tools together &mdash; CRM, inbox, sheets,
-                invoicing &mdash; into pipelines that handle the busywork end to
-                end. AI where it helps, deterministic where it matters.
-              </p>
-            </div>
-
-            <FlowDemo />
-          </div>
-
-          {/* ---------------- Web ---------------- */}
-
-          <div className="svc reveal">
-
-            <div className="svc-tag mono">
-              <span>02 / Web</span>
-            </div>
-
-            <h3>Sites &amp; platforms that sell</h3>
-
-            <p>
-              Fast, search-friendly marketing sites and web apps &mdash;
-              built to convert, not just to exist.
-            </p>
-
-            <WebDemo />
-
-          </div>
-
-          {/* ---------------- Mobile ---------------- */}
-
-          <div className="svc reveal">
-
-            <div className="svc-tag mono">
-              <span>03 / Mobile</span>
-            </div>
-
-            <h3>Mobile apps built for growth</h3>
-
-            <p>
-              High-performance iOS and Android applications engineered for
-              speed, scalability and exceptional user experiences.
-            </p>
-
-            <MobileDemo />
-
-          </div>
-
+        <div className="section-body reveal">
+          <FeatureGrid />
         </div>
       </div>
 

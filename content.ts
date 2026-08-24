@@ -2,6 +2,7 @@
 // Add a case study = add one object to `workItems` (sample: true renders the "Sample" chip).
 
 import { siInstagram, siGithub } from "simple-icons";
+import { Code2, Globe, MessageCircle, Palette, Smartphone, Zap, type LucideIcon } from "lucide-react";
 
 // `phone` is rendered as selectable text (not only inside the tel: href) so Google
 // Business Profile can corroborate the number against the profile — keep the displayed
@@ -190,5 +191,65 @@ export const services: ServiceItem[] = [
       "Architecture that scales from first 100 users to first 100k",
       "Offline-ready, sync-safe where the job needs it",
     ],
+  },
+];
+
+// Desktop Services grid (components/FeatureGrid.tsx) — replaces the old
+// hand-built flow-diagram cards (FlowDemo/WebDemo/MobileDemo, removed).
+// First 3 entries intentionally match `services` above word-for-word so
+// desktop/mobile never say different things about the same three services.
+// The other 3 are real, already-true things about Autovex, not filler:
+// "Custom software" and "UI/UX design" are already in the site's own SEO
+// description (app/layout.tsx); "Direct founder access" is backed by the
+// named founder emails in that same file's JSON-LD.
+export type FeatureItem = {
+  id: string;
+  title: string;
+  description: string;
+  Icon: LucideIcon;
+};
+
+export const features: FeatureItem[] = [
+  {
+    id: "01",
+    title: "Workflows that run themselves",
+    description:
+      "We wire your tools together into pipelines that handle the busywork end to end. AI where it helps, deterministic where it matters.",
+    Icon: Zap,
+  },
+  {
+    id: "02",
+    title: "Custom software",
+    description:
+      "Beyond off-the-shelf tools — internal dashboards, admin panels and bespoke systems built around how your business actually operates.",
+    Icon: Code2,
+  },
+  {
+    id: "03",
+    title: "Sites & platforms that sell",
+    description:
+      "Fast, search-friendly marketing sites and web apps built to convert, not just to exist.",
+    Icon: Globe,
+  },
+  {
+    id: "04",
+    title: "Mobile apps built for growth",
+    description:
+      "High-performance iOS and Android apps engineered for speed, scale and exceptional UX.",
+    Icon: Smartphone,
+  },
+  {
+    id: "05",
+    title: "UI/UX design",
+    description:
+      "Interfaces designed to be used, not just looked at — wireframes through to polished, production-ready screens.",
+    Icon: Palette,
+  },
+  {
+    id: "06",
+    title: "Direct founder access",
+    description:
+      "No account managers or ticket queues — you talk directly with the people building your product, by email or WhatsApp.",
+    Icon: MessageCircle,
   },
 ];

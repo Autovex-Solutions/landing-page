@@ -1,36 +1,38 @@
-// Pure-CSS animated orb (see .orb-* rules in globals.css) — gradient sphere +
-// 3 rotating rings + orbiting/floating icon chips. No JS beyond mounting the
-// markup; all motion is CSS animation, and respects prefers-reduced-motion
-// via the CSS itself. Icons are lucide-react (already a dependency) standing
-// in for the original hand-drawn SVGs — the CSS targets a bare `svg` child
-// selector, so any inline SVG (Lucide's included) sizes/positions correctly.
-import { BarChart3, Shield, Sparkles, Users, Zap } from "lucide-react";
+// Pure-CSS animated orb v2 (see .orb-* rules in globals.css) — glowing core
+// sphere + 3 rotating rings + 4 cardinal orbiting icon chips. Replaces the
+// original smaller/floating-icon version per feedback. No JS beyond mounting
+// the markup; respects prefers-reduced-motion via the CSS.
+//
+// The chip icons sit in a static "mount" div (top/right/bottom/left,
+// positioned via transform: translate) nested inside a separate element that
+// only animates rotation (counter-spin). Two levels, not one: a single
+// element can't hold both a static positional transform and an animated
+// transform at once without the animation clobbering the position.
+import { Code2, Cpu, Shield, Sparkles, Zap } from "lucide-react";
 
-export default function OrbAnimation({ size = 260 }: { size?: number }) {
+const CHIPS = [
+  { Icon: Zap, mount: "top", shape: "square" as const },
+  { Icon: Shield, mount: "right", shape: "round" as const },
+  { Icon: Cpu, mount: "bottom", shape: "round" as const },
+  { Icon: Code2, mount: "left", shape: "square" as const },
+];
+
+export default function OrbAnimation() {
   return (
-    <div className="orb-wrap" style={{ width: size, height: size }} aria-hidden="true">
-      <div className="orb-glow" />
-      <div className="ring ring-dashed" />
-      <div className="ring ring-teal" />
-      <div className="ring ring-dots" />
-      <div className="orb-sphere">
-        <Sparkles />
+    <div className="orb-wrap" aria-hidden="true">
+      <div className="orb-core">
+        <Sparkles strokeWidth={2.5} />
       </div>
-      <div className="orbit orbit-bolt">
-        <div className="icon-chip icon-bolt">
-          <Zap />
-        </div>
-      </div>
-      <div className="orbit orbit-shield">
-        <div className="icon-chip icon-shield">
-          <Shield />
-        </div>
-      </div>
-      <div className="float-icon icon-bars">
-        <BarChart3 />
-      </div>
-      <div className="float-icon icon-users">
-        <Users />
+      <div className="orb-ring-inner" />
+      <div className="orb-ring-middle" />
+      <div className="orb-ring-outer">
+        {CHIPS.map(({ Icon, mount, shape }) => (
+          <div className={`orb-chip-mount orb-chip-mount--${mount}`} key={mount}>
+            <div className={`orb-chip${shape === "round" ? " round" : ""}`}>
+              <Icon strokeWidth={3} />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

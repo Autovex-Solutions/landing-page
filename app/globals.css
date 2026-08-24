@@ -615,24 +615,38 @@ h2 .dim {
    Replaces the original smaller/floating-icon orb per feedback: bigger core
    + rings, 4 icon chips at fixed cardinal mounts instead of organic float
    positions. Re-themed from the supplied neon pink/purple/cyan/yellow to the
-   site's own amber + ink tones, same as the first version. Sits in the empty
-   space beside the "From concept to..." heading, desktop only — needs more
-   width than the first version (500px vs 260px), hence the higher breakpoint. */
-#services .section-head {
-  position: relative;
+   site's own amber + ink tones, same as the first version.
+
+   Layout: a real grid column, not absolute-positioning + a hand-measured
+   margin. The margin approach broke down because the 4 icon chips
+   continuously orbit — sampling one chip's getBoundingClientRect() only
+   ever caught wherever it happened to be in its 20s rotation at that
+   instant, not its true worst-case reach, so the "measured" clearance was
+   different (and sometimes negative) every time. A grid column reserves
+   real space for the orb's full 500px footprint regardless of animation
+   state, so nothing below it can ever collide, full stop. */
+.services-head {
+  display: block;
 }
 @media (min-width: 1360px) {
-  /* the outer ring's real footprint (500px) extends well past the heading
-     text's height — measured, not guessed (see conversation) */
-  #services .section-head {
-    margin-bottom: 265px;
+  .services-head {
+    display: grid;
+    grid-template-columns: 1fr 500px;
+    align-items: center;
+    gap: 56px;
   }
+}
+.services-head-text {
+  display: flex;
+  flex-direction: column;
+}
+.section-head .services-lede {
+  margin-top: 24px;
+  max-width: 46ch;
 }
 .orb-wrap {
   display: none;
-  position: absolute;
-  top: 0;
-  right: 40px;
+  position: relative;
   width: 500px;
   height: 500px;
   align-items: center;

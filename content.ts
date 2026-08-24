@@ -14,6 +14,11 @@ export const contact = {
   whatsapp: "https://wa.me/923482033984",
 };
 
+// Supporting line under the Services heading — balances the left column
+// against the orb's height on the wide desktop layout (>=1360px).
+export const servicesIntro =
+  "We are your full-stack engineering partners, translating initial visions into market-leading digital products. Our holistic approach integrates strategic planning, user-centric design, and robust development to deliver end-to-end solutions that are built to scale and succeed.";
+
 // Tool logos/names for the hero marquee live in components/ToolMarquee.tsx
 // (names are coupled to their simple-icons imports).
 

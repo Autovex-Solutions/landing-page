@@ -1,6 +1,6 @@
 
 import { Fragment } from "react";
-import { contact, footerBio, getNavLinks, socials, steps, teardown, workItems } from "@/content";
+import { contact, footerBio, getNavLinks, servicesIntro, socials, steps, teardown, workItems } from "@/content";
 import CtaIconField from "@/components/CtaIconField";
 import FlowDemo from "@/components/FlowDemo";
 import HeroMachine from "@/components/HeroMachine";
@@ -77,14 +77,17 @@ export function Hero() {
 export function Services() {
   return (
     <section id="services">
-      <div className="section-head reveal">
-        <p className="mono eyebrow">What we do</p>
-        <h2 className="rise">
-          <Rise text="From concept to deployment." />{" "}
-          <span className="dim">
-            <Rise text="We build what's next." offset={2} />
-          </span>
-        </h2>
+      <div className="section-head services-head reveal">
+        <div className="services-head-text">
+          <p className="mono eyebrow">What we do</p>
+          <h2 className="rise">
+            <Rise text="From concept to deployment." />{" "}
+            <span className="dim">
+              <Rise text="We build what's next." offset={2} />
+            </span>
+          </h2>
+          <p className="lede services-lede">{servicesIntro}</p>
+        </div>
         <OrbAnimation />
       </div>
 

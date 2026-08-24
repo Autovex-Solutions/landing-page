@@ -972,6 +972,59 @@ h2 .dim {
   font-size: 18px;
 }
 
+/* mouse-scrub video panel beside the heading (components/MonitorGuyBackground.tsx)
+   — same text-column / visual-column pattern as .services-head, smaller
+   breakpoint since the panel (460px) is more modest than the orb (500px). */
+.teardown-head {
+  display: block;
+}
+@media (min-width: 1080px) {
+  .teardown-head {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    align-items: center;
+    gap: 48px;
+  }
+}
+.teardown-head-text {
+  display: flex;
+  flex-direction: column;
+}
+.monitor-guy {
+  display: none;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid rgba(242, 163, 60, 0.3);
+  background: #0b0c0e;
+  cursor: ew-resize;
+}
+@media (min-width: 1080px) {
+  .monitor-guy {
+    display: block;
+  }
+}
+.monitor-guy::after {
+  /* the source footage is shot against a light studio backdrop — a soft
+     inner vignette keeps it from reading as a bright rectangle dropped onto
+     an otherwise near-black page */
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 70px 24px rgba(11, 12, 14, 0.4);
+  pointer-events: none;
+}
+.monitor-guy-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% center;
+  pointer-events: none;
+}
+
 /* pipeline sketcher — full-width panel, form left, live diagram right */
 .sketch {
   background: var(--panel);

@@ -5,6 +5,7 @@ import CtaIconField from "@/components/CtaIconField";
 import FeatureGrid from "@/components/FeatureGrid";
 import HeroMachine from "@/components/HeroMachine";
 import FocusRail from "@/components/FocusRail";
+import MonitorGuyBackground from "@/components/MonitorGuyBackground";
 import OrbAnimation from "@/components/OrbAnimation";
 import ServicesAccordion from "@/components/ServicesAccordion";
 import TeardownCard from "@/components/TeardownCard";
@@ -133,18 +134,22 @@ export function Projects() {
 export function Teardown() {
   return (
     <section id="teardown">
-      <div className="section-head reveal">
-        <p className="mono eyebrow">{teardown.eyebrow}</p>
-        <h2 className="rise">
-          <Rise text={teardown.heading} />{" "}
-          <span className="dim">
-            <Rise text={teardown.headingDim} offset={4} />
-          </span>
-        </h2>
-        {/* Desktop's lede describes the self-running demo loop; mobile has no
-            loop/live-typing to describe, so it gets its own accurate copy. */}
-        <p className="lede desktop-only">{teardown.body}</p>
-        <p className="lede mobile-only">{teardown.bodyMobile}</p>
+      <div className="section-head teardown-head reveal">
+        <div className="teardown-head-text">
+          <p className="mono eyebrow">{teardown.eyebrow}</p>
+          <h2 className="rise">
+            <Rise text={teardown.heading} />{" "}
+            <span className="dim">
+              <Rise text={teardown.headingDim} offset={4} />
+            </span>
+          </h2>
+          {/* Desktop's lede describes the self-running demo loop; mobile has
+              no loop/live-typing to describe, so it gets its own accurate
+              copy. */}
+          <p className="lede desktop-only">{teardown.body}</p>
+          <p className="lede mobile-only">{teardown.bodyMobile}</p>
+        </div>
+        <MonitorGuyBackground />
       </div>
 
       <div className="desktop-only">

@@ -1,37 +1,34 @@
 "use client";
 
-// Full-screen mouse-scrub video interlude between Teardown and Process.
-// Reuses the same self-hosted clip as the smaller Teardown panel
-// (MonitorGuyBackground.tsx), but at full viewport scale with a
-// window-scoped mousemove listener — appropriate here since this section
-// genuinely spans the whole screen, unlike that smaller contained panel.
+// Full-screen mouse-scrub video banner, now doubling as the Teardown
+// section itself (id="teardown") — the pitch/heading/body and the
+// interactive pipeline-sketch tool that used to live in their own section
+// above this one now live here, per explicit request to consolidate rather
+// than show the same pitch twice in a row as the visitor scrolls. The small
+// contained video panel that used to sit beside that old section's heading
+// (MonitorGuyBackground.tsx) is retired along with it — this section's own
+// full-screen video already carries that job.
 //
-// The video itself is position: absolute, scoped to this section, not
-// position: fixed like the supplied brief. That brief was a single-page
-// site where a fixed background was fine for the page's whole lifetime;
-// on this long scrolling page a fixed video would stay pinned to the
-// viewport across every section below it, not just this one.
-//
-// Mobile gets no <video> at all (conditionally mounted, matching the
-// Teardown panel's fix) — mouse-scrub can't work on touch, and there's no
-// reason to ship 4.5MB for a feature that can't run.
+// The video is a fixed-height zone pinned to the top of the section
+// (roughly one screen), not stretched across the section's full height —
+// the section is now much taller once the sketch tool is included, and a
+// video stretched to fill 2000px+ via object-fit: cover would look badly
+// over-zoomed. Heading sits over the video zone; the tool sits on the
+// section's own solid background once you scroll past it.
 import { useEffect, useRef, useState } from "react";
-import { banner, contact } from "@/content";
+import { teardown } from "@/content";
+import { Rise } from "@/components/sections";
+import TeardownCard from "@/components/TeardownCard";
+import TeardownSketch from "@/components/TeardownSketch";
 
 const SENSITIVITY = 0.8;
 const BREAKPOINT = "(min-width: 768px)"; // matches .desktop-only/.mobile-only sitewide
 
 export default function MonitorGuyBanner() {
-  const [showButton, setShowButton] = useState(false);
   const [wide, setWide] = useState(false);
   const [inView, setInView] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowButton(true), 400);
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     const mq = matchMedia(BREAKPOINT);
@@ -41,13 +38,13 @@ export default function MonitorGuyBanner() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
-  // pause the (window-level) scrub listener while the section is scrolled
-  // out of view — same reasoning HeroMachine's canvas loop already follows
+  // pause the (window-level) scrub listener while the video zone is
+  // scrolled out of view — same reasoning HeroMachine's canvas loop follows
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section || !wide) return;
+    const video = videoRef.current;
+    if (!video || !wide) return;
     const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.1 });
-    io.observe(section);
+    io.observe(video);
     return () => io.disconnect();
   }, [wide]);
 
@@ -93,39 +90,46 @@ export default function MonitorGuyBanner() {
     };
   }, [wide, inView]);
 
-  const copyEmail = () => {
-    navigator.clipboard.writeText(contact.email);
-  };
-
   return (
-    <section className="mg-banner" ref={sectionRef}>
-      {wide && (
-        <video
-          ref={videoRef}
-          src="/monitor-guy.mp4"
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-          className="mg-banner-video"
-        />
-      )}
-      <div className="mg-banner-inner">
-        <p className="mg-banner-label">
-          {banner.label[0]}
-          <br />
-          {banner.label[1]}
-        </p>
-        <div className={`mg-banner-cta${showButton ? " in" : ""}`}>
-          <button type="button" className="mg-banner-btn" onClick={copyEmail}>
-            <span>
-              Reach us: <span className="mg-banner-email">{contact.email}</span>
-            </span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-            </svg>
-          </button>
+    <section id="teardown" className="mg-banner">
+      <div className="mg-banner-video-wrap">
+        {wide && (
+          <video
+            ref={videoRef}
+            src="/monitor-guy.mp4"
+            muted
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+            className="mg-banner-video"
+          />
+        )}
+      </div>
+
+      <div className="section-head reveal">
+        <p className="mono eyebrow">{teardown.eyebrow}</p>
+        <h2 className="rise">
+          <Rise text={teardown.heading} />{" "}
+          <span className="dim">
+            <Rise text={teardown.headingDim} offset={4} />
+          </span>
+        </h2>
+        {/* Desktop's lede describes the self-running demo loop; mobile has
+            no loop/live-typing to describe, so it gets its own accurate
+            copy. */}
+        <p className="lede desktop-only">{teardown.body}</p>
+        <p className="lede mobile-only">{teardown.bodyMobile}</p>
+      </div>
+
+      <div className="desktop-only">
+        <div className="section-body reveal">
+          <TeardownSketch />
+        </div>
+      </div>
+
+      <div className="mobile-only">
+        <div className="section-body">
+          <TeardownCard />
         </div>
       </div>
     </section>

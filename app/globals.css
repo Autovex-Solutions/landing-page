@@ -972,77 +972,34 @@ h2 .dim {
   font-size: 18px;
 }
 
-/* mouse-scrub video panel beside the heading (components/MonitorGuyBackground.tsx)
-   — same text-column / visual-column pattern as .services-head, smaller
-   breakpoint since the panel (460px) is more modest than the orb (500px). */
-.teardown-head {
-  display: block;
-}
-@media (min-width: 1080px) {
-  .teardown-head {
-    display: grid;
-    grid-template-columns: 1fr 380px;
-    align-items: center;
-    gap: 48px;
-  }
-}
-.teardown-head-text {
-  display: flex;
-  flex-direction: column;
-}
-.monitor-guy {
-  display: none;
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  border: 1px solid rgba(242, 163, 60, 0.3);
-  background: #0b0c0e;
-  cursor: ew-resize;
-}
-@media (min-width: 1080px) {
-  .monitor-guy {
-    display: block;
-  }
-}
-.monitor-guy::after {
-  /* the source footage is shot against a light studio backdrop — a soft
-     inner vignette keeps it from reading as a bright rectangle dropped onto
-     an otherwise near-black page */
-  content: "";
-  position: absolute;
-  inset: 0;
-  box-shadow: inset 0 0 70px 24px rgba(11, 12, 14, 0.4);
-  pointer-events: none;
-}
-.monitor-guy-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 70% center;
-  pointer-events: none;
-}
-
 /* ---------- monitor guy banner (components/MonitorGuyBanner.tsx) ----------
-   Full-screen interlude, section between Teardown and Process — see the
-   component's own comment for why the video is absolute (scoped to this
-   section) rather than the supplied brief's position: fixed. */
+   This is now the Teardown section itself (id="teardown") — the pitch/tool
+   that used to live in its own section, plus the small side video panel
+   that used to sit beside its heading, are both retired/folded in here per
+   explicit request, rather than showing the same pitch twice as the
+   visitor scrolls.
+
+   The video is a fixed-height zone pinned to the section's top (one
+   screen), not stretched across the section's full height. Once the
+   sketch tool is included the section runs well past 100svh, and
+   object-fit: cover on a video stretched to a 2000px+ box would look badly
+   over-zoomed — better to let it read as a banner the heading sits over,
+   with the tool below on the section's own solid background. */
 .mg-banner {
   position: relative;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  overflow: hidden;
-  padding: clamp(40px, 8vw, 80px) var(--pad);
-  background: var(--bg);
 }
-@media (min-width: 768px) {
-  .mg-banner {
-    justify-content: center;
-  }
+/* z-index: -1, same pattern as .machine (HeroMachine) — the heading is
+   normal in-flow content and paints above negative-z-index positioned
+   content automatically, no z-index needed on .section-head itself. */
+.mg-banner-video-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--bg);
 }
 .mg-banner-video {
   position: absolute;
@@ -1053,63 +1010,15 @@ h2 .dim {
   object-position: 70% center;
   pointer-events: none;
 }
-.mg-banner::after {
-  /* scrim so the label/button stay readable whether the video is present
-     (a light studio backdrop) or absent (mobile — just var(--bg)) */
+.mg-banner-video-wrap::after {
+  /* scrim so the heading stays readable over the video, fading to solid
+     var(--bg) at the bottom so the tool below reads as "on the page", not
+     "on the video" */
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(11, 12, 14, 0.15) 0%, rgba(11, 12, 14, 0.55) 60%, rgba(11, 12, 14, 0.88) 100%);
+  background: linear-gradient(180deg, rgba(11, 12, 14, 0.25) 0%, rgba(11, 12, 14, 0.6) 55%, var(--bg) 100%);
   pointer-events: none;
-}
-.mg-banner-inner {
-  position: relative;
-  z-index: 1;
-  max-width: 640px;
-}
-.mg-banner-label {
-  pointer-events: none;
-  user-select: none;
-  margin: 0 0 24px;
-  color: var(--ink);
-  font-size: clamp(18px, 4vw, 26px);
-  line-height: 1.35;
-  font-weight: 500;
-  filter: blur(4px);
-}
-.mg-banner-cta {
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-.mg-banner-cta.in {
-  opacity: 1;
-  transform: none;
-}
-.mg-banner-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 11px 20px;
-  border-radius: 999px;
-  border: 1px solid var(--accent);
-  background: transparent;
-  color: var(--ink);
-  font-family: var(--sans);
-  font-size: 15px;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-.mg-banner-btn:hover {
-  background: var(--accent);
-  color: #0b0c0e;
-}
-.mg-banner-email {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.mg-banner-btn svg {
-  flex: none;
 }
 
 /* pipeline sketcher — full-width panel, form left, live diagram right */

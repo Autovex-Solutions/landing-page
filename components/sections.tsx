@@ -1,15 +1,12 @@
 
 import { Fragment } from "react";
-import { contact, footerBio, getNavLinks, servicesIntro, socials, steps, teardown, workItems } from "@/content";
+import { contact, footerBio, getNavLinks, servicesIntro, socials, steps, workItems } from "@/content";
 import CtaIconField from "@/components/CtaIconField";
 import FeatureGrid from "@/components/FeatureGrid";
 import HeroMachine from "@/components/HeroMachine";
 import FocusRail from "@/components/FocusRail";
-import MonitorGuyBackground from "@/components/MonitorGuyBackground";
 import OrbAnimation from "@/components/OrbAnimation";
 import ServicesAccordion from "@/components/ServicesAccordion";
-import TeardownCard from "@/components/TeardownCard";
-import TeardownSketch from "@/components/TeardownSketch";
 import ToolMarquee from "@/components/ToolMarquee";
 
 
@@ -19,7 +16,7 @@ import ToolMarquee from "@/components/ToolMarquee";
    `word-spacing` on .rise — see globals.css. No space after the last word: on the
    centre-aligned CTA heading a trailing one shifts the whole line ~4px.
    split(/\s+/) so a line break in the JSX source can't emit empty word spans. */
-function Rise({ text, offset = 0 }: { text: string; offset?: number }) {
+export function Rise({ text, offset = 0 }: { text: string; offset?: number }) {
   const words = text.trim().split(/\s+/);
   return (
     <>
@@ -126,42 +123,6 @@ export function Projects() {
       </div>
       <div className="section-body reveal">
         <FocusRail items={workItems} />
-      </div>
-    </section>
-  );
-}
-
-export function Teardown() {
-  return (
-    <section id="teardown">
-      <div className="section-head teardown-head reveal">
-        <div className="teardown-head-text">
-          <p className="mono eyebrow">{teardown.eyebrow}</p>
-          <h2 className="rise">
-            <Rise text={teardown.heading} />{" "}
-            <span className="dim">
-              <Rise text={teardown.headingDim} offset={4} />
-            </span>
-          </h2>
-          {/* Desktop's lede describes the self-running demo loop; mobile has
-              no loop/live-typing to describe, so it gets its own accurate
-              copy. */}
-          <p className="lede desktop-only">{teardown.body}</p>
-          <p className="lede mobile-only">{teardown.bodyMobile}</p>
-        </div>
-        <MonitorGuyBackground />
-      </div>
-
-      <div className="desktop-only">
-        <div className="section-body reveal">
-          <TeardownSketch />
-        </div>
-      </div>
-
-      <div className="mobile-only">
-        <div className="section-body">
-          <TeardownCard />
-        </div>
       </div>
     </section>
   );

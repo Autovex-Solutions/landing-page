@@ -15,6 +15,13 @@
 // video stretched to fill 2000px+ via object-fit: cover would look badly
 // over-zoomed. Heading sits over the video zone; the tool sits on the
 // section's own solid background once you scroll past it.
+//
+// Content is confined to the left half of a two-column grid at >=1024px
+// (.mg-banner-grid), not the shared .section-head/.section-body's usual
+// full-width centering — those would let the pipeline-sketch panel span
+// nearly the whole screen and cover the video subject, who sits on the
+// right. The right column is left with no content on purpose: an empty
+// grid track, not an occlusion, so the subject shows through.
 import { useEffect, useRef, useState } from "react";
 import { teardown } from "@/content";
 import { Rise } from "@/components/sections";
@@ -22,7 +29,10 @@ import TeardownCard from "@/components/TeardownCard";
 import TeardownSketch from "@/components/TeardownSketch";
 
 const SENSITIVITY = 0.8;
-const BREAKPOINT = "(min-width: 768px)"; // matches .desktop-only/.mobile-only sitewide
+// matches .mg-banner-grid's own breakpoint — below this the layout is a
+// single stacked column covering the video anyway, so there's no point
+// fetching/mounting it
+const BREAKPOINT = "(min-width: 1024px)";
 
 export default function MonitorGuyBanner() {
   const [wide, setWide] = useState(false);
@@ -106,31 +116,36 @@ export default function MonitorGuyBanner() {
         )}
       </div>
 
-      <div className="section-head reveal">
-        <p className="mono eyebrow">{teardown.eyebrow}</p>
-        <h2 className="rise">
-          <Rise text={teardown.heading} />{" "}
-          <span className="dim">
-            <Rise text={teardown.headingDim} offset={4} />
-          </span>
-        </h2>
-        {/* Desktop's lede describes the self-running demo loop; mobile has
-            no loop/live-typing to describe, so it gets its own accurate
-            copy. */}
-        <p className="lede desktop-only">{teardown.body}</p>
-        <p className="lede mobile-only">{teardown.bodyMobile}</p>
-      </div>
+      <div className="mg-banner-grid">
+        <div className="mg-banner-content">
+          <div className="section-head reveal">
+            <p className="mono eyebrow">{teardown.eyebrow}</p>
+            <h2 className="rise">
+              <Rise text={teardown.heading} />{" "}
+              <span className="dim">
+                <Rise text={teardown.headingDim} offset={4} />
+              </span>
+            </h2>
+            {/* Desktop's lede describes the self-running demo loop; mobile
+                has no loop/live-typing to describe, so it gets its own
+                accurate copy. */}
+            <p className="lede desktop-only">{teardown.body}</p>
+            <p className="lede mobile-only">{teardown.bodyMobile}</p>
+          </div>
 
-      <div className="desktop-only">
-        <div className="section-body reveal">
-          <TeardownSketch />
-        </div>
-      </div>
+          <div className="desktop-only">
+            <div className="section-body reveal">
+              <TeardownSketch />
+            </div>
+          </div>
 
-      <div className="mobile-only">
-        <div className="section-body">
-          <TeardownCard />
+          <div className="mobile-only">
+            <div className="section-body">
+              <TeardownCard />
+            </div>
+          </div>
         </div>
+        {/* right column intentionally left empty — see file header comment */}
       </div>
     </section>
   );

@@ -1007,7 +1007,11 @@ h2 .dim {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 70% center;
+  /* pushed further right than a typical centered crop — the right half of
+     the section is a deliberately empty grid column (see .mg-banner-grid)
+     so the subject should sit inside that visible window, not behind the
+     content column on the left */
+  object-position: 80% center;
   pointer-events: none;
 }
 .mg-banner-video-wrap::after {
@@ -1019,6 +1023,47 @@ h2 .dim {
   inset: 0;
   background: linear-gradient(180deg, rgba(11, 12, 14, 0.25) 0%, rgba(11, 12, 14, 0.6) 55%, var(--bg) 100%);
   pointer-events: none;
+}
+
+/* split-screen content grid: left column = all text/tool, right column
+   deliberately left empty so the video subject shows through unobstructed.
+   Below 1024px this is just a normal stacked column (no video is even
+   mounted there — see the component's BREAKPOINT). */
+.mg-banner-grid {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(72px, 10vw, 130px) var(--pad);
+}
+@media (min-width: 1024px) {
+  .mg-banner-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: 40px;
+    min-height: 100svh;
+  }
+}
+/* .section-head/.section-body normally center themselves at up to 1200px —
+   here they're already inside a grid column roughly half that, so their
+   own centering would just be a no-op at best and fight the column at
+   worst. Drop it in favor of simply filling the column. */
+.mg-banner-content .section-head {
+  max-width: none;
+  margin: 0 0 clamp(36px, 5vw, 64px);
+}
+.mg-banner-content .section-body {
+  max-width: none;
+  margin: 0;
+}
+/* .sketch-body's own form/diagram side-by-side split is a viewport media
+   query (min-width: 861px shows two columns) — it has no way to know it's
+   being squeezed into a ~560px grid column here rather than the ~1200px
+   it was designed for, so left to itself it'd cram both sides. Force it
+   stacked whenever it's rendered in this narrower context instead. */
+.mg-banner-content .sketch-body {
+  grid-template-columns: 1fr;
 }
 
 /* pipeline sketcher — full-width panel, form left, live diagram right */

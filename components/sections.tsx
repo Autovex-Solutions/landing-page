@@ -3,8 +3,9 @@ import { Fragment } from "react";
 import { contact, footerBio, getNavLinks, socials, steps, teardown, workItems } from "@/content";
 import CtaIconField from "@/components/CtaIconField";
 import FlowDemo from "@/components/FlowDemo";
-import HeroMachine from "@/components/HeroMachine";   
+import HeroMachine from "@/components/HeroMachine";
 import FocusRail from "@/components/FocusRail";
+import OrbAnimation from "@/components/OrbAnimation";
 import ServicesAccordion from "@/components/ServicesAccordion";
 import TeardownCard from "@/components/TeardownCard";
 import TeardownSketch from "@/components/TeardownSketch";
@@ -84,6 +85,7 @@ export function Services() {
             <Rise text="We build what's next." offset={2} />
           </span>
         </h2>
+        <OrbAnimation />
       </div>
 
       {/* Desktop (>= 768px): full flow-diagram cards, unchanged */}

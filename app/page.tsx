@@ -6,12 +6,14 @@ export default function Home() {
   return (
     <>
       <Nav />
-      <Hero />
-      <Services />
-      <Projects />
-      <MonitorGuyBanner />
-      <Process />
-      <Cta />
+      <main id="main-content">
+        <Hero />
+        <Services />
+        <Projects />
+        <MonitorGuyBanner />
+        <Process />
+        <Cta />
+      </main>
       <Footer />
     </>
   );

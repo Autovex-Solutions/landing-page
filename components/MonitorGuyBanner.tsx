@@ -84,7 +84,7 @@ export default function MonitorGuyBanner() {
 
   return (
     <>
-      <section className="mg-hero">
+      <section className="mg-hero" aria-labelledby="mg-hero-heading">
         <div className="mg-hero-video-wrap">
           {wide && (
             <video
@@ -100,14 +100,14 @@ export default function MonitorGuyBanner() {
         </div>
 
         <div className="mg-hero-content reveal">
-          <h2 className="rise mg-hero-heading">
+          <h2 id="mg-hero-heading" className="rise mg-hero-heading">
             <Rise text={monitorGuyHero.heading} />
           </h2>
           <p className="mg-hero-subtext">{monitorGuyHero.subtext}</p>
         </div>
       </section>
 
-      <section id="teardown" className="mg-workflow">
+      <section id="teardown" className="mg-workflow" aria-label="Free teardown">
         <div className="mg-workflow-grid">
           <div className="section-head reveal">
             <p className="mono eyebrow">{teardown.eyebrow}</p>

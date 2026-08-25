@@ -73,7 +73,7 @@ export function Hero() {
 
 export function Services() {
   return (
-    <section id="services">
+    <section id="services" aria-label="Services">
       <div className="section-head services-head reveal">
         <div className="services-head-text">
           <p className="mono eyebrow">What we do</p>
@@ -113,7 +113,7 @@ export function Services() {
 export function Projects() {
   if (workItems.length === 0) return null;
   return (
-    <section id="work">
+    <section id="work" aria-label="Selected work">
       <div className="section-head reveal">
         <p className="mono eyebrow">Selected work</p>
         <h2 className="rise">
@@ -132,7 +132,7 @@ export function Projects() {
 
 export function Process() {
   return (
-    <section id="process">
+    <section id="process" aria-label="Our process">
       <div className="section-head reveal">
         <p className="mono eyebrow">Our process</p>
 
@@ -163,7 +163,7 @@ export function Process() {
 
 export function Cta() {
   return (
-    <section className="cta" id="contact">
+    <section className="cta" id="contact" aria-label="Contact">
       <CtaIconField />
 
       <div className="cta-inner reveal">

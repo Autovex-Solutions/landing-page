@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { getNavLinks } from "@/content";
 
@@ -17,6 +17,8 @@ export default function Nav() {
   const [hovered, setHovered] = useState<string | null>(null);
   const reduceMotion = useReducedMotion();
   const links = useMemo(() => getNavLinks(), []);
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const burgerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -29,19 +31,50 @@ export default function Nav() {
     return () => removeEventListener("scroll", onScroll);
   }, []);
 
+  // Focus trap + management: move focus into the sheet on open (so a
+  // keyboard/screen-reader user lands on its content, not left behind on
+  // the now-hidden-behind-it page), keep Tab cycling within it while
+  // open, and return focus to the burger button on close instead of
+  // dropping it back to <body>.
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+
+    const sheet = sheetRef.current;
+    const focusable = sheet
+      ? Array.from(sheet.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'))
+      : [];
+    focusable[0]?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+      if (e.key !== "Tab" || focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
     addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
       removeEventListener("keydown", onKey);
+      burgerRef.current?.focus();
     };
   }, [open]);
 
   return (
     <div className={`site-nav${scrolled ? " scrolled" : ""}${open ? " open" : ""}`}>
+      <a className="skip-link" href="#main-content">
+        Skip to content
+      </a>
       <nav>
         <a className="brand" href="#" onClick={() => setOpen(false)}>
           {/* ponytail: plain img — logo is a tiny png, next/image adds nothing here */}
@@ -83,9 +116,11 @@ export default function Nav() {
             Book a call
           </a>
           <button
+            ref={burgerRef}
             className="nav-burger"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
+            aria-controls="nav-sheet"
             onClick={() => setOpen(!open)}
           >
             <span />
@@ -94,7 +129,7 @@ export default function Nav() {
         </div>
         <div className="nav-progress" style={{ transform: `scaleX(${progress})` }} aria-hidden="true" />
       </nav>
-      <div className="nav-sheet" role="dialog" aria-label="Site menu">
+      <div id="nav-sheet" ref={sheetRef} className="nav-sheet" role="dialog" aria-modal="true" aria-label="Site menu">
         <div className="nav-sheet-links">
           {links.map((l) => (
             <a key={l.href} href={l.href} onClick={() => setOpen(false)}>

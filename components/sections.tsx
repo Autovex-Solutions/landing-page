@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import { contact, footerBio, getNavLinks, servicesIntro, socials, steps, workItems } from "@/content";
 import CtaIconField from "@/components/CtaIconField";
 import FeatureGrid from "@/components/FeatureGrid";
+import FlowField from "@/components/FlowField";
 import HeroMachine from "@/components/HeroMachine";
 import FocusRail from "@/components/FocusRail";
 import OrbAnimation from "@/components/OrbAnimation";
@@ -203,6 +204,7 @@ export function Footer() {
 
   return (
     <footer>
+      <FlowField />
       {/* Real text lockup, not the old logo-lockup-white.png: that raster was a
           square canvas with the wordmark stacked under the mark and heavily
           padded, so at any sane footer height the "autovex solutions" text was

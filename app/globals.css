@@ -1759,12 +1759,24 @@ header .wave {
    mobile fallback of a desktop left/right split — the old two-column layout
    is gone entirely, replaced end to end. */
 footer {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   padding: 88px var(--pad) 48px;
   color: var(--faint);
+}
+/* z-index: -1, same pattern as .machine (HeroMachine) — footer's own
+   content is normal in-flow and paints above negative-z-index content
+   automatically, no z-index needed on it. */
+.footer-field {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 footer .mono {
   font-size: 11px;

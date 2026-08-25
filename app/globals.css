@@ -16,7 +16,7 @@
   --accent: #f2a33c;
   --accent-bright: #ffb954;
   --accent-soft: rgba(242, 163, 60, 0.16);
-  --sans: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --sans: var(--font-space-grotesk), "Helvetica Neue", Arial, sans-serif;
   --mono: var(--font-plex-mono), ui-monospace, "Cascadia Mono", monospace;
   --pad: clamp(20px, 5vw, 72px);
 }
@@ -44,7 +44,7 @@ a {
 
 .mono {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -188,7 +188,7 @@ a {
 }
 .brand-word span {
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: 15px;
   letter-spacing: 0.14em;
   font-weight: 500;
   text-transform: uppercase;
@@ -202,7 +202,7 @@ a {
 .nav-links a {
   position: relative;
   isolation: isolate;
-  font-size: 13.5px;
+  font-size: 15.5px;
   font-weight: 500;
   letter-spacing: 0.01em;
   color: rgba(242, 241, 238, 0.82);
@@ -249,7 +249,7 @@ a {
   gap: 10px;
 }
 .nav-cta {
-  font-size: 13.5px;
+  font-size: 15.5px;
   font-weight: 600;
   padding: 8px 18px;
   border-radius: 999px;
@@ -310,11 +310,11 @@ a {
      a lighter, smaller "Solutions" — amber stays reserved for status/CTA use,
      not the wordmark */
   .brand-word span:first-child {
-    font-size: 13.5px;
+    font-size: 15.5px;
     font-weight: 700;
   }
   .brand-word span:last-child {
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 400;
     letter-spacing: 0.14em;
     color: var(--muted);
@@ -416,7 +416,7 @@ h1 {
 .btn {
   position: relative;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 500;
@@ -487,7 +487,7 @@ h1 {
 }
 .tools-label {
   color: var(--faint);
-  font-size: 11px;
+  font-size: 13px;
 }
 
 /* tool marquee — boxless logo row, doubled content loops at -50% */
@@ -1090,7 +1090,7 @@ h2 .dim {
   gap: 12px;
 }
 .td-form label {
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--faint);
@@ -1137,7 +1137,7 @@ h2 .dim {
 }
 .td-result-label {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 15px;
   margin-bottom: 14px;
 }
 .td-send {
@@ -1146,7 +1146,7 @@ h2 .dim {
 }
 .td-note {
   color: var(--faint);
-  font-size: 12.5px;
+  font-size: 14.5px;
   line-height: 1.5;
   margin: 12px 0 0;
 }
@@ -1156,7 +1156,7 @@ h2 .dim {
   top: 14px;
   left: 14px;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 5px 9px;
@@ -1166,7 +1166,7 @@ h2 .dim {
 }
 .case-metric {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.06em;
   color: var(--accent);
   padding-top: 12px;
@@ -1226,7 +1226,7 @@ h2 .dim {
   justify-content: space-between;
   align-items: center;
   color: var(--faint);
-  font-size: 11px;
+  font-size: 13px;
 }
 .rc-top .sample-chip {
   position: static;
@@ -1245,7 +1245,7 @@ h2 .dim {
 }
 .rc-node {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.03em;
   display: flex;
   align-items: center;
@@ -1379,7 +1379,7 @@ h2 .dim {
 }
 .rail-cat {
   color: var(--accent);
-  font-size: 11px;
+  font-size: 13px;
 }
 .rail-info-text h3 {
   font-size: clamp(22px, 2.6vw, 30px);
@@ -1404,7 +1404,7 @@ h2 .dim {
 .rail-ctrl span {
   min-width: 56px;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
 }
 .rail-ctrl button {
   width: 44px;
@@ -1779,7 +1779,7 @@ footer {
   pointer-events: none;
 }
 footer .mono {
-  font-size: 11px;
+  font-size: 13px;
 }
 /* a phone number must never break across lines */
 a[href^="tel:"] {
@@ -1815,7 +1815,7 @@ a[href^="tel:"] {
   color: var(--ink);
 }
 .footer-mark span:last-child {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 400;
   color: var(--muted);
 }

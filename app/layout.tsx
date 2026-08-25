@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Archivo, IBM_Plex_Mono } from "next/font/google";
+import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Effects from "@/components/Effects";
 import "./globals.css";
 
-const archivo = Archivo({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-archivo",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-space-grotesk",
 });
 
 const plexMono = IBM_Plex_Mono({
@@ -224,7 +225,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${archivo.variable} ${plexMono.variable}`}
+      className={`${spaceGrotesk.variable} ${plexMono.variable}`}
     >
       <body>
         <script

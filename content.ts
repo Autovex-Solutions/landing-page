@@ -76,19 +76,19 @@ export type WorkItem = {
 export const workItems: WorkItem[] = [
   {
     category: "Automation",
-    title: "Autonomous content enrichment pipeline",
-    summary:
-      "A media library's backlog goes in one side and comes out captioned, safety-rated, de-watermarked and upscaled to HD. Crash-safe, budget-capped, and it throttles itself to the AI vendor's real rate limits. A human only ever sees the flagged exceptions.",
-    metric: "0 human touches per video · ~700 paying users",
-    nodes: ["Fetch from library", "Gemini caption + safety", "Watermark sweep", "4× HD upscale", "Publish enriched", "Exception → human"],
-  },
-  {
-    category: "Automation",
     title: "AI video restoration & upscaler",
     summary:
       "Low-res source in, 4× frames out: an in-house restoration stage with on-demand face recovery, tuned until it held its own against paid upscalers side by side. Runs on pay-per-second GPUs, so there's no idle hardware bill.",
     metric: "4× resolution on serverless GPUs",
     image: "/work/upscale-before-after.webp",
+  },
+  {
+    category: "Automation",
+    title: "Autonomous content enrichment pipeline",
+    summary:
+      "A media library's backlog goes in one side and comes out captioned, safety-rated, de-watermarked and upscaled to HD. Crash-safe, budget-capped, and it throttles itself to the AI vendor's real rate limits. A human only ever sees the flagged exceptions.",
+    metric: "0 human touches per video · ~700 paying users",
+    nodes: ["Fetch from library", "Gemini caption + safety", "Watermark sweep", "4× HD upscale", "Publish enriched", "Exception → human"],
   },
   {
     category: "Web",

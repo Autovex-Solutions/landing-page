@@ -3,6 +3,7 @@ import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Effects from "@/components/Effects";
+import SplashScreen from "@/components/SplashScreen";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -234,6 +235,8 @@ export default function RootLayout({
             __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
           }}
         />
+
+        <SplashScreen />
 
         {children}
 

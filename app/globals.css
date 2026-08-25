@@ -56,6 +56,64 @@ html {
   transform: translateY(0);
   outline-offset: 3px;
 }
+
+/* ---------- splash screen (components/SplashScreen.tsx) ----------
+   z-index: 1000 — deliberately the highest value anywhere on the site
+   (the skip link, the next-highest, sits at 200), since this must sit
+   above literally everything on load, nav included. */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+.splash.fading {
+  opacity: 0;
+  pointer-events: none;
+}
+.splash-svg {
+  max-width: 56rem;
+  padding: 0 24px;
+}
+.splash-text {
+  fill: transparent;
+  stroke: var(--ink);
+  stroke-width: 2px;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  font-family: var(--sans);
+  animation: splash-draw 2.5s ease-in-out forwards;
+}
+.splash-text-top {
+  font-size: 80px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+.splash-text-bottom {
+  font-size: 50px;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  animation-delay: 0.5s; /* starts just after AUTOVEX */
+}
+@keyframes splash-draw {
+  0% {
+    stroke-dashoffset: 1000;
+    fill: transparent;
+  }
+  80% {
+    stroke-dashoffset: 0;
+    fill: transparent;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    fill: var(--ink);
+  }
+}
 body {
   background: var(--bg);
   color: var(--ink);

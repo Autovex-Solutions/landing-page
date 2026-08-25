@@ -1173,53 +1173,90 @@ h2 .dim {
   border-top: 1px solid var(--line);
 }
 
-/* ---------- work rail (components/FocusRail.tsx) ----------
-   Coverflow: cards absolutely centered in the stage; JS sets per-offset
-   transform/opacity/filter inline, CSS owns the easing. */
-.rail-stage {
-  --rail-step: 330px;
+/* ---------- work bento grid (components/WorkBento.tsx) ----------
+   Replaces the old 3D coverflow (FocusRail.tsx) — every case study visible
+   at once instead of one legible card behind a synced info panel. First
+   item runs as a wide "feature" card (2 of 3 columns at desktop); the
+   rest are standard cards. .rc-top/.rc-img/.rc-diagram/.rc-node/.rc-link
+   below are unchanged from the old rail — they're generic "pipeline node
+   chip or image" card innards, independent of how the card itself is
+   positioned. */
+.bento-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+@media (min-width: 720px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .bento-card.feature {
+    grid-column: 1 / -1;
+  }
+}
+@media (min-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .bento-card.feature {
+    grid-column: span 2;
+  }
+}
+.bento-card {
   position: relative;
-  height: 470px;
-  perspective: 1200px;
   overflow: hidden;
-  cursor: grab;
-  touch-action: pan-y;
-  outline: none;
-  user-select: none;
-  -webkit-user-select: none;
-}
-.rail-stage:active {
-  cursor: grabbing;
-}
-.rail-stage:focus-visible {
-  outline: 1px solid var(--accent);
-  outline-offset: 4px;
-}
-.rail-stage::before {
-  /* faint amber wash behind the center card */
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 560px;
-  height: 440px;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(50% 50% at 50% 50%, rgba(242, 163, 60, 0.06), transparent 70%);
-}
-.rail-card {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 300px;
-  aspect-ratio: 3 / 4;
-  padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 14px;
+  padding: 20px;
   background: linear-gradient(180deg, #17191d 0%, #101216 100%);
   border: 1px solid #2b2e33;
   border-top-color: rgba(242, 241, 238, 0.28);
-  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.21, 1), opacity 0.6s ease, filter 0.6s ease;
+  transition: border-color 0.25s ease;
+}
+.bento-card:hover {
+  border-color: rgba(242, 163, 60, 0.45);
+}
+/* soft amber glow, off by default — fades in on hover instead of
+   following the cursor (no mouse-tracking JS needed for a card this size) */
+.bento-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 50% 100%, rgba(242, 163, 60, 0.16), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.bento-card:hover .bento-glow {
+  opacity: 1;
+}
+.bento-card .rc-img,
+.bento-card .rc-diagram {
+  min-height: 200px;
+}
+.bento-card.feature .rc-img,
+.bento-card.feature .rc-diagram {
+  min-height: 280px;
+}
+.bento-text h3 {
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin: 0 0 8px;
+}
+.bento-card.feature .bento-text h3 {
+  font-size: clamp(22px, 2.2vw, 28px);
+}
+.bento-text p {
+  color: var(--muted);
+  margin: 0 0 12px;
+  line-height: 1.55;
+}
+.bento-card:not(.feature) .bento-text p {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .rc-top {
   display: flex;
@@ -1280,9 +1317,10 @@ h2 .dim {
   margin-left: 13px;
 }
 
-/* ---------- work rail: center card runs its pipeline ----------
+/* ---------- work bento: hovered card runs its pipeline ----------
    Nodes light amber in sequence, links fill as the job passes down.
-   Pure CSS loop, staggered per child; only the focused card animates. */
+   Pure CSS loop, staggered per child; runs on :hover instead of a
+   carousel's "center" state, since every card is visible at once here. */
 @keyframes rail-node-run {
   0%,
   12%,
@@ -1319,126 +1357,40 @@ h2 .dim {
     background: var(--accent);
   }
 }
-.rail-card.center .rc-node {
+.bento-card:hover .rc-node {
   animation: rail-node-run 5.5s ease-in-out infinite;
 }
-.rail-card.center .rc-node::before {
+.bento-card:hover .rc-node::before {
   animation: rail-node-dot 5.5s ease-in-out infinite;
 }
-.rail-card.center .rc-link {
+.bento-card:hover .rc-link {
   animation: rail-link-run 5.5s ease-in-out infinite;
 }
-.rail-card.center .rc-diagram > :nth-child(2) { animation-delay: 0.35s; }
-.rail-card.center .rc-diagram > :nth-child(2)::before { animation-delay: 0.35s; }
-.rail-card.center .rc-diagram > :nth-child(3) { animation-delay: 0.7s; }
-.rail-card.center .rc-diagram > :nth-child(3)::before { animation-delay: 0.7s; }
-.rail-card.center .rc-diagram > :nth-child(4) { animation-delay: 1.05s; }
-.rail-card.center .rc-diagram > :nth-child(4)::before { animation-delay: 1.05s; }
-.rail-card.center .rc-diagram > :nth-child(5) { animation-delay: 1.4s; }
-.rail-card.center .rc-diagram > :nth-child(5)::before { animation-delay: 1.4s; }
-.rail-card.center .rc-diagram > :nth-child(6) { animation-delay: 1.75s; }
-.rail-card.center .rc-diagram > :nth-child(6)::before { animation-delay: 1.75s; }
-.rail-card.center .rc-diagram > :nth-child(7) { animation-delay: 2.1s; }
-.rail-card.center .rc-diagram > :nth-child(7)::before { animation-delay: 2.1s; }
-.rail-card.center .rc-diagram > :nth-child(8) { animation-delay: 2.45s; }
-.rail-card.center .rc-diagram > :nth-child(8)::before { animation-delay: 2.45s; }
-.rail-card.center .rc-diagram > :nth-child(9) { animation-delay: 2.8s; }
-.rail-card.center .rc-diagram > :nth-child(9)::before { animation-delay: 2.8s; }
-.rail-card.center .rc-diagram > :nth-child(10) { animation-delay: 3.15s; }
-.rail-card.center .rc-diagram > :nth-child(10)::before { animation-delay: 3.15s; }
-.rail-card.center .rc-diagram > :nth-child(11) { animation-delay: 3.5s; }
-.rail-card.center .rc-diagram > :nth-child(11)::before { animation-delay: 3.5s; }
+.bento-card:hover .rc-diagram > :nth-child(2) { animation-delay: 0.35s; }
+.bento-card:hover .rc-diagram > :nth-child(2)::before { animation-delay: 0.35s; }
+.bento-card:hover .rc-diagram > :nth-child(3) { animation-delay: 0.7s; }
+.bento-card:hover .rc-diagram > :nth-child(3)::before { animation-delay: 0.7s; }
+.bento-card:hover .rc-diagram > :nth-child(4) { animation-delay: 1.05s; }
+.bento-card:hover .rc-diagram > :nth-child(4)::before { animation-delay: 1.05s; }
+.bento-card:hover .rc-diagram > :nth-child(5) { animation-delay: 1.4s; }
+.bento-card:hover .rc-diagram > :nth-child(5)::before { animation-delay: 1.4s; }
+.bento-card:hover .rc-diagram > :nth-child(6) { animation-delay: 1.75s; }
+.bento-card:hover .rc-diagram > :nth-child(6)::before { animation-delay: 1.75s; }
+.bento-card:hover .rc-diagram > :nth-child(7) { animation-delay: 2.1s; }
+.bento-card:hover .rc-diagram > :nth-child(7)::before { animation-delay: 2.1s; }
+.bento-card:hover .rc-diagram > :nth-child(8) { animation-delay: 2.45s; }
+.bento-card:hover .rc-diagram > :nth-child(8)::before { animation-delay: 2.45s; }
+.bento-card:hover .rc-diagram > :nth-child(9) { animation-delay: 2.8s; }
+.bento-card:hover .rc-diagram > :nth-child(9)::before { animation-delay: 2.8s; }
+.bento-card:hover .rc-diagram > :nth-child(10) { animation-delay: 3.15s; }
+.bento-card:hover .rc-diagram > :nth-child(10)::before { animation-delay: 3.15s; }
+.bento-card:hover .rc-diagram > :nth-child(11) { animation-delay: 3.5s; }
+.bento-card:hover .rc-diagram > :nth-child(11)::before { animation-delay: 3.5s; }
 @media (prefers-reduced-motion: reduce) {
-  .rail-card.center .rc-node,
-  .rail-card.center .rc-node::before,
-  .rail-card.center .rc-link {
+  .bento-card:hover .rc-node,
+  .bento-card:hover .rc-node::before,
+  .bento-card:hover .rc-link {
     animation: none;
-  }
-}
-.rail-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 24px;
-  margin-top: 18px;
-}
-.rail-info-text {
-  max-width: 52ch;
-  min-height: 150px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  animation: rail-in 0.35s ease both;
-}
-@keyframes rail-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-    filter: blur(4px);
-  }
-}
-.rail-cat {
-  color: var(--accent);
-  font-size: 13px;
-}
-.rail-info-text h3 {
-  font-size: clamp(22px, 2.6vw, 30px);
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  margin: 0;
-}
-.rail-info-text p {
-  color: var(--muted);
-  margin: 0;
-}
-.rail-info-text .case-metric {
-  border-top: 0;
-  padding-top: 2px;
-}
-.rail-ctrl {
-  display: flex;
-  align-items: center;
-  flex: none;
-  color: var(--faint);
-}
-.rail-ctrl span {
-  min-width: 56px;
-  text-align: center;
-  font-size: 14px;
-}
-.rail-ctrl button {
-  width: 44px;
-  height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--mono);
-  font-size: 14px;
-  background: rgba(242, 241, 238, 0.07);
-  border: 1px solid rgba(242, 163, 60, 0.4);
-  color: var(--ink);
-  cursor: pointer;
-  transition: background 0.18s ease, border-color 0.18s ease;
-}
-.rail-ctrl button:hover {
-  background: rgba(242, 241, 238, 0.13);
-  border-color: rgba(242, 163, 60, 0.7);
-}
-@media (max-width: 720px) {
-  /* at 230px the neighbours never clear the 250px centre card and smear across it */
-  .rail-stage {
-    --rail-step: 300px;
-    height: 380px;
-  }
-  .rail-card {
-    width: 250px;
-  }
-  .rail-info {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .rail-info-text {
-    min-height: 0;
   }
 }
 
@@ -1976,20 +1928,12 @@ a[href^="tel:"] {
     transform: none;
     transition: none;
   }
-  .node,
-  .sk .link,
-  .sk-total {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
   .tools-track,
   .tile,
-  .rail-info-text,
   .site-nav.open .nav-sheet {
     animation: none;
   }
-  .rail-card,
+  .bento-card,
   .site-nav nav,
   .brand img,
   .nav-burger span {

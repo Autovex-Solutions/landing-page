@@ -5,10 +5,10 @@ import CtaIconField from "@/components/CtaIconField";
 import FeatureGrid from "@/components/FeatureGrid";
 import FlowField from "@/components/FlowField";
 import HeroMachine from "@/components/HeroMachine";
-import FocusRail from "@/components/FocusRail";
 import OrbAnimation from "@/components/OrbAnimation";
 import ServicesAccordion from "@/components/ServicesAccordion";
 import ToolMarquee from "@/components/ToolMarquee";
+import WorkBento from "@/components/WorkBento";
 
 
 /* Each word gets its own masked span so it can rise independently. The space between
@@ -107,8 +107,9 @@ export function Services() {
   );
 }
 
-/* Case-study rail — coverflow of pipeline-diagram cards (FocusRail.tsx).
-   Renders nothing while workItems is empty (nav link hides too). */
+/* Case-study bento grid (WorkBento.tsx) — every project visible at once,
+   asymmetric layout, feature card first. Renders nothing while workItems
+   is empty (nav link hides too). */
 export function Projects() {
   if (workItems.length === 0) return null;
   return (
@@ -123,7 +124,7 @@ export function Projects() {
         </h2>
       </div>
       <div className="section-body reveal">
-        <FocusRail items={workItems} />
+        <WorkBento items={workItems} />
       </div>
     </section>
   );

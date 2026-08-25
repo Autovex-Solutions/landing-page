@@ -6,10 +6,15 @@ const INK = "242, 241, 238";
 const AMBER = "242, 163, 60";
 
 // Hand-placed pipeline (x/y are fractions of the canvas). Kept to the upper
-// right so the headline area stays clean.
+// right so the headline area stays clean — measured against the actual
+// rendered h1 box (getBoundingClientRect at 1440x900: right edge lands at
+// ~0.64 of viewport width, bottom at ~0.54 of height), not eyeballed.
+// WEBHOOK and PARSE originally sat inside/right against that box (WEBHOOK
+// at 0.4/0.46 landed dead center of the word "Impact."); moved both clear
+// of it with real margin instead of just outside the measured edge.
 const NODES = [
-  { label: "WEBHOOK", x: 0.4, y: 0.46 },
-  { label: "PARSE", x: 0.52, y: 0.3 },
+  { label: "WEBHOOK", x: 0.68, y: 0.63 },
+  { label: "PARSE", x: 0.52, y: 0.2 },
   { label: "SCORE", x: 0.55, y: 0.58 },
   { label: "AI DRAFT", x: 0.66, y: 0.2 },
   { label: "CRM SYNC", x: 0.71, y: 0.44 },

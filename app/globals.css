@@ -979,12 +979,13 @@ h2 .dim {
    explicit request, rather than showing the same pitch twice as the
    visitor scrolls.
 
-   The video is a fixed-height zone pinned to the section's top (one
-   screen), not stretched across the section's full height. Once the
-   sketch tool is included the section runs well past 100svh, and
-   object-fit: cover on a video stretched to a 2000px+ box would look badly
-   over-zoomed — better to let it read as a banner the heading sits over,
-   with the tool below on the section's own solid background. */
+   The video now covers the section's full height (was a fixed 100svh zone
+   pinned to the top) — safe to do now that the sketch tool renders as its
+   normal, much-shorter side-by-side layout (see the container-query fix
+   below) rather than the tall stacked fallback the first pass forced it
+   into; a section that's closer to one screen tall doesn't stretch/zoom
+   the video nearly as far as the original, much-taller, all-stacked
+   version would have. */
 .mg-banner {
   position: relative;
 }
@@ -993,11 +994,8 @@ h2 .dim {
    content automatically, no z-index needed on .section-head itself. */
 .mg-banner-video-wrap {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  inset: 0;
   z-index: -1;
-  height: 100svh;
   overflow: hidden;
   background: var(--bg);
 }
@@ -1007,46 +1005,53 @@ h2 .dim {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* pushed further right than a typical centered crop — the right half of
-     the section is a deliberately empty grid column (see .mg-banner-grid)
-     so the subject should sit inside that visible window, not behind the
-     content column on the left */
+  /* pushed further right than a typical centered crop — the columns to
+     the right of the content span (see .mg-banner-grid) are a
+     deliberately empty grid track so the subject should sit inside that
+     visible window, not behind the content column on the left */
   object-position: 80% center;
   pointer-events: none;
 }
 .mg-banner-video-wrap::after {
-  /* scrim so the heading stays readable over the video, fading to solid
-     var(--bg) at the bottom so the tool below reads as "on the page", not
-     "on the video" */
+  /* scrim so the heading stays readable over the video */
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(11, 12, 14, 0.25) 0%, rgba(11, 12, 14, 0.6) 55%, var(--bg) 100%);
+  background: linear-gradient(180deg, rgba(11, 12, 14, 0.25) 0%, rgba(11, 12, 14, 0.55) 55%, rgba(11, 12, 14, 0.75) 100%);
   pointer-events: none;
 }
 
-/* split-screen content grid: left column = all text/tool, right column
-   deliberately left empty so the video subject shows through unobstructed.
-   Below 1024px this is just a normal stacked column (no video is even
-   mounted there — see the component's BREAKPOINT). */
+/* split-screen content grid: 12 columns, content spans the first 7
+   (~58%), the remaining 5 columns are deliberately left empty so the
+   video subject shows through unobstructed. Wider max-width than the
+   site's usual 1200px content cap specifically so column 1-7 has enough
+   real pixels for the sketch tool's own side-by-side form/diagram split
+   to render without cramming (that's the actual fix for the squishing —
+   the container query below is what makes it safe at any width, this is
+   what makes "safe" also "comfortable" at typical desktop sizes). Below
+   1024px this is just a normal stacked column (no video is even mounted
+   there — see the component's BREAKPOINT). */
 .mg-banner-grid {
   position: relative;
   z-index: 1;
-  max-width: 1200px;
+  max-width: 90rem;
   margin: 0 auto;
   padding: clamp(72px, 10vw, 130px) var(--pad);
 }
 @media (min-width: 1024px) {
   .mg-banner-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(12, 1fr);
     align-items: start;
     gap: 40px;
     min-height: 100svh;
   }
+  .mg-banner-content {
+    grid-column: span 8;
+  }
 }
 /* .section-head/.section-body normally center themselves at up to 1200px —
-   here they're already inside a grid column roughly half that, so their
+   here they're already inside a grid column narrower than that, so their
    own centering would just be a no-op at best and fight the column at
    worst. Drop it in favor of simply filling the column. */
 .mg-banner-content .section-head {
@@ -1058,12 +1063,25 @@ h2 .dim {
   margin: 0;
 }
 /* .sketch-body's own form/diagram side-by-side split is a viewport media
-   query (min-width: 861px shows two columns) — it has no way to know it's
-   being squeezed into a ~560px grid column here rather than the ~1200px
-   it was designed for, so left to itself it'd cram both sides. Force it
-   stacked whenever it's rendered in this narrower context instead. */
-.mg-banner-content .sketch-body {
-  grid-template-columns: 1fr;
+   query (min-width: 861px shows two columns) — it has no way to know how
+   much width its actual container has, whether that's the ~1200px it was
+   designed for, or the narrower grid column here. A container query is the
+   correct tool for "adapt to available space, not viewport" —
+   .mg-banner-content becomes the query container, and .sketch-body reads
+   its width instead of the window's, stacking only when it's actually
+   tight regardless of how wide the browser happens to be.
+   Threshold measured, not guessed: at a common 1440px viewport the
+   col-span-8 column renders ~745px — comfortably clears this, so the
+   sketch panel gets its real two-column layout there; only right at the
+   1024px activation floor does the column (~600px) actually need to fall
+   back to stacked. */
+.mg-banner-content {
+  container-type: inline-size;
+}
+@container (max-width: 620px) {
+  .mg-banner-content .sketch-body {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* pipeline sketcher — full-width panel, form left, live diagram right */

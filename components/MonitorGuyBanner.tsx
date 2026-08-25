@@ -1,43 +1,25 @@
 "use client";
 
-// Full-screen mouse-scrub video banner, now doubling as the Teardown
-// section itself (id="teardown") — the pitch/heading/body and the
-// interactive pipeline-sketch tool that used to live in their own section
-// above this one now live here, per explicit request to consolidate rather
-// than show the same pitch twice in a row as the visitor scrolls. The small
-// contained video panel that used to sit beside that old section's heading
-// (MonitorGuyBackground.tsx) is retired along with it — this section's own
-// full-screen video already carries that job.
-//
-// The video is a fixed-height zone pinned to the top of the section
-// (roughly one screen), not stretched across the section's full height —
-// the section is now much taller once the sketch tool is included, and a
-// video stretched to fill 2000px+ via object-fit: cover would look badly
-// over-zoomed. Heading sits over the video zone; the tool sits on the
-// section's own solid background once you scroll past it.
-//
-// Content is confined to the left half of a two-column grid at >=1024px
-// (.mg-banner-grid), not the shared .section-head/.section-body's usual
-// full-width centering — those would let the pipeline-sketch panel span
-// nearly the whole screen and cover the video subject, who sits on the
-// right. The right column is left with no content on purpose: an empty
-// grid track, not an occlusion, so the subject shows through.
+// Two stacked sections that used to be one (see git history for the merged
+// version). The full-bleed mouse-scrub video stays here, one screen tall,
+// carrying a short pitch (.mg-hero) — the "send us your worst workflow"
+// teardown pitch + lead-capture card live in their own section right below
+// it (.mg-workflow, id="teardown"), on solid background with no video
+// behind it. The interactive pipeline-sketch demo that used to sit there
+// (TeardownSketch.tsx) was deleted; TeardownCard is now used at every width.
 import { useEffect, useRef, useState } from "react";
-import { teardown } from "@/content";
+import { monitorGuyHero, teardown } from "@/content";
 import { Rise } from "@/components/sections";
 import TeardownCard from "@/components/TeardownCard";
-import TeardownSketch from "@/components/TeardownSketch";
 
 const SENSITIVITY = 0.8;
-// matches .mg-banner-grid's own breakpoint — below this the layout is a
-// single stacked column covering the video anyway, so there's no point
-// fetching/mounting it
+// below this the hero is a single stacked column covering the video anyway,
+// so there's no point fetching/mounting it
 const BREAKPOINT = "(min-width: 1024px)";
 
 export default function MonitorGuyBanner() {
   const [wide, setWide] = useState(false);
   const [inView, setInView] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -48,8 +30,8 @@ export default function MonitorGuyBanner() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
-  // pause the (window-level) scrub listener while the video zone is
-  // scrolled out of view — same reasoning HeroMachine's canvas loop follows
+  // pause the (window-level) scrub listener while the video is scrolled
+  // out of view — same reasoning HeroMachine's canvas loop follows
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !wide) return;
@@ -101,23 +83,32 @@ export default function MonitorGuyBanner() {
   }, [wide, inView]);
 
   return (
-    <section id="teardown" className="mg-banner">
-      <div className="mg-banner-video-wrap">
-        {wide && (
-          <video
-            ref={videoRef}
-            src="/monitor-guy.mp4"
-            muted
-            playsInline
-            preload="auto"
-            aria-hidden="true"
-            className="mg-banner-video"
-          />
-        )}
-      </div>
+    <>
+      <section className="mg-hero">
+        <div className="mg-hero-video-wrap">
+          {wide && (
+            <video
+              ref={videoRef}
+              src="/monitor-guy.mp4"
+              muted
+              playsInline
+              preload="auto"
+              aria-hidden="true"
+              className="mg-hero-video"
+            />
+          )}
+        </div>
 
-      <div className="mg-banner-grid">
-        <div className="mg-banner-content">
+        <div className="mg-hero-content reveal">
+          <h2 className="rise mg-hero-heading">
+            <Rise text={monitorGuyHero.heading} />
+          </h2>
+          <p className="mg-hero-subtext">{monitorGuyHero.subtext}</p>
+        </div>
+      </section>
+
+      <section id="teardown" className="mg-workflow">
+        <div className="mg-workflow-grid">
           <div className="section-head reveal">
             <p className="mono eyebrow">{teardown.eyebrow}</p>
             <h2 className="rise">
@@ -126,27 +117,14 @@ export default function MonitorGuyBanner() {
                 <Rise text={teardown.headingDim} offset={4} />
               </span>
             </h2>
-            {/* Desktop's lede describes the self-running demo loop; mobile
-                has no loop/live-typing to describe, so it gets its own
-                accurate copy. */}
-            <p className="lede desktop-only">{teardown.body}</p>
-            <p className="lede mobile-only">{teardown.bodyMobile}</p>
+            <p className="lede">{teardown.body}</p>
           </div>
 
-          <div className="desktop-only">
-            <div className="section-body reveal">
-              <TeardownSketch />
-            </div>
-          </div>
-
-          <div className="mobile-only">
-            <div className="section-body">
-              <TeardownCard />
-            </div>
+          <div className="section-body">
+            <TeardownCard />
           </div>
         </div>
-        {/* right column intentionally left empty — see file header comment */}
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

@@ -1,6 +1,7 @@
-// Keyword-heuristic pipeline sketch builder — shared between the desktop
-// self-running demo (components/TeardownSketch.tsx) and the mobile lead
-// capture card (components/TeardownCard.tsx), so the two can't drift.
+// Keyword-heuristic pipeline sketch builder, used by the teardown lead
+// capture card (components/TeardownCard.tsx). Used to also back the
+// desktop self-running demo (TeardownSketch.tsx, deleted) so the two
+// couldn't drift.
 // Fully client-side; the real LLM-backed engine is PLAN_pipeline-engine.md.
 
 export type SkNode = { label: string; kind: "trigger" | "step" | "done" };

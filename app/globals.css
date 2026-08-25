@@ -972,68 +972,39 @@ h2 .dim {
   font-size: 18px;
 }
 
-/* ---------- monitor guy banner (components/MonitorGuyBanner.tsx) ----------
-   This is now the Teardown section itself (id="teardown") — the pitch/tool
-   that used to live in its own section, plus the small side video panel
-   that used to sit beside its heading, are both retired/folded in here per
-   explicit request, rather than showing the same pitch twice as the
-   visitor scrolls.
-
-   The video now covers the section's full height (was a fixed 100svh zone
-   pinned to the top) — safe to do now that the sketch tool renders as its
-   normal, much-shorter side-by-side layout (see the container-query fix
-   below) rather than the tall stacked fallback the first pass forced it
-   into; a section that's closer to one screen tall doesn't stretch/zoom
-   the video nearly as far as the original, much-taller, all-stacked
-   version would have. */
-.mg-banner {
+/* ---------- monitor guy hero (components/MonitorGuyBanner.tsx) ----------
+   Full-bleed mouse-scrub video, one screen tall, with a short left-aligned
+   pitch over it. This used to be one section shared with the pipeline
+   sketch below (.mg-workflow) — that meant the video's box had to fit
+   both the heading AND the sketch panel, and every fix for the panel
+   crowding the subject fought the video's own sizing (see git history).
+   Split in two: this section only ever has to fit a couple of short
+   lines over the video, and the workflow section below has no video
+   behind it at all, so there's nothing left for the sketch panel to
+   overlap. */
+.mg-hero {
   position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
 }
-/* z-index: -1, same pattern as .machine (HeroMachine) — the heading is
-   normal in-flow content and paints above negative-z-index positioned
-   content automatically, no z-index needed on .section-head itself.
-   Height is 100svh, NOT inset:0/100% matching the section — the section's
-   own height is driven by its content (heading + the sketch panel below
-   it), and tying the video to that dynamic height created a feedback
-   loop: pushing the panel down with more margin also grew the section,
-   which grew the video's object-fit: cover box by the same amount,
-   rescaling the subject down by nearly the same fraction — so the two
-   stayed almost exactly as close together no matter how much margin was
-   added (confirmed by measuring the subject's on-screen position before
-   and after a 100px+ margin change and finding the gap barely moved).
-   Fixing the panel's position relative to the subject requires the
-   subject's position to actually hold still while the panel moves, hence
-   a height independent of the section's own. Background matches --bg
-   exactly (#0b0c0e) so where the section extends taller than one screen
-   (whenever the panel is tall), the seam below the video is invisible —
-   the scrim below already fades toward that same color at its bottom. */
-.mg-banner-video-wrap {
+.mg-hero-video-wrap {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100svh;
+  inset: 0;
   z-index: -1;
   overflow: hidden;
-  background: var(--bg);
+  background: var(--bg); /* mobile fallback — video isn't mounted below 1024px */
 }
-.mg-banner-video {
+.mg-hero-video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* pushed all the way to the frame's right edge, not just a typical
-     centered crop — the columns to the right of the content span (see
-     .mg-banner-grid) are a deliberately empty grid track so the subject
-     should sit inside that visible window, not behind the content column
-     on the left. 80% and then 90% both still read as too close to the
-     panel in review; there's no reason to hold back short of 100% since
-     object-fit: cover is already cropping the frame regardless. */
-  object-position: 100% center;
+  object-position: 80% center;
   pointer-events: none;
 }
-.mg-banner-video-wrap::after {
+.mg-hero-video-wrap::after {
   /* scrim so the heading stays readable over the video */
   content: "";
   position: absolute;
@@ -1041,267 +1012,69 @@ h2 .dim {
   background: linear-gradient(180deg, rgba(11, 12, 14, 0.25) 0%, rgba(11, 12, 14, 0.55) 55%, rgba(11, 12, 14, 0.75) 100%);
   pointer-events: none;
 }
-
-/* split-screen content grid: 12 columns, content spans the first 8
-   (~67%), the remaining 4 columns are deliberately left empty so the
-   video subject shows through unobstructed. Wider max-width than the
-   site's usual 1200px content cap specifically so column 1-7 has enough
-   real pixels for the sketch tool's own side-by-side form/diagram split
-   to render without cramming (that's the actual fix for the squishing —
-   the container query below is what makes it safe at any width, this is
-   what makes "safe" also "comfortable" at typical desktop sizes). Below
-   1024px this is just a normal stacked column (no video is even mounted
-   there — see the component's BREAKPOINT). */
-.mg-banner-grid {
+.mg-hero-content {
   position: relative;
   z-index: 1;
-  max-width: 90rem;
-  margin: 0 auto;
-  padding: clamp(72px, 10vw, 130px) var(--pad);
+  max-width: 48rem;
+  padding: 0 var(--pad);
 }
-@media (min-width: 1024px) {
-  .mg-banner-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    align-items: start;
-    gap: 40px;
-    min-height: 100svh;
-  }
-  .mg-banner-content {
-    grid-column: span 8;
-    /* extra dead space as a buffer against the subject, on top of the 4
-       empty grid columns already reserved to their right — kept the
-       column itself at span 8 rather than narrowing it, since a
-       narrower span (e.g. 7) was measured last round to drop the
-       column below the width .sketch-body's container query needs to
-       stay two-column, re-breaking the exact squish this was fixed for */
-    padding-right: clamp(20px, 3vw, 48px);
-  }
-}
-/* .section-head/.section-body normally center themselves at up to 1200px —
-   here they're already inside a grid column narrower than that, so their
-   own centering would just be a no-op at best and fight the column at
-   worst. Drop it in favor of simply filling the column.
-   Slightly more bottom margin than the shared clamp(36px,5vw,64px) other
-   sections use — modest breathing room now that the video-wrap above is
-   height: 100svh (decoupled from this section's own height), not tied to
-   it, so the subject's on-screen position no longer shifts when this
-   margin changes; a small fixed buffer is enough, not the much larger
-   margin an earlier pass needed to fight that coupling. */
-.mg-banner-content .section-head {
-  max-width: none;
-  margin: 0 0 clamp(48px, 6vw, 86px);
-}
-.mg-banner-content .section-body {
+.mg-hero-heading {
+  font-size: clamp(38px, 6vw, 64px);
+  font-weight: 700;
+  color: #fff;
   max-width: none;
   margin: 0;
 }
-/* Caps the panel itself well short of the column's own width and anchors
-   it left (margin-right, not both sides) — a second, independent line of
-   defense against the video subject that holds regardless of exactly how
-   wide the column ends up being at a given viewport, rather than relying
-   on getting the column width precisely right. 42rem (672px) gives real
-   separation from the video subject on the right — narrower than the
-   first pass (48rem) after the subject still read as too close to the
-   panel's top-right corner at 1440px.
-   The container query below reads *this element's* own rendered width,
-   not .mg-banner-content's — that matters now that the panel is capped
-   independently of the column: querying the wider outer column would
-   always clear the threshold regardless of how narrow .sketch itself
-   renders, silently defeating the whole point of capping it. */
-.mg-banner-content .sketch {
-  max-width: 42rem;
-  margin-right: auto;
-  container-type: inline-size;
-}
-/* .sketch-body's own form/diagram side-by-side split is a viewport media
-   query (min-width: 861px shows two columns) — it has no way to know how
-   much width its actual container has, whether that's the ~1200px it was
-   designed for, or the narrower, now explicitly-capped panel here. A
-   container query is the correct tool for "adapt to available space, not
-   viewport" — .sketch (not its outer grid column) is the query container,
-   so .sketch-body reads the panel's own true rendered width and stacks
-   only when *that* is actually tight, regardless of how wide the browser
-   or the grid column happen to be.
-   Threshold measured, not guessed: the panel renders at its 672px cap
-   everywhere the column has room for it (from the 1024px grid-activation
-   floor upward), comfortably above 620px, so it keeps its real two-column
-   layout; only if the column itself ever gets narrower than 620px would
-   .sketch fall back to that width and need to stack. */
-@container (max-width: 620px) {
-  .sketch-body {
-    grid-template-columns: 1fr;
-  }
+.mg-hero-subtext {
+  color: var(--muted);
+  max-width: 46ch;
+  margin: 24px 0 0;
+  font-size: 20px;
 }
 
-/* pipeline sketcher — full-width panel, form left, live diagram right */
-.sketch {
-  background: var(--panel);
-  border: 1px solid rgba(242, 163, 60, 0.3);
-}
-.sketch-bar {
+/* ---------- workflow + pipeline sketch (same file) ----------
+   Its own section, own solid background — no video behind it, so unlike
+   the old combined layout the sketch panel never needs capping away from
+   a subject; it just fills its grid column. */
+.mg-workflow {
+  background: var(--bg);
+  min-height: 100svh;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 12px 18px;
-  border-bottom: 1px solid var(--line);
-  color: var(--muted);
+  padding: clamp(64px, 10vw, 96px) var(--pad);
 }
-.sketch-bar .sample-chip {
-  position: static;
-}
-.sketch-body {
-  padding: clamp(20px, 3vw, 36px);
+.mg-workflow-grid {
+  width: 100%;
+  max-width: 90rem;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1.15fr;
-  gap: clamp(24px, 3.5vw, 52px);
-  align-items: start;
-}
-@media (max-width: 860px) {
-  .sketch-body {
-    grid-template-columns: 1fr;
-  }
-}
-.sk-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.sk-form label {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--faint);
-}
-.sk-form textarea {
-  background: var(--panel-2);
-  border: 1px solid var(--line);
-  color: var(--ink);
-  padding: 12px 14px;
-  font-family: var(--sans);
-  font-size: 15px;
-  line-height: 1.5;
-  resize: vertical;
-  min-height: 130px;
-}
-.sk-form textarea::placeholder {
-  color: var(--faint);
-}
-.sk-form textarea:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: -1px;
-}
-/* Safari zooms into any field it focuses below 16px and never zooms back out —
-   on the one lead-capture input on the page. */
-@media (max-width: 720px) {
-  .sk-form textarea {
-    font-size: 16px;
-  }
-}
-.sk-run {
-  align-self: flex-start;
-  cursor: pointer;
-}
-.node {
-  display: flex;
+  grid-template-columns: 1fr;
+  gap: 48px;
   align-items: center;
-  gap: 10px;
-  font-family: var(--mono);
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  padding: 13px 16px;
-  background: #1b1d22;
-  border: 1px solid #2b2e33;
-  color: var(--ink);
-  width: fit-content;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
 }
-.node::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--faint);
-  flex: none;
+@media (min-width: 1024px) {
+  .mg-workflow-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(48px, 6vw, 80px);
+  }
 }
-.node.n-trigger::before,
-.node.n-done::before {
-  background: var(--accent);
+/* .section-head/.section-body normally center themselves at up to 1200px —
+   here they're already inside a grid column, so that centering would just
+   be a no-op at best and fight the column at worst. */
+.mg-workflow-grid .section-head {
+  max-width: none;
+  margin: 0;
 }
-.node.n-done {
-  border-color: rgba(242, 163, 60, 0.38);
+.mg-workflow-grid .section-body {
+  max-width: none;
+  margin: 0;
 }
-.node small {
-  color: var(--faint);
-  font-size: 11px;
-}
-.sk {
-  min-height: 360px; /* tallest demo — keeps the panel from jumping between runs */
-}
-.sk .fork {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.sk .link {
-  display: block;
-  width: 1px;
-  height: 18px;
-  background: var(--line);
-  margin-left: 19px;
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.25s ease;
-}
-.sk.in .node {
-  opacity: 1;
-  transform: none;
-}
-.sk.in .link {
-  transform: none;
-}
-.sk-total {
-  margin-top: 20px;
-  padding-top: 14px;
-  border-top: 1px solid var(--line);
-  font-family: var(--mono);
-  font-size: 12.5px;
-  letter-spacing: 0.04em;
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  color: var(--muted);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-.sk.in .sk-total {
-  opacity: 1;
-}
-.sk-total b {
-  color: var(--accent);
-  font-weight: 500;
-}
-.sk-note {
-  margin: 22px 0 0;
-  color: var(--faint);
-  font-size: 14px;
-}
-.sk-note a {
-  color: var(--muted);
-  border-bottom: 1px solid var(--line);
-}
-.sk-note a:hover {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-}
-
-/* ---------- teardown card (components/TeardownCard.tsx, mobile only) ----------
+/* ---------- teardown card (components/TeardownCard.tsx) ----------
    Same rounded-card language as .acc-item (Services accordion) for visual
-   consistency across the mobile-redesigned sections; desktop's .sketch panel
-   is untouched. */
+   consistency. Used at every width now — the desktop-only interactive
+   pipeline-sketch panel (.sketch, .sk- prefixed classes, .node,
+   TeardownSketch.tsx) was deleted; this card is the whole teardown
+   lead-capture experience. */
 .td-card {
   background: var(--panel);
   border: 1px solid rgba(242, 163, 60, 0.3);

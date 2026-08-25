@@ -20,12 +20,13 @@ export const contact = {
 export const servicesIntro =
   "We are your full-stack engineering partners, translating initial visions into market-leading digital products. Our holistic approach integrates strategic planning, user-centric design, and robust development to deliver end-to-end solutions that are built to scale and succeed.";
 
-// Full-screen interlude between Teardown and Process (components/MonitorGuyBanner.tsx).
-// The supplied brief was for a different company ("Mainframe" / an AI persona
-// called "A.R.I.A."), so this is Autovex-true copy in the same two-line,
-// blurred-label shape.
-export const banner = {
-  label: ["Hey there — you've made it this far.", "Let's skip the deck and just start building."],
+// Monitor-guy hero section (components/MonitorGuyBanner.tsx) — short pitch
+// over the full-bleed mouse-scrub video. Kept separate from `teardown`
+// below: this is a brief, scroll-through moment, not the lead-capture pitch.
+export const monitorGuyHero = {
+  heading: "Intelligent systems for ambitious workflows.",
+  subtext:
+    "Autovex Solutions engineers automated pipelines so your team can focus on what actually matters.",
 };
 
 // Tool logos/names for the hero marquee live in components/ToolMarquee.tsx
@@ -117,17 +118,12 @@ export const workItems: WorkItem[] = [
   },
 ];
 
-// The free-teardown offer + the interactive pipeline sketcher next to it.
+// The free-teardown offer + its lead-capture card (TeardownCard.tsx).
 export const teardown = {
   eyebrow: "Free teardown",
   heading: "Send us your worst workflow.",
   headingDim: "We'll show you the math.",
-  body: "The panel below is sketching real workflows on a loop, the busywork, then the pipeline that replaces it. Click in, type yours, and watch it redraw. The engineered version, with your real numbers, lands in your inbox within 48 hours.",
-  // Mobile skips the self-running demo loop entirely (no live typing to
-  // describe), so it gets its own shorter, accurate copy instead of
-  // describing an animation that isn't there.
-  bodyMobile:
-    "Describe your worst workflow below and get an instant estimate of the hours it's costing you. The engineered version, with your real numbers, lands in your inbox within 48 hours.",
+  body: "Describe your worst workflow below and get an instant estimate of the hours it's costing you. The engineered version, with your real numbers, lands in your inbox within 48 hours.",
   placeholder:
     "e.g. Every order lands in our inbox as a PDF, we retype it into the CRM, invoice it in QuickBooks, then chase the driver on WhatsApp…",
   sample:

@@ -1,10 +1,10 @@
 "use client";
 
-// Mobile-only lead-capture card for the Teardown section (< 768px — see
-// .mobile-only in globals.css). Desktop keeps the self-running live-typing
-// demo + animated pipeline sketch in TeardownSketch.tsx untouched; that's a
-// lot of vertical real estate for a phone, so this trades the diagram for a
-// single instant number, using the exact same heuristic engine underneath.
+// Lead-capture card for the Teardown section, used at every width
+// (components/MonitorGuyBanner.tsx). Used to be mobile-only, trading the
+// interactive pipeline-sketch demo's diagram for a single instant number —
+// that desktop demo (TeardownSketch.tsx) was deleted, so this card is now
+// the whole teardown experience, still built on the same heuristic engine.
 
 import { useState, type FormEvent } from "react";
 import { motion, useReducedMotion } from "framer-motion";

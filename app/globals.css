@@ -93,11 +93,16 @@ html {
 }
 .splash-text {
   fill: transparent;
-  stroke: var(--ink);
+  /* amber outline traces in first (same accent used for every other
+     border/glow on the site), then resolves to a solid ink-white fill —
+     same "amber edge, white content" language as .sketch/.footer-socials
+     borders elsewhere, not a one-off color choice. */
+  stroke: var(--accent);
   stroke-width: 2px;
   stroke-dasharray: 1000;
   stroke-dashoffset: 1000;
   font-family: var(--sans);
+  filter: drop-shadow(0 0 10px rgba(242, 163, 60, 0.45));
   animation: splash-draw 2.5s ease-in-out forwards;
 }
 .splash-text-top {
@@ -2181,6 +2186,18 @@ opacity:.55;
   white-space: nowrap;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   cursor: pointer;
+  animation: robot-greeting-in 0.4s ease 0.3s both;
+}
+@keyframes robot-greeting-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .robot-greeting {
+    animation: none;
+  }
 }
 @media (max-width: 480px) {
   .robot-greeting {
@@ -2203,10 +2220,36 @@ opacity:.55;
   cursor: pointer;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
   transition: background 0.18s ease, transform 0.18s ease;
+  animation: robot-launcher-bounce 4.5s ease-in-out infinite;
 }
 .robot-launcher:hover {
+  /* pause the idle bounce on hover so it doesn't fight the hover
+     scale — both animate transform, and the keyframe would otherwise
+     keep overriding the hover value every frame */
+  animation-play-state: paused;
   background: var(--accent-bright);
   transform: scale(1.05);
+}
+@keyframes robot-launcher-bounce {
+  0%,
+  55%,
+  100% {
+    transform: translateY(0);
+  }
+  15% {
+    transform: translateY(-10px);
+  }
+  30% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .robot-launcher {
+    animation: none;
+  }
 }
 
 .robot-widget {

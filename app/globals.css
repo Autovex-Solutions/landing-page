@@ -1230,11 +1230,25 @@ h2 .dim {
 .bento-card:hover .bento-glow {
   opacity: 1;
 }
-.bento-card .rc-img,
+/* .rc-img needs a real height, not min-height — and flex: none to
+   actually get it: the base .rc-img rule below sets flex: 1 1 0%, and
+   with a non-auto flex-basis the flexbox algorithm (not the height
+   property) decides the item's main-axis size, so a plain "height: 200px"
+   here was silently ignored in favor of the image's natural aspect ratio
+   stretched to the card's width — at the wide 2-column feature card that
+   meant a ~990px-wide, ~1300px-tall image dwarfing every other card.
+   flex: none opts this element back out of that algorithm so the height
+   below actually applies, and object-fit: cover crops to it. */
+.bento-card .rc-img {
+  flex: none;
+  height: 200px;
+}
+.bento-card.feature .rc-img {
+  height: 280px;
+}
 .bento-card .rc-diagram {
   min-height: 200px;
 }
-.bento-card.feature .rc-img,
 .bento-card.feature .rc-diagram {
   min-height: 280px;
 }

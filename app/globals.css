@@ -56,6 +56,17 @@ html {
   transform: translateY(0);
   outline-offset: 3px;
 }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 /* ---------- splash screen (components/SplashScreen.tsx) ----------
    z-index: 1000 — deliberately the highest value anywhere on the site
@@ -2138,4 +2149,291 @@ opacity:.55;
   .hero-pill-dot {
     animation: none;
   }
+}
+
+/* ---------- robot agent widget (components/RobotAgent.tsx) ----------
+   Floating chat launcher, present on every page. z-index: 300 — above
+   nav (the highest value it or anything else in normal page flow uses)
+   but below the splash screen's 1000 and the skip link's 200 (neither
+   of those overlap it in practice: the splash is gone within seconds,
+   the skip link only appears in its own corner when focused).
+   --robot-scale drives every dimension below via calc(); redefined
+   smaller under the mobile breakpoint instead of a CSS transform, so the
+   widget's actual layout box shrinks too rather than just its visual
+   rendering leaving dead space around it. */
+.robot-launcher {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 300;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: #0b0c0e;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+.robot-launcher:hover {
+  background: var(--accent-bright);
+  transform: scale(1.05);
+}
+
+.robot-widget {
+  --robot-scale: 1;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 300;
+  max-height: calc(100vh - 40px);
+}
+@media (max-width: 640px) {
+  .robot-widget {
+    --robot-scale: 0.72;
+    right: 12px;
+    bottom: 12px;
+  }
+}
+.robot-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.robot-close:hover {
+  color: var(--accent);
+  border-color: rgba(242, 163, 60, 0.4);
+}
+.robot-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: calc(24px * var(--robot-scale));
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+.robot-antenna {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.robot-antenna-dot {
+  width: calc(16px * var(--robot-scale));
+  height: calc(16px * var(--robot-scale));
+  border-radius: 50%;
+  background: var(--muted);
+}
+.robot-antenna-rod {
+  width: calc(6px * var(--robot-scale));
+  height: calc(24px * var(--robot-scale));
+  background: var(--faint);
+}
+.robot-head {
+  position: relative;
+  width: calc(192px * var(--robot-scale));
+  height: calc(128px * var(--robot-scale));
+  background: var(--panel-2);
+  border: 2px solid var(--line);
+  border-radius: calc(48px * var(--robot-scale));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+.robot-visor {
+  width: calc(144px * var(--robot-scale));
+  height: calc(64px * var(--robot-scale));
+  background: var(--bg);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(24px * var(--robot-scale));
+  box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+.robot-eye {
+  width: calc(20px * var(--robot-scale));
+  height: calc(20px * var(--robot-scale));
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 15px var(--accent);
+  animation: robot-eye-pulse 2s ease-in-out infinite;
+}
+@keyframes robot-eye-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .robot-eye {
+    animation: none;
+  }
+}
+.robot-ear {
+  position: absolute;
+  top: calc(48px * var(--robot-scale));
+  width: calc(12px * var(--robot-scale));
+  height: calc(32px * var(--robot-scale));
+  background: var(--muted);
+}
+.robot-ear-left {
+  left: calc(-12px * var(--robot-scale));
+  border-radius: calc(6px * var(--robot-scale)) 0 0 calc(6px * var(--robot-scale));
+}
+.robot-ear-right {
+  right: calc(-12px * var(--robot-scale));
+  border-radius: 0 calc(6px * var(--robot-scale)) calc(6px * var(--robot-scale)) 0;
+}
+.robot-neck {
+  width: calc(40px * var(--robot-scale));
+  height: calc(24px * var(--robot-scale));
+  background: var(--muted);
+  border-left: 2px solid var(--line);
+  border-right: 2px solid var(--line);
+  margin: calc(-8px * var(--robot-scale)) 0;
+  z-index: 1;
+}
+.robot-torso {
+  position: relative;
+  width: calc(288px * var(--robot-scale));
+  height: calc(320px * var(--robot-scale));
+  background: var(--panel-2);
+  border: 2px solid var(--line);
+  border-radius: calc(40px * var(--robot-scale));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: calc(24px * var(--robot-scale));
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  z-index: 2;
+}
+.robot-screen {
+  position: relative;
+  width: calc(224px * var(--robot-scale));
+  height: calc(224px * var(--robot-scale));
+  background: var(--bg);
+  border: calc(3px * var(--robot-scale)) solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+}
+.robot-screen-glare {
+  position: absolute;
+  inset: 0 0 50% 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent);
+  pointer-events: none;
+  z-index: 2;
+}
+.robot-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: calc(10px * var(--robot-scale));
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: calc(11px * var(--robot-scale));
+  line-height: 1.4;
+}
+.robot-messages::-webkit-scrollbar {
+  width: 4px;
+}
+.robot-messages::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 4px;
+}
+.robot-msg {
+  max-width: 85%;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+.robot-msg-bot {
+  align-self: flex-start;
+  background: var(--panel);
+  color: var(--ink);
+}
+.robot-msg-user {
+  align-self: flex-end;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: rgba(242, 163, 60, 0.3);
+}
+.robot-form {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 8px;
+  background: var(--panel);
+  border-top: 1px solid var(--line);
+}
+.robot-form input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: calc(11px * var(--robot-scale));
+}
+.robot-form input::placeholder {
+  color: var(--faint);
+}
+.robot-form button {
+  display: flex;
+  align-items: center;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: color 0.15s ease;
+}
+.robot-form button:hover {
+  color: var(--accent);
+}
+.robot-buttons {
+  display: flex;
+  gap: calc(16px * var(--robot-scale));
+  margin-top: calc(24px * var(--robot-scale));
+}
+.robot-buttons span {
+  width: calc(16px * var(--robot-scale));
+  height: calc(16px * var(--robot-scale));
+  border-radius: 50%;
+  background: var(--muted);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.robot-base {
+  width: calc(96px * var(--robot-scale));
+  height: calc(48px * var(--robot-scale));
+  background: #1b1d22;
+  border: 2px solid var(--line);
+  border-radius: 0 0 999px 999px;
+  margin-top: calc(-8px * var(--robot-scale));
+  box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.5);
+  z-index: 1;
 }

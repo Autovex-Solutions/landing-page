@@ -3,6 +3,7 @@ import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Effects from "@/components/Effects";
+import RobotAgent from "@/components/RobotAgent";
 import SplashScreen from "@/components/SplashScreen";
 import "./globals.css";
 
@@ -239,6 +240,8 @@ export default function RootLayout({
         <SplashScreen />
 
         {children}
+
+        <RobotAgent />
 
         <Effects />
 

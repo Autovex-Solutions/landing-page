@@ -12,6 +12,11 @@
 // `@import "tailwindcss"` wraps its output in `@layer utilities`, which
 // always loses to unlayered plain CSS, so Tailwind classes here would
 // have silently done nothing.
+//
+// Chat is backed by a real model now (app/api/chat/route.ts, Groq) —
+// the API key lives server-side only (.env.local locally, the Vercel
+// project's env vars in production) and is never sent to the browser;
+// this component only ever talks to our own /api/chat route.
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Bot, Send, X } from "lucide-react";
 
@@ -21,10 +26,13 @@ const INITIAL_MESSAGES: Message[] = [
   { id: 1, text: "Hi! I'm the Autovex agent. How can I help?", sender: "bot" },
 ];
 
+const FALLBACK_REPLY = "Sorry, I'm having trouble connecting right now — try again in a moment, or book a call and we'll help directly.";
+
 export default function RobotAgent() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [inputValue, setInputValue] = useState("");
+  const [sending, setSending] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const launcherRef = useRef<HTMLButtonElement>(null);
@@ -33,7 +41,7 @@ export default function RobotAgent() {
     if (!open) return;
     const noMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
     chatEndRef.current?.scrollIntoView({ behavior: noMotion ? "auto" : "smooth" });
-  }, [messages, open]);
+  }, [messages, open, sending]);
 
   // Focus the input on open, close on Escape, return focus to the
   // launcher on close (both this way and via the X button) — same
@@ -55,32 +63,52 @@ export default function RobotAgent() {
     };
   }, [open]);
 
-  const handleSend = (e: FormEvent) => {
+  const handleSend = async (e: FormEvent) => {
     e.preventDefault();
     const text = inputValue.trim();
-    if (!text) return;
-    setMessages((prev) => [...prev, { id: Date.now(), text, sender: "user" }]);
-    setInputValue("");
+    if (!text || sending) return;
 
-    // Placeholder echo — swap for the real agent backend once it exists.
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        { id: Date.now() + 1, text: "Thanks — someone from the team will follow up shortly.", sender: "bot" },
-      ]);
-    }, 900);
+    const history = [...messages, { id: Date.now(), text, sender: "user" as const }];
+    setMessages(history);
+    setInputValue("");
+    setSending(true);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: history.map((m) => ({
+            role: m.sender === "user" ? "user" : "assistant",
+            content: m.text,
+          })),
+        }),
+      });
+      const data = await res.json();
+      const reply: string = res.ok && data.reply ? data.reply : FALLBACK_REPLY;
+      setMessages((prev) => [...prev, { id: Date.now() + 1, text: reply, sender: "bot" }]);
+    } catch {
+      setMessages((prev) => [...prev, { id: Date.now() + 1, text: FALLBACK_REPLY, sender: "bot" }]);
+    } finally {
+      setSending(false);
+    }
   };
 
   if (!open) {
     return (
-      <button
-        ref={launcherRef}
-        className="robot-launcher"
-        aria-label="Open the Autovex agent chat"
-        onClick={() => setOpen(true)}
-      >
-        <Bot size={26} strokeWidth={1.75} />
-      </button>
+      <div className="robot-launcher-group">
+        <div className="robot-greeting" onClick={() => setOpen(true)}>
+          Hello! How can I assist you today?
+        </div>
+        <button
+          ref={launcherRef}
+          className="robot-launcher"
+          aria-label="Open the Autovex agent chat"
+          onClick={() => setOpen(true)}
+        >
+          <Bot size={26} strokeWidth={1.75} />
+        </button>
+      </div>
     );
   }
 
@@ -117,6 +145,7 @@ export default function RobotAgent() {
                   {msg.text}
                 </div>
               ))}
+              {sending && <div className="robot-msg robot-msg-bot robot-msg-typing">…</div>}
               <div ref={chatEndRef} />
             </div>
             <form className="robot-form" onSubmit={handleSend}>
@@ -131,8 +160,9 @@ export default function RobotAgent() {
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="Type a message…"
                 autoComplete="off"
+                disabled={sending}
               />
-              <button type="submit" aria-label="Send message">
+              <button type="submit" aria-label="Send message" disabled={sending}>
                 <Send size={14} />
               </button>
             </form>

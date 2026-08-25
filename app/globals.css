@@ -991,10 +991,28 @@ h2 .dim {
 }
 /* z-index: -1, same pattern as .machine (HeroMachine) — the heading is
    normal in-flow content and paints above negative-z-index positioned
-   content automatically, no z-index needed on .section-head itself. */
+   content automatically, no z-index needed on .section-head itself.
+   Height is 100svh, NOT inset:0/100% matching the section — the section's
+   own height is driven by its content (heading + the sketch panel below
+   it), and tying the video to that dynamic height created a feedback
+   loop: pushing the panel down with more margin also grew the section,
+   which grew the video's object-fit: cover box by the same amount,
+   rescaling the subject down by nearly the same fraction — so the two
+   stayed almost exactly as close together no matter how much margin was
+   added (confirmed by measuring the subject's on-screen position before
+   and after a 100px+ margin change and finding the gap barely moved).
+   Fixing the panel's position relative to the subject requires the
+   subject's position to actually hold still while the panel moves, hence
+   a height independent of the section's own. Background matches --bg
+   exactly (#0b0c0e) so where the section extends taller than one screen
+   (whenever the panel is tall), the seam below the video is invisible —
+   the scrim below already fades toward that same color at its bottom. */
 .mg-banner-video-wrap {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100svh;
   z-index: -1;
   overflow: hidden;
   background: var(--bg);
@@ -1005,11 +1023,14 @@ h2 .dim {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* pushed further right than a typical centered crop — the columns to
-     the right of the content span (see .mg-banner-grid) are a
-     deliberately empty grid track so the subject should sit inside that
-     visible window, not behind the content column on the left */
-  object-position: 80% center;
+  /* pushed all the way to the frame's right edge, not just a typical
+     centered crop — the columns to the right of the content span (see
+     .mg-banner-grid) are a deliberately empty grid track so the subject
+     should sit inside that visible window, not behind the content column
+     on the left. 80% and then 90% both still read as too close to the
+     panel in review; there's no reason to hold back short of 100% since
+     object-fit: cover is already cropping the frame regardless. */
+  object-position: 100% center;
   pointer-events: none;
 }
 .mg-banner-video-wrap::after {
@@ -1021,8 +1042,8 @@ h2 .dim {
   pointer-events: none;
 }
 
-/* split-screen content grid: 12 columns, content spans the first 7
-   (~58%), the remaining 5 columns are deliberately left empty so the
+/* split-screen content grid: 12 columns, content spans the first 8
+   (~67%), the remaining 4 columns are deliberately left empty so the
    video subject shows through unobstructed. Wider max-width than the
    site's usual 1200px content cap specifically so column 1-7 has enough
    real pixels for the sketch tool's own side-by-side form/diagram split
@@ -1048,38 +1069,67 @@ h2 .dim {
   }
   .mg-banner-content {
     grid-column: span 8;
+    /* extra dead space as a buffer against the subject, on top of the 4
+       empty grid columns already reserved to their right — kept the
+       column itself at span 8 rather than narrowing it, since a
+       narrower span (e.g. 7) was measured last round to drop the
+       column below the width .sketch-body's container query needs to
+       stay two-column, re-breaking the exact squish this was fixed for */
+    padding-right: clamp(20px, 3vw, 48px);
   }
 }
 /* .section-head/.section-body normally center themselves at up to 1200px —
    here they're already inside a grid column narrower than that, so their
    own centering would just be a no-op at best and fight the column at
-   worst. Drop it in favor of simply filling the column. */
+   worst. Drop it in favor of simply filling the column.
+   Slightly more bottom margin than the shared clamp(36px,5vw,64px) other
+   sections use — modest breathing room now that the video-wrap above is
+   height: 100svh (decoupled from this section's own height), not tied to
+   it, so the subject's on-screen position no longer shifts when this
+   margin changes; a small fixed buffer is enough, not the much larger
+   margin an earlier pass needed to fight that coupling. */
 .mg-banner-content .section-head {
   max-width: none;
-  margin: 0 0 clamp(36px, 5vw, 64px);
+  margin: 0 0 clamp(48px, 6vw, 86px);
 }
 .mg-banner-content .section-body {
   max-width: none;
   margin: 0;
 }
+/* Caps the panel itself well short of the column's own width and anchors
+   it left (margin-right, not both sides) — a second, independent line of
+   defense against the video subject that holds regardless of exactly how
+   wide the column ends up being at a given viewport, rather than relying
+   on getting the column width precisely right. 42rem (672px) gives real
+   separation from the video subject on the right — narrower than the
+   first pass (48rem) after the subject still read as too close to the
+   panel's top-right corner at 1440px.
+   The container query below reads *this element's* own rendered width,
+   not .mg-banner-content's — that matters now that the panel is capped
+   independently of the column: querying the wider outer column would
+   always clear the threshold regardless of how narrow .sketch itself
+   renders, silently defeating the whole point of capping it. */
+.mg-banner-content .sketch {
+  max-width: 42rem;
+  margin-right: auto;
+  container-type: inline-size;
+}
 /* .sketch-body's own form/diagram side-by-side split is a viewport media
    query (min-width: 861px shows two columns) — it has no way to know how
    much width its actual container has, whether that's the ~1200px it was
-   designed for, or the narrower grid column here. A container query is the
-   correct tool for "adapt to available space, not viewport" —
-   .mg-banner-content becomes the query container, and .sketch-body reads
-   its width instead of the window's, stacking only when it's actually
-   tight regardless of how wide the browser happens to be.
-   Threshold measured, not guessed: at a common 1440px viewport the
-   col-span-8 column renders ~745px — comfortably clears this, so the
-   sketch panel gets its real two-column layout there; only right at the
-   1024px activation floor does the column (~600px) actually need to fall
-   back to stacked. */
-.mg-banner-content {
-  container-type: inline-size;
-}
+   designed for, or the narrower, now explicitly-capped panel here. A
+   container query is the correct tool for "adapt to available space, not
+   viewport" — .sketch (not its outer grid column) is the query container,
+   so .sketch-body reads the panel's own true rendered width and stacks
+   only when *that* is actually tight, regardless of how wide the browser
+   or the grid column happen to be.
+   Threshold measured, not guessed: the panel renders at its 672px cap
+   everywhere the column has room for it (from the 1024px grid-activation
+   floor upward), comfortably above 620px, so it keeps its real two-column
+   layout; only if the column itself ever gets narrower than 620px would
+   .sketch fall back to that width and need to stack. */
 @container (max-width: 620px) {
-  .mg-banner-content .sketch-body {
+  .sketch-body {
     grid-template-columns: 1fr;
   }
 }

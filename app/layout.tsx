@@ -15,7 +15,10 @@ const spaceGrotesk = Space_Grotesk({
 
 const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  // 600/700 added for the splash screen's big bold wordmark — without a
+  // real bold weight loaded, the browser fake-bolds (synthesized, not a
+  // real font file), which looks noticeably worse at that size.
+  weight: ["400", "500", "600", "700"],
   variable: "--font-plex-mono",
 });
 

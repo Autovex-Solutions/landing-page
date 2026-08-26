@@ -101,13 +101,20 @@ html {
   stroke-width: 2px;
   stroke-dasharray: 1000;
   stroke-dashoffset: 1000;
-  font-family: var(--sans);
+  /* mono instead of the body sans — same "control room" family already
+     used for every label/eyebrow/terminal-log on the site, so the splash
+     reads as techy/engineered rather than borrowing a one-off font
+     nothing else uses. */
+  font-family: var(--mono);
   filter: drop-shadow(0 0 10px rgba(242, 163, 60, 0.45));
   animation: splash-draw 2.5s ease-in-out forwards;
 }
 .splash-text-top {
   font-size: 80px;
-  font-weight: 800;
+  /* 700, not 800 — IBM Plex Mono doesn't have an 800 weight file, so
+     asking for it would've made the browser fake-bold (synthesized,
+     visibly worse) regardless of what's preloaded in layout.tsx. */
+  font-weight: 700;
   letter-spacing: 0.15em;
 }
 .splash-text-bottom {
@@ -156,7 +163,17 @@ a {
 .site-nav {
   position: fixed;
   inset: 0 0 auto 0;
-  z-index: 50;
+  /* was 50 — a positioned element with a z-index creates its own
+     stacking context, so raising .nav-sheet's own z-index (a child)
+     did nothing: the whole .site-nav subtree, sheet included, was
+     capped at this value regardless. The robot widget (z-index: 300,
+     a separate top-level sibling, not nested in here) floated on top of
+     the full-screen mobile menu instead of being covered by it —
+     hiding the sheet's own Book a call button behind the chat launcher.
+     Comfortably above the widget now; harmless the rest of the time
+     since the collapsed bar (top) and the widget (bottom corner) never
+     spatially overlap regardless of stacking order. */
+  z-index: 500;
 }
 .site-nav nav {
   position: relative;
@@ -1872,7 +1889,12 @@ footer {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 88px var(--pad) 48px;
+  /* bottom padding is 48px + 100px of clearance for the robot launcher
+     (fixed, bottom: 20px, 60px tall — the last ~80px of the viewport is
+     never truly clear of it), not just visual breathing room: without
+     this the copyright line sat directly behind the widget once
+     scrolled all the way down. */
+  padding: 88px var(--pad) 148px;
   color: var(--faint);
 }
 /* z-index: -1, same pattern as .machine (HeroMachine) — footer's own

@@ -6,6 +6,7 @@ import FeatureGrid from "@/components/FeatureGrid";
 import FlowField from "@/components/FlowField";
 import HeroMachine from "@/components/HeroMachine";
 import OrbAnimation from "@/components/OrbAnimation";
+import ProcessTimeline from "@/components/ProcessTimeline";
 import ServicesAccordion from "@/components/ServicesAccordion";
 import ToolMarquee from "@/components/ToolMarquee";
 import WorkBento from "@/components/WorkBento";
@@ -42,7 +43,10 @@ export function Hero() {
       <div className="hero-inner">
        <div className="hero-pill mono">
           <span className="hero-pill-dot"></span>
-          AI Automation • Web Apps • Mobile Apps
+          {/* own span so mobile can make just the text horizontally
+              scrollable (overflow-x) without the dot scrolling away
+              with it — see .hero-pill-text in globals.css */}
+          <span className="hero-pill-text">AI Automation • Web Apps • Mobile Apps</span>
         </div>
         <h1 className="rise">
           <Rise text="Engineered for
@@ -144,18 +148,32 @@ export function Process() {
         </h2>
       </div>
 
-      <div className="section-body steps">
-        {steps.map((step, i) => (
-          <div className="step reveal" key={step.title}>
-            <span className="mono">
-              {String(i + 1).padStart(2, "0")}
-            </span>
+      {/* Desktop (>= 768px): full step text in the bordered 4-up grid,
+          unchanged. Same desktop-only/mobile-only split Services already
+          uses below — see the comment on that class in globals.css for
+          why this, not a Tailwind hidden/md:block pair. */}
+      <div className="desktop-only">
+        <div className="section-body steps">
+          {steps.map((step, i) => (
+            <div className="step reveal" key={step.title}>
+              <span className="mono">
+                {String(i + 1).padStart(2, "0")}
+              </span>
 
-            <h3>{step.title}</h3>
+              <h3>{step.title}</h3>
 
-            <p>{step.body}</p>
-          </div>
-        ))}
+              <p>{step.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Mobile (< 768px): number + icon + title only, no body copy —
+          see ProcessTimeline.tsx */}
+      <div className="mobile-only">
+        <div className="section-body">
+          <ProcessTimeline />
+        </div>
       </div>
     </section>
   );

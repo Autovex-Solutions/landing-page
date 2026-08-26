@@ -117,7 +117,14 @@ export default function MonitorGuyBanner() {
                 <Rise text={teardown.headingDim} offset={4} />
               </span>
             </h2>
-            <p className="lede">{teardown.body}</p>
+            {/* Full pitch on desktop; mobile gets the input box front and
+                center with a one-line reason to use it, not a paragraph
+                to read first — same desktop-only/mobile-only split used
+                elsewhere (see that class comment in globals.css). */}
+            <p className="lede desktop-only">{teardown.body}</p>
+            <p className="lede td-lede-mobile mobile-only">
+              Get an engineered estimate in 48 hours.
+            </p>
           </div>
 
           <div className="section-body">

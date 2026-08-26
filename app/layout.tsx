@@ -15,10 +15,10 @@ const spaceGrotesk = Space_Grotesk({
 
 const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
-  // 600/700 added for the splash screen's big bold wordmark — without a
-  // real bold weight loaded, the browser fake-bolds (synthesized, not a
-  // real font file), which looks noticeably worse at that size.
-  weight: ["400", "500", "600", "700"],
+  // 600 covers .td-result-num (the teardown card's "≈ X hrs/month"
+  // number) — 700 was only ever needed for the splash's mono treatment,
+  // which has since moved to var(--sans) instead, so it's dropped here.
+  weight: ["400", "500", "600"],
   variable: "--font-plex-mono",
 });
 

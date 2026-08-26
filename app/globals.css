@@ -2438,6 +2438,10 @@ opacity:.55;
   padding: 6px 10px;
   border-radius: 10px;
   border: 1px solid var(--line);
+  /* the service-list reply uses real line breaks (one service per line)
+     — plain divs collapse \n by default, this is what actually renders
+     them as separate lines instead of one run-on line */
+  white-space: pre-line;
 }
 .robot-msg-bot {
   align-self: flex-start;

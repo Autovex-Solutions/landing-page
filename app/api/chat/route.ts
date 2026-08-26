@@ -31,7 +31,10 @@ Keep replies short — 2-4 sentences, plain conversational text only. The chat w
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
 export async function POST(req: Request) {
-  const apiKey = process.env.GROQ_API_KEY;
+  // .trim() guards against the single most common way this breaks in
+  // practice: a stray leading/trailing space or newline picked up when
+  // pasting the value into a dashboard's env var field.
+  const apiKey = process.env.GROQ_API_KEY?.trim();
   if (!apiKey) {
     return NextResponse.json({ error: "Chat is not configured." }, { status: 500 });
   }
@@ -75,6 +78,11 @@ export async function POST(req: Request) {
     });
 
     if (!groqRes.ok) {
+      // Logged server-side only (visible in Vercel's function logs) — the
+      // client only ever gets the generic message below, never Groq's
+      // raw error body.
+      const detail = await groqRes.text().catch(() => "");
+      console.error(`[api/chat] Groq ${groqRes.status}: ${detail}`);
       return NextResponse.json({ error: "Upstream error." }, { status: 502 });
     }
 
@@ -85,7 +93,8 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ reply });
-  } catch {
+  } catch (err) {
+    console.error("[api/chat] Request failed:", err);
     return NextResponse.json({ error: "Request failed." }, { status: 502 });
   }
 }

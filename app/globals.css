@@ -1885,12 +1885,13 @@ footer {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  /* bottom padding is 48px + 100px of clearance for the robot launcher
-     (fixed, bottom: 20px, 60px tall — the last ~80px of the viewport is
-     never truly clear of it), not just visual breathing room: without
-     this the copyright line sat directly behind the widget once
-     scrolled all the way down. */
-  padding: 88px var(--pad) 148px;
+  /* bottom padding clears the robot launcher (fixed, bottom: 20px, 60px
+     tall — the last ~80px of the viewport is never truly clear of it),
+     not just visual breathing room — the previous 148px overshot that by
+     a lot and read as a big dead gap, especially on mobile where the
+     copyright line's own text is shorter/wraps tighter. 100px leaves
+     ~20px of real margin past the widget instead of ~68px of it. */
+  padding: 88px var(--pad) 100px;
   color: var(--faint);
 }
 /* z-index: -1, same pattern as .machine (HeroMachine) — footer's own
@@ -2238,11 +2239,16 @@ opacity:.55;
     animation: none;
   }
 }
-@media (max-width: 480px) {
+@media (max-width: 640px) {
+  /* Fixed + persistently visible, the bubble's real width (not just the
+     round launcher) rode over card titles, CTA buttons, and body copy
+     at a dozen different scroll positions on a narrow phone — it isn't
+     just the very bottom of the page that's ever "behind" it, it's
+     wherever content happens to scroll into that corner. The launcher
+     icon alone still signals "chat here" without the standing width
+     that kept landing on top of whatever was actually being read. */
   .robot-greeting {
-    white-space: normal;
-    font-size: 13px;
-    max-width: 44vw;
+    display: none;
   }
 }
 .robot-launcher {

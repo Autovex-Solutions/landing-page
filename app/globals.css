@@ -421,13 +421,15 @@ a {
     color: var(--muted);
   }
   /* section links live in the nav-sheet instead below this width; only the
-     CTA + burger stay in the bar itself */
+     burger stays in the bar itself — the CTA is dropped too (not just the
+     links): logo + wordmark + CTA pill + burger all competing in one bar
+     read as cluttered, and "Book a call" is already the very first thing
+     in the sheet the burger opens, plus repeated again in the hero. */
   .nav-links {
     display: none;
   }
   .nav-cta {
-    padding: 12px 18px;
-    white-space: nowrap;
+    display: none;
   }
   .nav-burger {
     display: flex;
@@ -513,6 +515,25 @@ h1 {
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
+}
+/* Desktop keeps the hero left-aligned (unchanged) — mobile centers the
+   pill, heading, subtext and both buttons. text-align alone only
+   centers inline content (the pill, and wrapped text inside h1/.hero-sub);
+   h1 and .hero-sub are block-level with their own max-width, so they
+   need their own margin: 0 auto to actually center the box, not just
+   the text inside it. */
+@media (max-width: 720px) {
+  .hero-inner {
+    text-align: center;
+  }
+  .hero-inner h1,
+  .hero-inner .hero-sub {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-inner .cta-row {
+    justify-content: center;
+  }
 }
 .btn {
   position: relative;

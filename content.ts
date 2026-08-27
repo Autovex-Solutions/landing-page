@@ -86,7 +86,7 @@ export const workItems: WorkItem[] = [
     category: "Automation",
     title: "Autonomous content enrichment pipeline",
     summary:
-      "A media library's backlog goes in one side and comes out captioned, safety-rated, de-watermarked and upscaled to HD. Crash-safe, budget-capped, and it throttles itself to the AI vendor's real rate limits. A human only ever sees the flagged exceptions.",
+      "Backlog in, captioned and upscaled HD out — a human only ever sees the exceptions.",
     metric: "0 human touches per video · ~700 paying users",
     nodes: ["Fetch from library", "Gemini caption + safety", "Watermark sweep", "4× HD upscale", "Publish enriched", "Exception → human"],
   },
@@ -94,7 +94,7 @@ export const workItems: WorkItem[] = [
     category: "Web",
     title: "Live classroom engagement analytics",
     summary:
-      "A virtual classroom that reads the room: emotion AI runs in each student's browser and streams only engagement signals, so instructors watch attention rise, dip and recover live — then get the post-session report.",
+      "A virtual classroom that reads the room — on-device emotion AI, engagement signals only.",
     metric: "0 video frames leave the device",
     image: "/work/classroom-live.webp",
   },
@@ -102,7 +102,7 @@ export const workItems: WorkItem[] = [
     category: "Web",
     title: "Booking platform rebuild",
     summary:
-      "A slow five-step quote form became a two-screen booking flow with live pricing. Same traffic, more than twice the bookings.",
+      "A slow five-step quote form became a fast two-screen booking flow with live pricing.",
     metric: "2.4× booking conversion",
     sample: true,
     nodes: ["Next.js front end", "Live pricing API", "Stripe checkout", "Supabase records"],
@@ -111,7 +111,7 @@ export const workItems: WorkItem[] = [
     category: "Mobile",
     title: "Field-ops companion app",
     summary:
-      "Crews log jobs offline from site; everything syncs when signal returns and the office dashboard updates itself. Paper forms retired.",
+      "Crews log jobs offline from site — everything syncs the moment signal returns.",
     metric: "0 paper forms since launch",
     sample: true,
     nodes: ["React Native app", "Offline job queue", "Background sync", "Ops dashboard"],

@@ -87,50 +87,56 @@ html {
   opacity: 0;
   pointer-events: none;
 }
-.splash-svg {
-  max-width: 56rem;
+.splash-lockup {
+  display: flex;
+  align-items: center;
+  gap: 20px;
   padding: 0 24px;
+  max-width: 56rem;
 }
-.splash-text {
-  fill: transparent;
-  /* amber outline traces in first (same accent used for every other
-     border/glow on the site), then resolves to a solid ink-white fill —
-     same "amber edge, white content" language as .sketch/.footer-socials
-     borders elsewhere, not a one-off color choice. */
-  stroke: var(--accent);
-  stroke-width: 2px;
-  stroke-dasharray: 1000;
-  stroke-dashoffset: 1000;
-  /* var(--sans) (Space Grotesk) — same family as the "Engineered for
-     Impact." hero heading, per explicit request, not the mono/"control
-     room" treatment this had briefly. */
+/* Mark slides in from the left, wordmark from the right, meeting at
+   center — same brand mark used in the nav/footer, just bigger here.
+   Distances are viewport-relative so the convergence reads the same on
+   a phone as a wide desktop screen. */
+.splash-mark {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  opacity: 0;
+  transform: translateX(-24vw);
+  filter: drop-shadow(0 0 16px rgba(242, 163, 60, 0.4));
+  animation: splash-mark-in 0.9s cubic-bezier(0.22, 0.61, 0.21, 1) 0.15s forwards;
+}
+.splash-word {
   font-family: var(--sans);
-  filter: drop-shadow(0 0 10px rgba(242, 163, 60, 0.45));
-  animation: splash-draw 2.5s ease-in-out forwards;
+  font-size: clamp(22px, 5.5vw, 56px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(24vw);
+  animation: splash-word-in 0.9s cubic-bezier(0.22, 0.61, 0.21, 1) 0.15s forwards;
 }
-.splash-text-top {
-  font-size: 80px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-}
-.splash-text-bottom {
-  font-size: 50px;
-  font-weight: 700;
-  letter-spacing: 0.4em;
-  animation-delay: 0.5s; /* starts just after AUTOVEX */
-}
-@keyframes splash-draw {
-  0% {
-    stroke-dashoffset: 1000;
-    fill: transparent;
+@media (max-width: 480px) {
+  .splash-mark {
+    width: 44px;
+    height: 44px;
   }
-  80% {
-    stroke-dashoffset: 0;
-    fill: transparent;
+  .splash-word {
+    font-size: clamp(18px, 7vw, 28px);
   }
-  100% {
-    stroke-dashoffset: 0;
-    fill: var(--ink);
+}
+@keyframes splash-mark-in {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes splash-word-in {
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 body {
@@ -198,7 +204,13 @@ a {
   max-width: 940px;
   margin: 14px auto 0;
   padding: 8px 10px 8px 22px;
-  background: rgba(20, 22, 26, 0.5);
+  /* Was 0.5 alpha — at that opacity, section content scrolling underneath
+     (card text, metrics) stayed legible enough through the blur to
+     visually collide with the nav's own text and buttons instead of
+     reading as a solid bar on top of the page. Backdrop-blur still gives
+     the glass look; the background itself now does the job of actually
+     separating the nav from what's behind it. */
+  background: rgba(14, 15, 18, 0.92);
   border-color: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(32px) saturate(1.7);
   -webkit-backdrop-filter: blur(32px) saturate(1.7);
@@ -362,17 +374,17 @@ a {
   align-items: center;
   gap: 10px;
 }
+/* Was its own bespoke pill — rounded, sentence-case, sans-serif, no
+   arrow — the only button on the whole site that didn't match .btn's
+   design language (rectangular, mono, uppercase, arrow icon). A senior
+   dev's outside review flagged exactly this as looking like two
+   different button systems on the same page. Now it's .btn.primary
+   itself (see the className in Nav.tsx) with only sizing overridden
+   here, so it's a smaller instance of the same button, not a different
+   one. */
 .nav-cta {
-  font-size: 15.5px;
-  font-weight: 600;
-  padding: 8px 18px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #0b0c0e;
-  transition: background 0.18s ease;
-}
-.nav-cta:hover {
-  background: var(--accent-bright);
+  padding: 9px 16px;
+  font-size: 12px;
 }
 /* True centering, not just "next to the logo": with unequal-width left/right
    groups, flex space-between never lands .nav-links on the actual midpoint —
@@ -441,7 +453,11 @@ a {
   .nav-links {
     display: none;
   }
-  .nav-cta {
+  /* .nav-actions .nav-cta (0-2-0), not just .nav-cta (0-1-0): now that the
+     element also carries .btn, its unconditional `display: inline-flex`
+     rule sits later in this file and would otherwise win this tie at
+     equal specificity, un-hiding the button on mobile. */
+  .nav-actions .nav-cta {
     display: none;
   }
   .nav-burger {

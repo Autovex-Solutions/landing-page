@@ -112,8 +112,8 @@ export default function Nav() {
             links — was bundled inside .nav-links before, which is why the
             burger ended up as its own third zone instead of pairing with it. */}
         <div className="nav-actions">
-          <a className="nav-cta" href="#contact">
-            Book a call
+          <a className="btn primary nav-cta" href="#contact">
+            Book a call <span className="arrow">&rarr;</span>
           </a>
           <button
             ref={burgerRef}
